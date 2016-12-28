@@ -1,5 +1,5 @@
 # LEDCanvas
-A project to control Adafruit's "Neopixel" LED strips with a 80MHz PIC32 MCU. I was motivated to do this because I am not inclined to learn the Arduino platform and most of Adafruit's sample code is based on the Arduino platform. 
+A project to control Adafruit's "Neopixel" LED strips with a 80MHz PIC32 MCU. I was motivated to do this because I am not inclined to learn the Arduino platform on which most of Adafruit's sample code is based. 
 
 The design is with flexibility kept in mind: any number of strips can be connected to the PIC32 up to the number of pins on a given port. The strips can be cut to whatever length, which only requires the programmer to specify the number of LEDs on each connected strip. The project will build a rectangular display based on the largest strip length connected and will simply clip out any pixels that aren't visible if variable-length strips were to be connected (I can't see a reason why anybody would want to do that, but hey...people do weird shit). 
 
