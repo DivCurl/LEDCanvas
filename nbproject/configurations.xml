@@ -4,25 +4,29 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>main.h</itemPath>
-      <itemPath>Neopixel.h</itemPath>
-      <itemPath>npDisplay.h</itemPath>
-      <itemPath>npAnimation.h</itemPath>
-      <itemPath>anTest.h</itemPath>
-      <itemPath>rgbColor.h</itemPath>
-      <itemPath>counter.h</itemPath>
-      <itemPath>io.h</itemPath>
-      <itemPath>anPatterns.h</itemPath>
-      <itemPath>anStrobes.h</itemPath>
-      <itemPath>anAnalyzers.h</itemPath>
-      <itemPath>pixel.h</itemPath>
-      <itemPath>types.h</itemPath>
-      <itemPath>sprite.h</itemPath>
-      <itemPath>anRain.h</itemPath>
-      <itemPath>anRainbowChaser.h</itemPath>
-      <itemPath>anFadeMiddle.h</itemPath>
-      <itemPath>anChevrons.h</itemPath>
-      <itemPath>anComets.h</itemPath>
+      <logicalFolder name="include" displayName="include" projectFiles="true">
+        <itemPath>src/include/anChevrons.h</itemPath>
+        <itemPath>src/include/anClassicHorizSA.h</itemPath>
+        <itemPath>src/include/anColorFlowSA.h</itemPath>
+        <itemPath>src/include/anColorRaceSA.h</itemPath>
+        <itemPath>src/include/anComets.h</itemPath>
+        <itemPath>src/include/anFadeMiddle.h</itemPath>
+        <itemPath>src/include/anPulseFadeSA.h</itemPath>
+        <itemPath>src/include/anRain.h</itemPath>
+        <itemPath>src/include/anRainbowChaser.h</itemPath>
+        <itemPath>src/include/anSplatterSA.h</itemPath>
+        <itemPath>src/include/counter.h</itemPath>
+        <itemPath>src/include/fft.h</itemPath>
+        <itemPath>src/include/io.h</itemPath>
+        <itemPath>src/include/main.h</itemPath>
+        <itemPath>src/include/Neopixel.h</itemPath>
+        <itemPath>src/include/npAnimation.h</itemPath>
+        <itemPath>src/include/npDisplay.h</itemPath>
+        <itemPath>src/include/pixel.h</itemPath>
+        <itemPath>src/include/rgbColor.h</itemPath>
+        <itemPath>src/include/sprite.h</itemPath>
+        <itemPath>src/include/types.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -31,24 +35,28 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.cpp</itemPath>
-      <itemPath>Neopixel.cpp</itemPath>
-      <itemPath>npDisplay.cpp</itemPath>
-      <itemPath>npAnimation.cpp</itemPath>
-      <itemPath>anTest.cpp</itemPath>
-      <itemPath>rgbColor.cpp</itemPath>
-      <itemPath>counter.cpp</itemPath>
-      <itemPath>io.cpp</itemPath>
-      <itemPath>anPatterns.cpp</itemPath>
-      <itemPath>anStrobes.cpp</itemPath>
-      <itemPath>anAnalyzers.cpp</itemPath>
-      <itemPath>pixel.cpp</itemPath>
-      <itemPath>sprite.cpp</itemPath>
-      <itemPath>anRain.cpp</itemPath>
-      <itemPath>anRainbowChaser.cpp</itemPath>
-      <itemPath>anFadeMiddle.cpp</itemPath>
-      <itemPath>anChevrons.cpp</itemPath>
-      <itemPath>anComets.cpp</itemPath>
+      <logicalFolder name="src" displayName="src" projectFiles="true">
+        <itemPath>src/anChevrons.cpp</itemPath>
+        <itemPath>src/anClassicHorizSA.cpp</itemPath>
+        <itemPath>src/anColorFlowSA.cpp</itemPath>
+        <itemPath>src/anColorRaceSA.cpp</itemPath>
+        <itemPath>src/anComets.cpp</itemPath>
+        <itemPath>src/anFadeMiddle.cpp</itemPath>
+        <itemPath>src/anPulseFadeSA.cpp</itemPath>
+        <itemPath>src/anRain.cpp</itemPath>
+        <itemPath>src/anRainbowChaser.cpp</itemPath>
+        <itemPath>src/anSplatterSA.cpp</itemPath>
+        <itemPath>src/counter.cpp</itemPath>
+        <itemPath>src/fft.cpp</itemPath>
+        <itemPath>src/io.cpp</itemPath>
+        <itemPath>src/main.cpp</itemPath>
+        <itemPath>src/Neopixel.cpp</itemPath>
+        <itemPath>src/npAnimation.cpp</itemPath>
+        <itemPath>src/npDisplay.cpp</itemPath>
+        <itemPath>src/pixel.cpp</itemPath>
+        <itemPath>src/rgbColor.cpp</itemPath>
+        <itemPath>src/sprite.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -67,9 +75,9 @@
         <targetDevice>PIC32MX795F512L</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <platformTool>Simulator</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>1.43</languageToolchainVersion>
+        <languageToolchainVersion>1.40</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
