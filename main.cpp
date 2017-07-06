@@ -1,5 +1,4 @@
 #include "main.h"
-#include "npAnimation.h"
 
 // Chip configuration
 #pragma config FSRSSEL      = PRIORITY_7    // Assign shadow register set to IPL7 interrupts
@@ -17,6 +16,8 @@
 
 using namespace std;
 
+int currAnim;
+int totalAnim;
 int T4Period = 3000;           // 40 Khz period; 20 Khz effective for audio FFT
 volatile uint32_t t2Ticks = 0;
 volatile uint32_t ticks = 0;
@@ -60,65 +61,141 @@ int main() {
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 9 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 10 ] );
     
-    // containers to hold predefined animations.
-    // vector<anTest> tests;
-    vector<anPatterns> patterns;
-    vector<anStrobes> strobes;
-    vector<anAnalyzers> analyzers;
     
-    // Setup a few default animations to start with. Others can be added/removed at runtime. 
-    // tests.push_back( anTest( &display, 1000, ID_NONE, MODE_REPEAT ) );
-    
-    
-    
-    patterns.push_back( anPatterns( &display, 1000, ID_PATTERN_RAINBOW_1 ) );
-    patterns.push_back( anPatterns( &display, 1000, ID_PATTERN_FADE_MIDDLE ) );    
-    patterns.push_back( anPatterns( &display, 1000, ID_PATTERN_RAIN ) );   
-    patterns.push_back( anPatterns( &display, 1000, ID_PATTERN_RANDOM_FILL ) );
-    patterns.push_back( anPatterns( &display, 8000, ID_PATTERN_CHEVRONS ) );  
-    patterns.push_back( anPatterns( &display, 1000, ID_PATTERN_COMETS ) );    
-    strobes.push_back( anStrobes( &display, 1000, ID_STROBE_BASIC ) );            
-    // analyzers.push_back( anAnalyzers( &display, 1000, ID_ANALYZER_CLASSIC1, MODE_REPEAT ) );    
-    analyzers.push_back( anAnalyzers( &display, 1000, ID_ANALYZER_CLASSIC2, MODE_REPEAT ) );    
-    analyzers.push_back( anAnalyzers( &display, 1000, ID_ANALYZER_SPLATTER, MODE_REPEAT ) );    
-    analyzers.push_back( anAnalyzers( &display, 1000, ID_ANALYZER_FADE, MODE_REPEAT ) );
-    analyzers.push_back( anAnalyzers( &display, 1000, ID_ANALYZER_COLOR_FLOW, MODE_REPEAT ) );
-    analyzers.push_back( anAnalyzers( &display, 1000, ID_ANALYZER_RACECARS, MODE_REPEAT ) );   
-    
-         
-    // patterns.push_back( anPatterns( &display, 1000, ID_PATTERN_FIREWORKS, MODE_REPEAT ) );
-    
-    // Need to rethink this a little...
+    // Each animation is loaded to the heap. 
+    // Each animation is derived from npAnimation base class
+    // anPatterns* pPattern;
+    // anStrobes* pStrobes;
+    // anAnalyzers* pAnalyzers;       
     
     while ( 1 ) {
-        vector<anPatterns>::iterator itPatterns = patterns.begin();
-        while ( itPatterns != patterns.end() ) {
-            if ( ( (*itPatterns).Draw() == MODE_PREV ) && ( itPatterns != patterns.begin() ) ) {  // return code 1 -> animation received MODE_PREV message
-                itPatterns--;
-            } else {      
-                itPatterns++;
-            }
-        }
-        
-        
-        vector<anStrobes>::iterator itStrobes = strobes.begin();
-        while ( itStrobes != strobes.end() ) {
-            if ( ( (*itStrobes).Draw() == MODE_PREV ) && ( itStrobes != strobes.begin() ) ) {  // return code 1 -> animation received MODE_PREV message
-                itStrobes--;
-            } else {
-                itStrobes++;
-            }
-        }
-        
-        
-        vector<anAnalyzers>::iterator itAnalyzers = analyzers.begin();
-        while ( itAnalyzers != analyzers.end() ) {
-            if ( ( (*itAnalyzers).Draw() == MODE_PREV ) && ( itAnalyzers != analyzers.begin() ) ) {  // return code 1 -> animation received MODE_PREV message
-                itAnalyzers--;
-            } else {
-                itAnalyzers++;
-            }
-        }                                       
+        switch ( currAnim ) {
+            /*
+            case ( 1 ):
+                pPattern = new anPatterns( &display, 1000, ID_PATTERN_RAINBOW_1 );
+                if ( pPattern->Draw() == MODE_PREV ) {
+                    currAnim = 1;
+                } else {
+                    currAnim++;
+                }
+                delete pPattern;
+                break;
+            
+            case ( 2 ):
+                pPattern = new anPatterns( &display, 1000, ID_PATTERN_FADE_MIDDLE );
+                if ( pPattern->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pPattern;
+                break;
+                
+            case ( 3 ):
+                pPattern = new anPatterns( &display, 1000, ID_PATTERN_RAIN );
+                if ( pPattern->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pPattern;
+                break;
+                
+            case ( 4 ):
+                pPattern = new anPatterns( &display, 1000, ID_PATTERN_RANDOM_FILL );
+                if ( pPattern->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pPattern;
+                break;
+                
+            case ( 5 ):
+                pPattern = new anPatterns( &display, 1000, ID_PATTERN_CHEVRONS );
+                if ( pPattern->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pPattern;
+                break;
+                                
+            case ( 6 ):
+                pPattern = new anPatterns( &display, 1000, ID_PATTERN_COMETS );
+                if ( pPattern->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pPattern;
+                break;
+                
+            case ( 7 ):
+                pAnalyzers = new anAnalyzers( &display, 3000, ID_ANALYZER_CLASSIC2 );
+                if ( pAnalyzers->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pAnalyzers;
+                break;
+                
+            case ( 8 ):
+                pAnalyzers = new anAnalyzers( &display, 3000, ID_ANALYZER_SPLATTER );
+                if ( pAnalyzers->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pAnalyzers;
+                break;
+                
+            case ( 9 ):
+                pAnalyzers = new anAnalyzers( &display, 3000, ID_ANALYZER_FADE );
+                if ( pAnalyzers->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pAnalyzers;
+                break;
+                
+            case ( 10 ):
+                pAnalyzers = new anAnalyzers( &display, 3000, ID_ANALYZER_FADE );
+                if ( pAnalyzers->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pAnalyzers;
+                break;
+                
+            case ( 11 ):
+                pAnalyzers = new anAnalyzers( &display, 3000, ID_ANALYZER_COLOR_FLOW );
+                if ( pAnalyzers->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pAnalyzers;
+                break;
+                
+            case ( 12 ):
+                pAnalyzers = new anAnalyzers( &display, 3000, ID_ANALYZER_RACECARS );
+                if ( pAnalyzers->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {                    
+                    currAnim++;
+                }
+                delete pAnalyzers;
+                break;
+             */
+            
+            default: 
+                currAnim = 1;
+                break;                        
+        }        
     }
     
     return ( EXIT_SUCCESS );

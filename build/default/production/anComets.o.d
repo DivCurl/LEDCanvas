@@ -1,6 +1,6 @@
-build/default/production/anStrobes.o:  \
-anStrobes.cpp  \
-anStrobes.h  \
+build/default/production/anComets.o:  \
+anComets.cpp  \
+anComets.h  \
  npAnimation.h  \
 npDisplay.h  \
 Neopixel.h  \

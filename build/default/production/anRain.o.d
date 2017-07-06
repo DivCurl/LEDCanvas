@@ -1,5 +1,6 @@
-build/default/production/npAnimation.o:  \
-npAnimation.cpp  \
+build/default/production/anRain.o:  \
+anRain.cpp  \
+anRain.h  \
 npAnimation.h  \
  npDisplay.h  \
 Neopixel.h  \

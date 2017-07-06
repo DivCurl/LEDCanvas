@@ -160,6 +160,7 @@ colorMode_t npDisplay::GetColorMode () {
     return colorMode;   
 }
 
+/*
 void npDisplay::SetPixel( uint16_t x, uint16_t y, rgbw_t color, uint16_t brt ) {
     uint16_t index;
     if ( ( index = GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
@@ -169,6 +170,7 @@ void npDisplay::SetPixel( uint16_t x, uint16_t y, rgbw_t color, uint16_t brt ) {
         frameBuffer[ index + 3 ] = ( color.w * ( globalBrightness + 1 ) ) >> 8;
     }
 }
+*/
 
 void npDisplay::ClrFB() {
     memset( frameBuffer, 0, sizeof(  frameBuffer ) );

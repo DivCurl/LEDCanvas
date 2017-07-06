@@ -1,6 +1,6 @@
-build/default/production/anStrobes.o:  \
-anStrobes.cpp  \
-anStrobes.h  \
+build/default/production/anFadeMiddle.o:  \
+anFadeMiddle.cpp  \
+anFadeMiddle.h  \
  npAnimation.h  \
 npDisplay.h  \
 Neopixel.h  \

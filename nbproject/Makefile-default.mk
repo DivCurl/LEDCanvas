@@ -30,18 +30,24 @@ ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 IMAGE_TYPE=debug
 OUTPUT_SUFFIX=elf
 DEBUGGABLE_SUFFIX=elf
-FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 else
 IMAGE_TYPE=production
 OUTPUT_SUFFIX=hex
 DEBUGGABLE_SUFFIX=elf
-FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 endif
 
 ifeq ($(COMPARE_BUILD), true)
-COMPARISON_BUILD=
+COMPARISON_BUILD=-mafrlcsj
 else
 COMPARISON_BUILD=
+endif
+
+ifdef SUB_IMAGE_ADDRESS
+
+else
+SUB_IMAGE_ADDRESS_COMMAND=
 endif
 
 # Object Directory
@@ -51,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.cpp Neopixel.cpp npDisplay.cpp npAnimation.cpp anTest.cpp rgbColor.cpp counter.cpp io.cpp anPatterns.cpp anStrobes.cpp anAnalyzers.cpp pixel.cpp sprite.cpp
+SOURCEFILES_QUOTED_IF_SPACED=main.cpp Neopixel.cpp npDisplay.cpp npAnimation.cpp anTest.cpp rgbColor.cpp counter.cpp io.cpp anPatterns.cpp anStrobes.cpp anAnalyzers.cpp pixel.cpp sprite.cpp anRain.cpp anRainbowChaser.cpp anFadeMiddle.cpp anChevrons.cpp anComets.cpp
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/Neopixel.o ${OBJECTDIR}/npDisplay.o ${OBJECTDIR}/npAnimation.o ${OBJECTDIR}/anTest.o ${OBJECTDIR}/rgbColor.o ${OBJECTDIR}/counter.o ${OBJECTDIR}/io.o ${OBJECTDIR}/anPatterns.o ${OBJECTDIR}/anStrobes.o ${OBJECTDIR}/anAnalyzers.o ${OBJECTDIR}/pixel.o ${OBJECTDIR}/sprite.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/Neopixel.o.d ${OBJECTDIR}/npDisplay.o.d ${OBJECTDIR}/npAnimation.o.d ${OBJECTDIR}/anTest.o.d ${OBJECTDIR}/rgbColor.o.d ${OBJECTDIR}/counter.o.d ${OBJECTDIR}/io.o.d ${OBJECTDIR}/anPatterns.o.d ${OBJECTDIR}/anStrobes.o.d ${OBJECTDIR}/anAnalyzers.o.d ${OBJECTDIR}/pixel.o.d ${OBJECTDIR}/sprite.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/Neopixel.o ${OBJECTDIR}/npDisplay.o ${OBJECTDIR}/npAnimation.o ${OBJECTDIR}/anTest.o ${OBJECTDIR}/rgbColor.o ${OBJECTDIR}/counter.o ${OBJECTDIR}/io.o ${OBJECTDIR}/anPatterns.o ${OBJECTDIR}/anStrobes.o ${OBJECTDIR}/anAnalyzers.o ${OBJECTDIR}/pixel.o ${OBJECTDIR}/sprite.o ${OBJECTDIR}/anRain.o ${OBJECTDIR}/anRainbowChaser.o ${OBJECTDIR}/anFadeMiddle.o ${OBJECTDIR}/anChevrons.o ${OBJECTDIR}/anComets.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/Neopixel.o.d ${OBJECTDIR}/npDisplay.o.d ${OBJECTDIR}/npAnimation.o.d ${OBJECTDIR}/anTest.o.d ${OBJECTDIR}/rgbColor.o.d ${OBJECTDIR}/counter.o.d ${OBJECTDIR}/io.o.d ${OBJECTDIR}/anPatterns.o.d ${OBJECTDIR}/anStrobes.o.d ${OBJECTDIR}/anAnalyzers.o.d ${OBJECTDIR}/pixel.o.d ${OBJECTDIR}/sprite.o.d ${OBJECTDIR}/anRain.o.d ${OBJECTDIR}/anRainbowChaser.o.d ${OBJECTDIR}/anFadeMiddle.o.d ${OBJECTDIR}/anChevrons.o.d ${OBJECTDIR}/anComets.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/Neopixel.o ${OBJECTDIR}/npDisplay.o ${OBJECTDIR}/npAnimation.o ${OBJECTDIR}/anTest.o ${OBJECTDIR}/rgbColor.o ${OBJECTDIR}/counter.o ${OBJECTDIR}/io.o ${OBJECTDIR}/anPatterns.o ${OBJECTDIR}/anStrobes.o ${OBJECTDIR}/anAnalyzers.o ${OBJECTDIR}/pixel.o ${OBJECTDIR}/sprite.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/Neopixel.o ${OBJECTDIR}/npDisplay.o ${OBJECTDIR}/npAnimation.o ${OBJECTDIR}/anTest.o ${OBJECTDIR}/rgbColor.o ${OBJECTDIR}/counter.o ${OBJECTDIR}/io.o ${OBJECTDIR}/anPatterns.o ${OBJECTDIR}/anStrobes.o ${OBJECTDIR}/anAnalyzers.o ${OBJECTDIR}/pixel.o ${OBJECTDIR}/sprite.o ${OBJECTDIR}/anRain.o ${OBJECTDIR}/anRainbowChaser.o ${OBJECTDIR}/anFadeMiddle.o ${OBJECTDIR}/anChevrons.o ${OBJECTDIR}/anComets.o
 
 # Source Files
-SOURCEFILES=main.cpp Neopixel.cpp npDisplay.cpp npAnimation.cpp anTest.cpp rgbColor.cpp counter.cpp io.cpp anPatterns.cpp anStrobes.cpp anAnalyzers.cpp pixel.cpp sprite.cpp
+SOURCEFILES=main.cpp Neopixel.cpp npDisplay.cpp npAnimation.cpp anTest.cpp rgbColor.cpp counter.cpp io.cpp anPatterns.cpp anStrobes.cpp anAnalyzers.cpp pixel.cpp sprite.cpp anRain.cpp anRainbowChaser.cpp anFadeMiddle.cpp anChevrons.cpp anComets.cpp
 
 
 CFLAGS=
@@ -81,7 +87,7 @@ FIXDEPS=fixDeps
 ifneq ($(INFORMATION_MESSAGE), )
 	@echo $(INFORMATION_MESSAGE)
 endif
-	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 
 MP_PROCESSOR_OPTION=32MX795F512L
 MP_LINKER_FILE_OPTION=
@@ -184,6 +190,36 @@ ${OBJECTDIR}/sprite.o: sprite.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/sprite.o 
 	@${FIXDEPS} "${OBJECTDIR}/sprite.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/sprite.o.d" -o ${OBJECTDIR}/sprite.o sprite.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/anRain.o: anRain.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anRain.o.d 
+	@${RM} ${OBJECTDIR}/anRain.o 
+	@${FIXDEPS} "${OBJECTDIR}/anRain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anRain.o.d" -o ${OBJECTDIR}/anRain.o anRain.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anRainbowChaser.o: anRainbowChaser.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anRainbowChaser.o.d 
+	@${RM} ${OBJECTDIR}/anRainbowChaser.o 
+	@${FIXDEPS} "${OBJECTDIR}/anRainbowChaser.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anRainbowChaser.o.d" -o ${OBJECTDIR}/anRainbowChaser.o anRainbowChaser.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anFadeMiddle.o: anFadeMiddle.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anFadeMiddle.o.d 
+	@${RM} ${OBJECTDIR}/anFadeMiddle.o 
+	@${FIXDEPS} "${OBJECTDIR}/anFadeMiddle.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anFadeMiddle.o.d" -o ${OBJECTDIR}/anFadeMiddle.o anFadeMiddle.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anChevrons.o: anChevrons.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anChevrons.o.d 
+	@${RM} ${OBJECTDIR}/anChevrons.o 
+	@${FIXDEPS} "${OBJECTDIR}/anChevrons.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anChevrons.o.d" -o ${OBJECTDIR}/anChevrons.o anChevrons.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anComets.o: anComets.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anComets.o.d 
+	@${RM} ${OBJECTDIR}/anComets.o 
+	@${FIXDEPS} "${OBJECTDIR}/anComets.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anComets.o.d" -o ${OBJECTDIR}/anComets.o anComets.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/main.o: main.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -263,20 +299,50 @@ ${OBJECTDIR}/sprite.o: sprite.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/sprite.o 
 	@${FIXDEPS} "${OBJECTDIR}/sprite.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/sprite.o.d" -o ${OBJECTDIR}/sprite.o sprite.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/anRain.o: anRain.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anRain.o.d 
+	@${RM} ${OBJECTDIR}/anRain.o 
+	@${FIXDEPS} "${OBJECTDIR}/anRain.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anRain.o.d" -o ${OBJECTDIR}/anRain.o anRain.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anRainbowChaser.o: anRainbowChaser.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anRainbowChaser.o.d 
+	@${RM} ${OBJECTDIR}/anRainbowChaser.o 
+	@${FIXDEPS} "${OBJECTDIR}/anRainbowChaser.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anRainbowChaser.o.d" -o ${OBJECTDIR}/anRainbowChaser.o anRainbowChaser.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anFadeMiddle.o: anFadeMiddle.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anFadeMiddle.o.d 
+	@${RM} ${OBJECTDIR}/anFadeMiddle.o 
+	@${FIXDEPS} "${OBJECTDIR}/anFadeMiddle.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anFadeMiddle.o.d" -o ${OBJECTDIR}/anFadeMiddle.o anFadeMiddle.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anChevrons.o: anChevrons.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anChevrons.o.d 
+	@${RM} ${OBJECTDIR}/anChevrons.o 
+	@${FIXDEPS} "${OBJECTDIR}/anChevrons.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anChevrons.o.d" -o ${OBJECTDIR}/anChevrons.o anChevrons.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/anComets.o: anComets.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/anComets.o.d 
+	@${RM} ${OBJECTDIR}/anComets.o 
+	@${FIXDEPS} "${OBJECTDIR}/anComets.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fenforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/anComets.o.d" -o ${OBJECTDIR}/anComets.o anComets.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 endif
 
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: link
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
+dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CPPC} $(MP_EXTRA_LD_PRE)  -mdebugger -D__MPLAB_DEBUGGER_PK3=1 -mprocessor=$(MP_PROCESSOR_OPTION) -O1 -o dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}          -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)   -mreserve=data@0x0:0x1FC -mreserve=boot@0x1FC02000:0x1FC02FEF -mreserve=boot@0x1FC02000:0x1FC024FF  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PK3=1,--defsym=_min_heap_size=65535,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
+	${MP_CPPC} $(MP_EXTRA_LD_PRE)  -mdebugger -D__MPLAB_DEBUGGER_PK3=1 -mprocessor=$(MP_PROCESSOR_OPTION) -O1 -o dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}          -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)   -mreserve=data@0x0:0x1FC -mreserve=boot@0x1FC02000:0x1FC02FEF -mreserve=boot@0x1FC02000:0x1FC024FF  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,-D=__DEBUG_D,--defsym=__MPLAB_DEBUGGER_PK3=1,--defsym=_min_heap_size=16384,--no-code-in-dinit,--no-dinit-in-serial-mem,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
 	
 else
-dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
+dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_CPPC} $(MP_EXTRA_LD_PRE)  -mprocessor=$(MP_PROCESSOR_OPTION) -O1 -o dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}          -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=_min_heap_size=65535,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
-	${MP_CC_DIR}\\xc32-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} 
+	${MP_CPPC} $(MP_EXTRA_LD_PRE)  -mprocessor=$(MP_PROCESSOR_OPTION) -O1 -o dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} ${OBJECTFILES_QUOTED_IF_SPACED}          -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD)  -Wl,--defsym=__MPLAB_BUILD=1$(MP_EXTRA_LD_POST)$(MP_LINKER_FILE_OPTION),--defsym=_min_heap_size=16384,--no-code-in-dinit,--no-dinit-in-serial-mem,-Map="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map",--memorysummary,dist/${CND_CONF}/${IMAGE_TYPE}/memoryfile.xml
+	${MP_CC_DIR}\\xc32-bin2hex dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX} 
 endif
 
 

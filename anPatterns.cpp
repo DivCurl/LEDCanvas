@@ -29,47 +29,53 @@ int anPatterns::Draw() {
        
         if ( !skip ) {           
             switch ( id ) {
+                /*
                 case ID_PATTERN_RAINBOW_1:
                     if ( RainbowChaser1() ) {
                         framesDrawn++;
                     }
                     break;
+                */
 
+                /*
                 case ID_PATTERN_RAIN:
                     if ( Rain() ) {
                         framesDrawn++;
                     }
                     break;
+                */
 
+                /*
                 case ID_PATTERN_FADE_MIDDLE:
                     if ( FadeToMiddle() ) {
                         framesDrawn++;
                     }                    
                     break;
+                */ 
 
+                /*
                 case ID_PATTERN_RANDOM_FILL:
                     if ( RandomFill() ) {
                         framesDrawn++;
                     }                    
-                    break;    
+                    break;
+                 */
 
+                /*
                 case ID_PATTERN_CHEVRONS:
                     if ( StackedChevrons() ) {
                         framesDrawn++;
                     }                    
                     break;  
-                    
+                */
+                
+                /*                    
                 case ID_PATTERN_COMETS:
                     if ( Comets() ) {
                         framesDrawn++;
                     }                    
                     break;  
-                    
-                case ID_PATTERN_FIREWORKS:
-                    if ( FireWorks() ) {
-                        framesDrawn++;
-                    }                    
-                    break;  
+                 */
 
                 default:
                     break;
@@ -102,6 +108,7 @@ int anPatterns::Init() {
     }
 }
  
+/*
 bool anPatterns::RainbowChaser1() {
     static float d = 0;
     
@@ -133,7 +140,9 @@ bool anPatterns::RainbowChaser1() {
     }
     return ( FRAME_SKIP );
 }
+*/
 
+/*
 bool anPatterns::FadeToMiddle() {
     if ( firstScan ) {
         firstScan = 0;
@@ -167,7 +176,9 @@ bool anPatterns::FadeToMiddle() {
      
     return ( FRAME_SKIP );  
 }
+*/
 
+/*
 bool anPatterns::Rain() {
     if ( firstScan ) {
         firstScan = 0;
@@ -196,7 +207,9 @@ bool anPatterns::Rain() {
     
     return ( FRAME_SKIP );
 }
+*/
 
+/*
 bool anPatterns::RandomFill() {     
     if ( firstScan ) {        
         firstScan = 0;
@@ -226,7 +239,9 @@ bool anPatterns::RandomFill() {
     
     return ( FRAME_SKIP );
 }
+ */
 
+/*
 bool anPatterns::StackedChevrons() {
     static int bottomVertex; // this tracks the lowest-most chevron vertex currently drawn
     static int currentVertex;
@@ -302,7 +317,9 @@ bool anPatterns::StackedChevrons() {
     
     return ( FRAME_SKIP );
 }
+*/
 
+/*
 bool anPatterns::Comets() {
     int ret = FRAME_SKIP;
     if ( firstScan ) {        
@@ -385,104 +402,4 @@ bool anPatterns::Comets() {
 
     return ( ret );    
 }
-
-bool anPatterns::FireWorks() {
-/* 
- * 1. Randomize starting position (not too far from center)
- * 2. Randomize 'explode' (y) position
- * 3. Determine number of explosion particles
- * 4. Launch the firework
- * 5. Explode - 2-3 steps? Concentrate particles around starting position
- * 6. Allow the particles to fall & fade out
-  */    
-    int launchSpeed = 0;
-    if ( firstScan ) {
-        firstScan = 0;
-        step = 0;
-        fireWorks.particles.resize( 10 );        
-        StartDelayCounter( 100 );  
-        ctrDelay.Reset();                   
-    }
-    
-    if ( ctrDelay.Update() ) {
-        FadeOut();
-        ctrDelay.Reset();
-    }
-    
-    switch ( step ) {
-        // launch
-        case 0:
-            fireWorks.y = 0;
-            fireWorks.x = rand() % 3;
-            fireWorks.x += 2;
-            fireWorks.yExplode = rand() % 40;
-            fireWorks.yExplode += 20;
-            launchSpeed = rand() % 50;
-            launchSpeed += 25;
-            fireWorks.launchSpeed.Start( launchSpeed ); 
-            step = 1;
-            break;
-        case 1: 
-            if ( fireWorks.launchSpeed.Update() ) {
-                if ( fireWorks.y != fireWorks.yExplode ) {
-                    fireWorks.y++;
-                    Set( fireWorks.x, fireWorks.y, rgbwGetByAngle( 0, 255 ) );
-                } else {
-                    // get the starting position of the particles
-                    for ( int i = 0; i < fireWorks.particles.size(); i++  ) {
-                        fireWorks.particles[i].x = rand() % 4;
-                        fireWorks.particles[i].x += 2;  // ensure we're not too close to the sides
-                        fireWorks.particles[i].y = fireWorks.yExplode;  // all starting at same height
-                        fireWorks.delta[i].x = 1-(float)(rand() % 200) / 100;   // 0-0.99
-                        // Set( fireWorks.particles[i].x, fireWorks.particles[i].y, rgbwGetByAngle( 0 ) );
-                    }                    
-                    
-                    fireWorks.dropSpeed.Start( 350 );   // start the 'falling' speed counter                    
-                    fireWorks.launchSpeed.Stop();
-                    // step = 5;
-                    break;
-                } 
-                
-                fireWorks.launchSpeed.Reset();
-            }
-            break;
-            
-        // generate explode frame 1
-        case 5:
-            if ( fireWorks.dropSpeed.Update() ) {
-                // update positions and let 'debris' fall
-                for ( int i = 0; i < fireWorks.particles.size(); i++  ) {
-                        fireWorks.delta[i].x = 1-(float)(rand() % 200) / 100; // 0-0.99
-                        fireWorks.particles[i].y--;
-                        Set( fireWorks.particles[i].x, fireWorks.particles[i].y, rgbwGetByAngle( angle ) );
-                        fireWorks.dropSpeed.SetDelay( fireWorks.dropSpeed.GetDelay() * 0.9 );
-                        fireWorks.dropSpeed.Reset();
-                }
-            }
-            
-            break;
-
-        // generate explode frame 2
-        case 10:
-            break;
-            
-       // generate explode frame 3
-        case 15:
-            break;
-            
-        // generate explode frame 4
-        case 20:
-            break;
-            
-        case 25:
-            break;
-            
-        case 30:
-            break;
-            
-        default:
-            break;
-    }  
-    
-    return ( FRAME_DRAWN );
-}
+*/

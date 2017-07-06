@@ -2,6 +2,34 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/main.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anAnalyzers.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anStrobes.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anComets.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/npDisplay.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/npAnimation.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anChevrons.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/io.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/npDisplay.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/types.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anRainbowChaser.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/io.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anFadeMiddle.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anComets.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/main.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anRain.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anRain.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anStrobes.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anRainbowChaser.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/pixel.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anFadeMiddle.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/npAnimation.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anPatterns.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/pixel.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anPatterns.cpp</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/anChevrons.h</file>
+            <file>file:/D:/Projects/MPLAB/LEDCanvas/sprite.cpp</file>
+        </group>
     </open-files>
 </project-private>

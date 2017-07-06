@@ -21,8 +21,8 @@ public:
     npAnimation();
     npAnimation( npDisplay* pDisplay, int frames, int id, mode_t mode );
     ~npAnimation();
-    virtual int Draw() = 0;
-    virtual int Init() = 0;
+    //virtual int Draw() = 0;
+    //virtual int Init() = 0;
     uint16_t GetRowBottom();
     uint16_t GetRowTop();
     uint16_t GetColLeft();
@@ -80,7 +80,6 @@ protected:
     bool skip;
     bitset<16> modeFlags;   
     counter ctrDelay;           // Get rid of this at some point
-    vector<counter> counters;   // general use; resize as needed
     npDisplay* pDisplay;
 };
 

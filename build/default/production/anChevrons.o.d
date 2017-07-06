@@ -1,6 +1,6 @@
-build/default/production/anStrobes.o:  \
-anStrobes.cpp  \
-anStrobes.h  \
+build/default/production/anChevrons.o:  \
+anChevrons.cpp  \
+anChevrons.h  \
  npAnimation.h  \
 npDisplay.h  \
 Neopixel.h  \

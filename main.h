@@ -10,6 +10,7 @@
 #include <plib.h>  
 #include <xc.h>
 #include <sys/attribs.h>
+#include "npAnimation.h"
 #include "io.h"
 #include "npDisplay.h"
 #include "anTest.h"

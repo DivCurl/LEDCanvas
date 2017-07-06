@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=0.5.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=0.5/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=LEDCanvas.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=ledcanvas/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/0.5/bin
+makeDirectory ${TMPDIR}/ledcanvas/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/0.5.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/ledcanvas.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/0.5.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/ledcanvas.tar *
 checkReturnCode
 
 # Cleanup

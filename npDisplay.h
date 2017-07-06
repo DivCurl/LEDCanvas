@@ -4,6 +4,7 @@
 #include <vector>
 #include "Neopixel.h"
 #include "rgbColor.h"
+#include "pixel.h"
 
 enum colorMode_t { RGB, RGBW };
 enum { ORIGIN_BOTTOM, ORIGIN_TOP, ORIGIN_LEFT, ORIGIN_RIGHT }; // orientation of origin with respect to first wired LED.
@@ -67,11 +68,24 @@ public:
     colorMode_t GetColorMode ();
     rgbw_t GetColorAtCoord( uint16_t x, uint16_t y );
     uint8_t* GetFBPointer();    
-        
+    class pixel {
+        public:
+            void Set( rgb_t color, int brt );    // Set this pixel
+            void Clr( );    // Clear this pixel
+            void Mov( coord dest );     // move this pixel to destination coordinate
+            void Cop( coord dest );     // copy this pixel to destination coordinate
+
+        private:
+            rgb_t color;
+            int brt;
+
+    };
+
 protected:  
     std::vector<Neopixel> neopixels;    
     uint8_t frameBuffer[ FB_SIZE ] = {};
     uint8_t frameBufferAlt[ FB_SIZE ] = {};
+    // pixel frameBufferPixels [ FB_SIZE ] = {};
     int t1LUT[ FB_SIZE ] = {};
     uint8_t maxLED;                         // maximum connected LED count per Neopixel strand
     uint8_t bytesPerPixel;

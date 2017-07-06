@@ -4,20 +4,20 @@
 #include "types.h"
 #include "rgbColor.h"
 
+/*
 class pixel {
 public:
-    void Set( coord );
-    void Clr( coord );
-    void Mov( coord c1, coord c2 );
-    void Cop( coord c1, coord c2 );
-    coord GetCoord();    
+    void Set( rgb_t color, int brt );    // Set this pixel
+    void Clr( );    // Clear this pixel
+    void Mov( coord dest );     // move this pixel to destination coordinate
+    void Cop( coord dest );     // copy this pixel to destination coordinate
     
 private:
-    coord pCoord;
-    rgbw_t color;
+    rgb_t color;
     int brt;
-};
 
+};
+*/
 
 #endif
 

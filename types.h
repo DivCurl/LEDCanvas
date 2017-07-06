@@ -4,6 +4,7 @@
 struct coord {
     int x;
     int y;
+    int z;
 };
 
 #endif

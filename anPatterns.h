@@ -13,16 +13,14 @@ public:
     anPatterns( npDisplay* pDisplay, int frames, int id, mode_t mode = MODE_NONE );
     int Draw();
     int Init();
-    bool RainbowChaser1();  // Done
-    bool Rain();            // Done
-    bool FadeToMiddle();    // Done
-    bool Firefly();         // Done    
-    bool RandomFill();      // Done
-    bool StackedChevrons(); // Done
-    bool Comets();          // Done
-    bool FireWorks();       // Test
-    bool ChaseOpposites();  // TODO    
-    bool Snake();           // TODO
+    // bool RainbowChaser1();  // Done
+    // bool Rain();            // Done
+    // bool FadeToMiddle();    // Done
+    // bool Firefly();         // Done    
+    // bool RandomFill();      // Done
+    // bool StackedChevrons(); // Done
+    // bool Comets();          // Done
+
         
 private:
     float angle;
@@ -35,17 +33,8 @@ private:
         counter speed;
         rgbw_t color;
     };
-    
-    struct fireWork {
-        int x, y, yExplode;     
-        rgbw_t particleColor;
-        vector<coord> particles;
-        vector<coord> delta;        
-        counter dropSpeed;       
-        counter launchSpeed;
-    } fireWorks;
-    
-    
+  
+
     vector<flySaucer> saucers;
 };
 
