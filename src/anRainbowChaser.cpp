@@ -2,8 +2,8 @@
 
 using namespace std;
 
-anRainbowChaser::anRainbowChaser( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
-: npAnimation( pDisplay, frames, id, mode ) { }
+anRainbowChaser::anRainbowChaser( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+: npAnimation( pDisplay, mode, frames, opts ) { }
 
 anRainbowChaser::~anRainbowChaser() { }
 

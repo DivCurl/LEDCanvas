@@ -7,7 +7,7 @@
 class anClassicHorizSA : public npAnimation {    
 public:
     anClassicHorizSA();
-    anClassicHorizSA( npDisplay* display, int frames, int id, mode_t mode = MODE_NONE );
+    anClassicHorizSA( npDisplay* display, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
     ~anClassicHorizSA();
     int Draw();   
     int Init();

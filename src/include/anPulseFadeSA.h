@@ -7,7 +7,7 @@
 class anPulseFadeSA : public npAnimation {    
 public:
     anPulseFadeSA();
-    anPulseFadeSA( npDisplay* display, int frames, int id, mode_t mode = MODE_NONE );
+    anPulseFadeSA( npDisplay* display, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
     ~anPulseFadeSA();
     int Draw();   
     int Init();

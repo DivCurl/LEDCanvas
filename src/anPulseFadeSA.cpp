@@ -1,18 +1,20 @@
 #include "./include/anPulseFadeSA.h" 
 
-extern int16c sampleBuffer[ N ]; //initialize buffer to collect samples
+// Refer to fft.h/fft.cpp
+extern int16c sampleBuffer[ N ];
 extern volatile int sampleIndex;
-extern int analyzerRun;
-extern int16c din[ N ];       // buffer to hold old samples
-extern int16c dout[ N ];      // holds computed FFT
+extern bool analyzerRun;
+extern volatile bool newSample;
+extern int16c din[ N ];
+extern int16c dout[ N ];
 extern int16c scratch[ N ];
 extern int16c twiddle [ N / 2 ];
 extern short singleSidedFFT[ N ];
 extern long maxM;
-extern int log2N; // log2(128) = 7
+extern int log2N; 
 
-anPulseFadeSA::anPulseFadeSA( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
- : npAnimation( pDisplay, frames, id, mode ) { }
+anPulseFadeSA::anPulseFadeSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+ : npAnimation( pDisplay, mode, frames, opts ) { }
 
 anPulseFadeSA::~anPulseFadeSA( void ) { }
 
@@ -84,8 +86,13 @@ int anPulseFadeSA::Init() {
     skip = 0;
     ret = MODE_NONE;
     Clr();    
+    memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
     analyzerRun = 1;    // used by T4 ISR
-    memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM      
+    newSample = 0;
+    // sampleIndex = 0;
+    // memcpy( sampleBuffer, 0, sizeof( sampleBuffer ) );
+    // memcpy( din, 0, sizeof( din ) );
+    // memcpy( dout, 0, sizeof( dout ) );      
     
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {

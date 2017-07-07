@@ -1,18 +1,20 @@
 #include "./include/anClassicHorizSA.h" 
 
-extern int16c sampleBuffer[ N ]; //initialize buffer to collect samples
+// Refer to fft.h/fft.cpp
+extern int16c sampleBuffer[ N ];
 extern volatile int sampleIndex;
-extern int analyzerRun;
-extern int16c din[ N ];       // buffer to hold old samples
-extern int16c dout[ N ];      // holds computed FFT
+extern bool analyzerRun;
+extern volatile bool newSample;
+extern int16c din[ N ];
+extern int16c dout[ N ];
 extern int16c scratch[ N ];
 extern int16c twiddle [ N / 2 ];
 extern short singleSidedFFT[ N ];
 extern long maxM;
-extern int log2N; // log2(128) = 7
+extern int log2N; 
 
-anClassicHorizSA::anClassicHorizSA( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
- : npAnimation( pDisplay, frames, id, mode ) { }
+anClassicHorizSA::anClassicHorizSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+ : npAnimation( pDisplay, mode, frames, opts ) { }
 
 anClassicHorizSA::~anClassicHorizSA( void ) { }
 
@@ -29,8 +31,7 @@ int anClassicHorizSA::Draw() {
         }        
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
-        }     
-    
+        }
         if ( !skip ) {                
             int barLength = 0;
             int ii = 0;
@@ -41,8 +42,7 @@ int anClassicHorizSA::Draw() {
                 angle = 0;
                 StartDelayCounter( 12 );         
                 ctrDelay.Reset();
-            }
-            
+            }            
             if ( ctrDelay.Update() ) {
                 ShiftDown( 0, 29 );         // shift down the bottom half of the display
                 ShiftUp( 30, 59 );          // shift up the upper half of the display
@@ -55,9 +55,8 @@ int anClassicHorizSA::Draw() {
                     if ( Remap ( singleSidedFFT[ i + 3 ], -50, -dbGain, 0, 29 ) > j ) {   
                         barLength = j;
                     }
-
-                }           
-
+                }
+                
                 if ( i % 2 == 0 ) {  // alternate bottom/top columns on even/odd values of i
                      SetCol( ii, GetRowBottom(), barLength, rgbwGetByAngle( angle + ( i * 20 )  ) ); 
                 } else {
@@ -86,8 +85,13 @@ int anClassicHorizSA::Init() {
     skip = 0;
     ret = MODE_NONE;
     Clr();    
+    memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
     analyzerRun = 1;    // used by T4 ISR
-    memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM      
+    newSample = 0;
+    sampleIndex = 0;
+    // memcpy( sampleBuffer, 0, sizeof( sampleBuffer ) );
+    // memcpy( din, 0, sizeof( din ) );
+    // memcpy( dout, 0, sizeof( dout ) );    
     
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
@@ -101,4 +105,6 @@ int anClassicHorizSA::Init() {
     } else {
         LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
     }
+    
+    return ( 0 );
 }

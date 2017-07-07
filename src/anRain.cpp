@@ -2,14 +2,10 @@
 
 using namespace std;
 
-anRain::anRain( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
-: npAnimation( pDisplay, frames, id, mode ) {
-    
-}
+anRain::anRain( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+: npAnimation( pDisplay, mode, frames, opts ) { }
 
-anRain::~anRain() {    
-    
-}
+anRain::~anRain() { }
 
 int anRain::Draw() {
     Init();

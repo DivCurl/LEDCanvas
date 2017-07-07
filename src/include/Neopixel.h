@@ -9,8 +9,7 @@
 #include <p32xxxx.h>
 #include <plib.h>    
 
-class Neopixel {
-    
+class Neopixel {    
 friend class npDisplay;
 
 public:

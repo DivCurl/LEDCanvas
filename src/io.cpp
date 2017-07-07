@@ -14,19 +14,16 @@ void LCDReadByte() {
     if ( uartBytesRead == 0 && ( ( rxByte == LCD_ACK ) || ( rxByte == LCD_NAK ) ) ) {
         return;
     }
-
     // Was a full data packet previously read? 
     if ( ( uartBytesRead == 6 ) ) {
         isReadPacket = 0;
         uartBytesRead = 0;
         lcdReadBuffer = 0;
     }
-
     // if first byte read and is response to query (byte 0 value is 0x1 or 0x7), flag it as packet header
     if ( ( uartBytesRead == 0) && ((rxByte == 0x01) ||  ( rxByte == 0x07 ) ) ) {
         isReadPacket = 1;
     }
-
     // continue reading packets after packet header found...
     if ( isReadPacket ) {
         lcdReadBuffer = ( lcdReadBuffer << 8 ) | rxByte;

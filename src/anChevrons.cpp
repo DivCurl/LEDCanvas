@@ -2,18 +2,13 @@
 
 using namespace std;
 
-anChevrons::anChevrons( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
-: npAnimation( pDisplay, frames, id, mode ) {
-    
-}
+anChevrons::anChevrons( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+: npAnimation( pDisplay, mode, frames, opts ) { }
 
-anChevrons::~anChevrons() {    
-    
-}
+anChevrons::~anChevrons() { }
 
 int anChevrons::Draw() {
     Init();
-    asm volatile ("nop");
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
@@ -25,20 +20,18 @@ int anChevrons::Draw() {
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
-       
         if ( !skip ) {           
             static int bottomVertex; // this tracks the lowest-most chevron vertex currently drawn
             static int currentVertex;
             static int dropNew = 1;
-            static int shiftOut = 0;
             static int count = 0;
+            
             if ( firstScan ) { 
-                Clr();
                 firstScan = 0;
                 angle = rand() % 360 ;
                 currentVertex = 51;
                 bottomVertex = 0;
-                StartDelayCounter( 50 );         
+                StartDelayCounter( 25 );         
                 ctrDelay.Reset();       
             }
     
@@ -62,7 +55,6 @@ int anChevrons::Draw() {
                     Set( 8, currentVertex + 8, rgbwGetByAngle( angle ) );         
                     count++;            
                     dropNew = 0;
-
                 } else {    // gets the job done but need to clean this up...
                     Clr( 0, currentVertex + 8 );
                     Clr( 1, currentVertex + 6 );
@@ -73,7 +65,6 @@ int anChevrons::Draw() {
                     Clr( 6, currentVertex + 4 );
                     Clr( 7, currentVertex + 6 );
                     Clr( 8, currentVertex + 8 );
-
                     Set( 0, currentVertex + 7, rgbwGetByAngle( angle  ) );
                     Set( 1, currentVertex + 5, rgbwGetByAngle( angle ) );
                     Set( 2, currentVertex + 3, rgbwGetByAngle( angle ) );
@@ -83,8 +74,8 @@ int anChevrons::Draw() {
                     Set( 6, currentVertex + 3, rgbwGetByAngle( angle ) );
                     Set( 7, currentVertex + 5, rgbwGetByAngle( angle ) );
                     Set( 8, currentVertex + 7, rgbwGetByAngle( angle ) );  
-
-                    currentVertex--;                                    
+                    currentVertex--;                      
+                    
                     if ( currentVertex == bottomVertex ) {
                         if ( bottomVertex++ != 50 ) {
                             dropNew = 1;
@@ -117,11 +108,13 @@ int anChevrons::Init() {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
     } else {
         LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
-    }
+    }  
     
     if ( modeFlags.test( MODE_PAUSE ) ) {
         LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
     } else {
         LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
     }
+    
+    return ( 0 );
 }

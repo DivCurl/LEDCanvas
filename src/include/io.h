@@ -7,11 +7,7 @@
 #include <cstdint>
 #include <p32xxxx.h>
 #include <plib.h> 
-
-typedef struct {
-    bool msgPending;
-    uint64_t msg;
-} gModes_t;
+#include "types.h"
 
 // Defines for LCD UART read/write messages, as inferred from 4D Workshop debugging
 #define LCD_ACK             0x06

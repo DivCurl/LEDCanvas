@@ -3,14 +3,20 @@
 // global so ISR can access
 int16c sampleBuffer[ N ]; //initialize buffer to collect samples
 volatile int sampleIndex = 0;
-int analyzerRun = 0;
+volatile bool newSample = 0;
+bool analyzerRun;
 int16c din[ N ];       // buffer to hold old samples
 int16c dout[ N ];      // holds computed FFT
 int16c scratch[ N ];
 int16c twiddle [ N / 2 ];
 short singleSidedFFT[ N ];
-long maxM = 0;
-int log2N = 7; // log2(128) = 7
+#if N == 64
+int log2N = 6;  // log2(64) = 6
+#elif N == 128
+int log2N = 7;  // log2(128) = 7
+#elif N == 256
+int log2N = 8;  // log2(256) = 8
+#endif
 // fast log (dB) lookup table
 const char dbLUT[ 1024 ] = {
 -60,-60,-54,-51,-48,-46,-45,-43,-42,-41,-40,-39,-39,-38,-37,-37,-36,-36,-35,-35,-34,-34,-33,-33,-33,-32,-32,-32,-31,-31,-31,-30,-30,-30,-30,-29,-29,
@@ -40,6 +46,7 @@ const char dbLUT[ 1024 ] = {
 __attribute__ ( ( optimize( "unroll-loops" ) ) )
 void ComputeFFT() {
     mT4IntEnable( 0 );
+    // Pull sampled values out of ADC sample buffer and store in din
     for ( int i = 0; i < N; i++ ) {
         if ( i < sampleIndex ) {
             din[ i + ( N - sampleIndex ) ] = sampleBuffer[ i ];
@@ -61,7 +68,7 @@ void ComputeFFT() {
         
         singleSidedFFT[ i - 1 ] = 20 * log10( dB );	// calculate dB and store in final holding array
          */
-        singleSidedFFT[ i - 1 ] = (short)dbLUT[ ( int) ( sqrt(re_sqr + im_sqr) ) ];     // scaled to dB using lookup table for speed
+        singleSidedFFT[ i - 1 ] = (short)dbLUT[ (int)( sqrt( re_sqr + im_sqr ) ) ];     // scaled to dB using lookup table for speed
         // singleSidedFFT[ i - 1 ] = sqrt(re_sqr + im_sqr );    // linear amplitude
     }
 

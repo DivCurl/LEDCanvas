@@ -2,14 +2,10 @@
 
 using namespace std;
 
-anFadeMiddle::anFadeMiddle( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
-: npAnimation( pDisplay, frames, id, mode ) {
-    
-}
+anFadeMiddle::anFadeMiddle( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+: npAnimation( pDisplay, mode, frames, opts ) { }
 
-anFadeMiddle::~anFadeMiddle() {    
-    
-}
+anFadeMiddle::~anFadeMiddle() { }
 
 int anFadeMiddle::Draw() {
     Init();

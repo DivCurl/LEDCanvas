@@ -7,8 +7,8 @@
 class anRainbowChaser : public npAnimation {
 public:
     anRainbowChaser();
-    ~anRainbowChaser();
-    anRainbowChaser( npDisplay* pDisplay, int frames, int id, mode_t mode = MODE_NONE );
+    anRainbowChaser( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
+    ~anRainbowChaser();    
     int Draw();
     int Init();
         

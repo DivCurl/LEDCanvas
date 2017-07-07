@@ -2,9 +2,7 @@
 
 using namespace std;
 
-Neopixel::Neopixel( void ) {    
-    
-}
+Neopixel::Neopixel( void ) { }
 
 Neopixel::Neopixel( uint16_t numLEDs, volatile uint32_t* portSET, volatile uint32_t* portCLR, volatile uint32_t* portTRIS, uint16_t pinLED ) : 
     numLEDs( numLEDs ), 
@@ -15,6 +13,4 @@ Neopixel::Neopixel( uint16_t numLEDs, volatile uint32_t* portSET, volatile uint3
     portTRIS( portTRIS ) {
 }
     
-Neopixel::~Neopixel() {
-    
-}
+Neopixel::~Neopixel() { }

@@ -1,8 +1,7 @@
 #include "./include/main.h"
 
-#define _DEBUG 0
-
-// Chip configuration
+#define DEBUG_LEVEL 0
+// PIC32 chip-specific configuration bits
 #pragma config FSRSSEL      = PRIORITY_7    // Assign shadow register set to IPL7 interrupts
 #pragma config POSCMOD      = HS            // Enable high speed oscillator module
 #pragma config FNOSC        = PRIPLL        // use primary PLL
@@ -18,38 +17,39 @@
 
 using namespace std;
 
-int currAnim;
 int T4Period = 3000;           // 40 Khz period; 20 Khz effective for audio FFT
 volatile uint32_t t2Ticks = 0;
 volatile uint32_t ticks = 0;
-int _1_ms_tick;
+uint16_t _1_ms_tick;
 extern int16c sampleBuffer[];   // initialize buffer to collect samples
-extern int analyzerRun;
+extern bool analyzerRun;
+extern volatile bool newSample;
 extern int sampleIndex;
 extern int uartBytesRead;
-extern bool isReadPacket;
 extern uint64_t lcdReadBuffer;
    
-int main() {   
+int main() {          
     SYSTEMConfigPerformance( SYS_FREQ );
     mJTAGPortEnable( DEBUG_JTAGPORT_OFF );
-    INTEnableSystemMultiVectoredInt();   
+    INTEnableSystemMultiVectoredInt();
     InitADC();
     InitUART();    
     CloseTimer4();
     OpenTimer4( T4_ON | T4_SOURCE_INT | T4_PS_1_1, T4Period );  
     ConfigIntTimer4( T4_INT_ON | T4_INT_PRIOR_7 );    
     srand( ReadADC10( 0 ) );   
-    _1_ms_tick = (float) ( SYS_FREQ / T4Period ) * 0.001;
+    _1_ms_tick = ( uint16_t )round( ( SYS_FREQ / (float)T4Period ) * 0.001f ) ;
     
-    // give LCD time to boot
-#if _DEBUG == 0
+    // Startup delay to give LCD time to boot
+#if DEBUG_LEVEL == 0
     counter startup( 2000 );
     startup.Start();
     while ( !startup.Update() );    
     InitLCD();
 #endif
     
+    int currAnim = 1;
+    npAnimation* pAnim;
     npDisplay display( RGBW );   
     display.SetBrightness( 120 );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 0 ] );
@@ -58,60 +58,61 @@ int main() {
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 3 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 4 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 5 ] );   
-    // RB6 and RB7 used for ICSP so skip these pins. Doesn't hurt anything to have them wired there, 
-    // just prevents junk from being clocked to those LED strips when downloading. 
+    // RB6 and RB7 used for ICSP so I'm not using these pins here. It doesn't hurt anything, 
+    // just prevents junk from being clocked to those LED strips while flashing the PIC. 
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 8 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 9 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 10 ] );
-    
-    npAnimation* pAnim;
-       
+           
+    /* Todo:
+        1. Add some randomization to animation options (number of frames, color modes, fading, etc)                 
+    */
     while ( 1 ) {
-        switch ( currAnim ) {            
-            case ( ID_AN_CHEVRONS ) :
-                pAnim = new anChevrons( &display, 1000, 1 );
+        switch ( currAnim ) {  
+            case ( ID_AN_CHEVRONS ):
+                pAnim = new anChevrons( &display, MODE_NONE, 1500 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
                 delete pAnim;
                 break;
             
-            case ( ID_AN_COMETS ) :
-                pAnim = new anComets( &display, 1000, 1 );
+            case ( ID_AN_COMETS ):
+                pAnim = new anComets( &display, MODE_NONE, 1500 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
                 delete pAnim;
                 break;
                 
-            case ( ID_AN_FADEMIDDLE ) :
-                pAnim = new anFadeMiddle( &display, 1000, 1 );
+            case ( ID_AN_FADEMIDDLE ):
+                pAnim = new anFadeMiddle( &display, MODE_NONE, 1500 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
-                } else {
-                    currAnim++;
-                }
-                delete pAnim;                
-                break;
-                
-            case ( ID_AN_RAIN ) :
-                pAnim = new anRain( &display, 1000, 1 );
-                if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
                 delete pAnim;
                 break;
                 
-            case ( ID_AN_RAINBOWCHASER ) :
-                pAnim = new anRainbowChaser( &display, 1000, 1 );
+            case ( ID_AN_RAIN ):
+                pAnim = new anRain( &display, MODE_NONE, 1500 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
+                } else {
+                    currAnim++;
+                }
+                delete pAnim;
+                break;
+                
+            case ( ID_AN_RAINBOWCHASER ):
+                pAnim = new anRainbowChaser( &display, MODE_NONE, 1500 );
+                if ( pAnim->Draw() == MODE_PREV ) {
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
@@ -119,9 +120,9 @@ int main() {
                 break;
                                 
             case ( ID_AN_CLASSICHORIZ_SA ) :
-                pAnim = new anClassicHorizSA( &display, 1000, 1, MODE_REPEAT );
+                pAnim = new anClassicHorizSA( &display, MODE_NONE, 3000 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
@@ -129,9 +130,9 @@ int main() {
                 break;
                 
             case ( ID_AN_COLORFLOW_SA ) :
-                pAnim = new anColorFlowSA( &display, 1000, 1, MODE_REPEAT );
+                pAnim = new anColorFlowSA( &display, MODE_NONE, 3000 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
@@ -139,9 +140,9 @@ int main() {
                 break;
                 
             case ( ID_AN_COLORRACE_SA ) :
-                pAnim = new anColorRaceSA( &display, 1000, 1, MODE_REPEAT );
+                pAnim = new anColorRaceSA( &display, MODE_NONE, 3000 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
@@ -149,9 +150,9 @@ int main() {
                 break;
                 
             case ( ID_AN_PULSEFADE_SA ) :
-               pAnim = new anPulseFadeSA( &display, 1000, 1, MODE_REPEAT );
+               pAnim = new anPulseFadeSA( &display, MODE_NONE, 3000 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
@@ -159,9 +160,9 @@ int main() {
                 break;
                 
             case ( ID_AN_SPLATTER_SA ) :
-                pAnim = new anSplatterSA( &display, 1000, 1, MODE_REPEAT );
+                pAnim = new anSplatterSA( &display, MODE_NONE, 3000 );
                 if ( pAnim->Draw() == MODE_PREV ) {
-                    currAnim = 1;
+                    currAnim--;
                 } else {
                     currAnim++;
                 }
@@ -202,13 +203,13 @@ void InitLCD( void ) {
     LCDSendMessage( LCD_SET_GAIN_4, 6 ); 
 }
 
+// Timer4 interrupt for accurate timing
 extern "C"
-void __ISR ( _TIMER_4_VECTOR, IPL7SRS ) TMR4IntHandler( void ) {
+void __ISR ( _TIMER_4_VECTOR, IPL7AUTO ) TMR4IntHandler( void ) {
     if ( ticks++ == _1_ms_tick ) {
         t2Ticks++;  
         ticks = 0;
-    }
-    
+    }    
     if ( analyzerRun ) {
         sampleBuffer[ sampleIndex ].re = ReadADC10( 0 ) - 370 ; // bias voltage at ~1.25V
         sampleBuffer[ sampleIndex ].im = 0;    
@@ -216,11 +217,14 @@ void __ISR ( _TIMER_4_VECTOR, IPL7SRS ) TMR4IntHandler( void ) {
             sampleIndex = 0;
         } else {
             sampleIndex++;
-        }      
+        }
+        newSample = 1;
     }
+    
     mT4ClearIntFlag(); 
 } 
 
+// UART1 interrupt for serial communications
 extern "C"
 void __ISR( _UART1_VECTOR, IPL1AUTO ) UART1IntHandler( void ) {
     if ( mU1RXGetIntFlag() ) {        
@@ -232,9 +236,8 @@ void __ISR( _UART1_VECTOR, IPL1AUTO ) UART1IntHandler( void ) {
         }
         mU1RXClearIntFlag();          
     }
-
-    // Don't care about tx interrupt, return immediately
+    // Don't care about tx interrupts, return immediately
     if ( mU1TXGetIntFlag() ) {
         mU1TXClearIntFlag();
-    }    
+    }
 }

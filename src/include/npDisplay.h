@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Neopixel.h"
+#include "types.h"
 #include "rgbColor.h"
 #include "pixel.h"
 
@@ -43,7 +44,7 @@ const uint16_t portPin[] {
 class npDisplay {
     
 friend class npAnimation;
-    
+
 public:
     npDisplay();
     npDisplay( int num );
@@ -67,19 +68,8 @@ public:
     uint16_t GetFrameBytes();
     colorMode_t GetColorMode ();
     rgbw_t GetColorAtCoord( uint16_t x, uint16_t y );
+    uint32_t GetPackedColorAtCoord( uint16_t x, uint16_t y );
     uint8_t* GetFBPointer();    
-    class pixel {
-        public:
-            void Set( rgb_t color, int brt );    // Set this pixel
-            void Clr( );    // Clear this pixel
-            void Mov( coord dest );     // move this pixel to destination coordinate
-            void Cop( coord dest );     // copy this pixel to destination coordinate
-
-        private:
-            rgb_t color;
-            int brt;
-
-    };
 
 protected:  
     std::vector<Neopixel> neopixels;    

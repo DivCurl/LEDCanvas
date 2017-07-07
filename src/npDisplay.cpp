@@ -43,24 +43,24 @@ int npDisplay::AddNeopixel( uint16_t numLEDs, volatile uint32_t* portSET, volati
     // update the number of connected Neopixel strips
     numNeopixels = neopixels.size();
     // set port TRIS mode to 0 for output on the specified pin
-    *portTRIS &= ~( pin );      
+    *portTRIS &= ~( pin );     
+    
+     if ( numLEDs > maxLED ) {
+        maxLED = numLEDs;
+    }
     
     // update total frame bytes
     switch ( colorMode ) {
         case RGB:
-            frameBytes += numLEDs * 3;           
+            frameBytes += maxLED * 3;           
             break;
         case RGBW:
-            frameBytes += numLEDs * 4;
+            frameBytes += maxLED * 4;
             break;
         default:
             break;
-    }
-    
-    if ( numLEDs > maxLED ) {
-        maxLED = numLEDs;
-    }
-    
+    }       
+
 //    delete[] frameBuffer;
 //    frameBuffer = new uint8_t[ frameBytes ]();   
     
@@ -74,46 +74,35 @@ int npDisplay::AddNeopixel( uint16_t numLEDs, volatile uint32_t* portSET, volati
     return ( 0 );
 }
 
-/*
-// Add a new Neopixel device to the container
-int npDisplay::AddNeopixel( Neopixel& np ) {
-    neopixels.push_back( np );    
-    // update the number of connected Neopixel strips
-    numNeopixels = neopixels.size();
-    // set port TRIS mode to 0 for output on the specified pin
-    *np.portTRIS &= ~( np.pin );      
-    
-    // update total frame bytes
-    switch ( colorMode ) {
-        case RGB:
-            frameBytes += np.numLEDs * 3;           
-            break;
-        case RGBW:
-            frameBytes += np.numLEDs * 4;
-            break;
-        default:
-            break;
-    }
-    
-    // update the maximum connected LED/strip count for ports with variably-sized strips 
-    if ( np.numLEDs > maxLED ) {
-        maxLED = np.numLEDs;
-    }
-        
-    refreshPulses = maxLED * bytesPerPixel * 8;    
-    // TODO - adjust below according to wiring orientation (future)
-    rowTop = maxLED - 1;
-    rowBottom = 0;
-    colLeft = 0;
-    colRight = numNeopixels - 1;
-   
-    return ( 0 );
-}
-*/
+int npDisplay::DeleteNeopixel( uint8_t pos ) {
+    if ( neopixels.empty() ) {  // nothing yet in the container
+        return ( 1 );
+    } else {
+        neopixels.erase( neopixels.begin() + pos );
+        // update the number of connected Neopixel strips
+        numNeopixels = neopixels.size();
 
-// To be used for future functionality allowing resizing display size on the fly
-int npDisplay::DeleteNeopixel( uint8_t pos ) {       
-   
+        // update total frame bytes
+        switch ( colorMode ) {
+            case RGB:
+                frameBytes -= maxLED * 3;           
+                break;
+            case RGBW:
+                frameBytes -= maxLED * 4;
+                break;
+            default:
+                break;
+        }
+
+        refreshPulses = maxLED * bytesPerPixel * 8;   
+        // TODO - adjust below according to wiring orientation (future)
+        rowTop = maxLED - 1;
+        rowBottom = 0;
+        colLeft = 0;
+        colRight = numNeopixels - 1;
+
+        return ( 0 );
+    }
 }
 
 int npDisplay::GetColorArrayIndex( uint16_t x, uint16_t y ) {
@@ -176,27 +165,27 @@ void npDisplay::ClrFB() {
     memset( frameBuffer, 0, sizeof(  frameBuffer ) );
 }
 
-// returns packed RGB or RGBW dword
-/*
-uint32_t npDisplay::GetColorAtCoord( uint16_t x, uint16_t y ) {
+// returns packed RGB or RGBW DWORD
+// color array is G-R-B[-W], returned DWORD is R-G-B[-W]
+uint32_t npDisplay::GetPackedColorAtCoord( uint16_t x, uint16_t y ) {
      uint16_t index;
      uint32_t color;
     if ( ( index = GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
         if ( colorMode == RGB ) {
-            color |= frameBuffer[ index ] << 8;
-            color |= frameBuffer[ index + 1 ] << 16;
-            color |= frameBuffer[ index + 2 ];
+            color |= frameBuffer[ index ] << 8; // R
+            color |= frameBuffer[ index + 1 ] << 16; // G
+            color |= frameBuffer[ index + 2 ]; // B
                       
         } 
         else {
-            color |= frameBuffer[ index ] << 16;
-            color |= frameBuffer[ index + 1 ] << 24;
-            color |= frameBuffer[ index + 2 ] << 8;
-            color |= frameBuffer[ index + 3 ];
+            color |= frameBuffer[ index ] << 16; // R
+            color |= frameBuffer[ index + 1 ] << 24; // G
+            color |= frameBuffer[ index + 2 ] << 8; // B
+            color |= frameBuffer[ index + 3 ]; // W
         }
         return ( color );
     } 
-} */
+} 
 
 rgbw_t npDisplay::GetColorAtCoord( uint16_t x, uint16_t y ) {
     uint16_t index;
@@ -264,6 +253,5 @@ void npDisplay::Refresh( void ) {
         delay_3();          // t2 = .6us
         LATBCLR = pins;
     }       
-    INTEnableInterrupts();  
-    
+    INTEnableInterrupts();      
 }

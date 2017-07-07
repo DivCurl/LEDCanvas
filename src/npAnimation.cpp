@@ -5,22 +5,20 @@ using namespace std;
 npAnimation::npAnimation() :
     firstScan( 1 ),
     pDisplay( NULL ),
-    frames( 0 ),
-    id ( -1 ) {
-    modeFlags.set( MODE_NONE ); 
+    frames( 0 ) {
+        optFlags.set ( OPT_NONE );
+        modeFlags.set( MODE_NONE ); 
 } 
 
-npAnimation::npAnimation( npDisplay* pDisplay, int frames, int id, mode_t mode ) : 
+npAnimation::npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) : 
     firstScan( 1 ),
     pDisplay ( pDisplay ),
-    frames( frames ),
-    id( id ) {
-    modeFlags.set( mode ); 
+    frames( frames ) {
+        optFlags.set ( opts );
+        modeFlags.set( mode ); 
 }
 
-
-npAnimation::~npAnimation() { 
-}
+npAnimation::~npAnimation() { }
 
 void npAnimation::SetMode( mode_t mode ) {
     modeFlags.set( mode );
@@ -115,7 +113,6 @@ void npAnimation::Clr( uint16_t x, uint16_t y ) {
 // Clear the entire framebuffer if no coords specified
 void npAnimation::Clr( void ) {
     pDisplay->ClrFB();
-
 }
 
 // Fills entire row with specified color
@@ -197,7 +194,7 @@ void npAnimation::Mov( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 ) {
     if ( pDisplay != NULL ) {
         uint16_t index1 = pDisplay->GetColorArrayIndex( x1, y1 );
         uint16_t index2 = pDisplay->GetColorArrayIndex( x2, y2 );
-        if ( ( index1 && index2 ) >= 0 ) {  // valid coordinates in buffer
+        if ( ( index1 && index2 ) ) {  // valid coordinates in buffer
             pDisplay->frameBuffer[ index2 ] = pDisplay->frameBuffer[ index1 ];
             pDisplay->frameBuffer[ index2 + 1 ] = pDisplay->frameBuffer[ index1 + 1 ];
             pDisplay->frameBuffer[ index2 + 2 ] = pDisplay->frameBuffer[ index1 + 2 ];
@@ -234,7 +231,7 @@ void npAnimation::ShiftLeft() {
                 pDisplay->frameBuffer[ idx1+3 ] = pDisplay->frameBuffer[ idx2+3 ];
             }
         }        
-    }    
+    }
     ClrCol( pDisplay->colRight );
 }
 

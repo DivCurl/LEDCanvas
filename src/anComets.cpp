@@ -2,14 +2,10 @@
 
 using namespace std;
 
-anComets::anComets( npDisplay* pDisplay, int frames, int id, mode_t mode ) 
-: npAnimation( pDisplay, frames, id, mode ) {
-    
-}
+anComets::anComets( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
+: npAnimation( pDisplay, mode, frames, opts ) { }
 
-anComets::~anComets() {    
-    
-}
+anComets::~anComets() { }
 
 int anComets::Draw() {
     Init();
@@ -34,7 +30,7 @@ int anComets::Draw() {
                 rnd = rand() % 10;
                 rnd += 10;
 
-                comets.resize( rnd );    // number of saucers
+                comets.resize( rnd );    // number of comets
                 firstScan = 0;
                 // controls fadeout rate (and thus trail length) for all saucers 
                 // NOTE: might need to have individual counter for each saucer...will see after testing

@@ -2,17 +2,11 @@
 
 using namespace std;
 
-counter::counter( void ) {
-    
-}
+counter::counter( void ) { }
 
-counter::counter( uint16_t delay ) : pre ( delay ) {
+counter::counter( uint16_t delay ) : pre ( delay ) { }
 
-}
-
-counter::~counter( void ) {    
-
-}
+counter::~counter( void ) { }
 
 void counter::Start() {
     if ( !en ) {

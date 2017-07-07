@@ -8,20 +8,16 @@
 #include "rgbColor.h"
 #include "counter.h"
 #include "io.h"
+#include "types.h"
 
 using namespace std;
 
-typedef enum { MODE_NONE, MODE_OFF, MODE_STBY, MODE_PAUSE, MODE_REPEAT, MODE_NEXT, MODE_PREV, MODE_STROBE, MODE_FADEIN, MODE_FADEOUT } mode_t;
-enum { FRAME_SKIP, FRAME_DRAWN };
-enum { DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT, DIR_MAX };
-enum { ID_AN_CHEVRONS = 1, ID_AN_COMETS, ID_AN_FADEMIDDLE, ID_AN_RAIN, ID_AN_RAINBOWCHASER, ID_AN_CLASSICHORIZ_SA, 
-    ID_AN_COLORFLOW_SA, ID_AN_COLORRACE_SA, ID_AN_PULSEFADE_SA, ID_AN_SPLATTER_SA };
 extern gModes_t globalMode;
 
 class npAnimation {
 public:
     npAnimation();
-    npAnimation( npDisplay* pDisplay, int frames, int id, mode_t mode );
+    npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts );
     ~npAnimation();
     virtual int Draw() = 0;
     virtual int Init() = 0;
@@ -81,6 +77,7 @@ protected:
     bool firstScan;
     bool skip;
     bitset<16> modeFlags;   
+    bitset<16> optFlags;   
     counter ctrDelay;           // Get rid of this at some point
     npDisplay* pDisplay;
 };
