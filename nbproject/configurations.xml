@@ -4,20 +4,29 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>main.h</itemPath>
-      <itemPath>Neopixel.h</itemPath>
-      <itemPath>npDisplay.h</itemPath>
-      <itemPath>npAnimation.h</itemPath>
-      <itemPath>anTest.h</itemPath>
-      <itemPath>rgbColor.h</itemPath>
-      <itemPath>counter.h</itemPath>
-      <itemPath>io.h</itemPath>
-      <itemPath>anPatterns.h</itemPath>
-      <itemPath>anStrobes.h</itemPath>
-      <itemPath>anAnalyzers.h</itemPath>
-      <itemPath>pixel.h</itemPath>
-      <itemPath>types.h</itemPath>
-      <itemPath>sprite.h</itemPath>
+      <logicalFolder name="include" displayName="include" projectFiles="true">
+        <itemPath>src/include/anChevrons.h</itemPath>
+        <itemPath>src/include/anClassicHorizSA.h</itemPath>
+        <itemPath>src/include/anColorFlowSA.h</itemPath>
+        <itemPath>src/include/anColorRaceSA.h</itemPath>
+        <itemPath>src/include/anComets.h</itemPath>
+        <itemPath>src/include/anFadeMiddle.h</itemPath>
+        <itemPath>src/include/anPulseFadeSA.h</itemPath>
+        <itemPath>src/include/anRain.h</itemPath>
+        <itemPath>src/include/anRainbowChaser.h</itemPath>
+        <itemPath>src/include/anSplatterSA.h</itemPath>
+        <itemPath>src/include/counter.h</itemPath>
+        <itemPath>src/include/fft.h</itemPath>
+        <itemPath>src/include/io.h</itemPath>
+        <itemPath>src/include/main.h</itemPath>
+        <itemPath>src/include/Neopixel.h</itemPath>
+        <itemPath>src/include/npAnimation.h</itemPath>
+        <itemPath>src/include/npDisplay.h</itemPath>
+        <itemPath>src/include/pixel.h</itemPath>
+        <itemPath>src/include/rgbColor.h</itemPath>
+        <itemPath>src/include/sprite.h</itemPath>
+        <itemPath>src/include/types.h</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,19 +35,28 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>main.cpp</itemPath>
-      <itemPath>Neopixel.cpp</itemPath>
-      <itemPath>npDisplay.cpp</itemPath>
-      <itemPath>npAnimation.cpp</itemPath>
-      <itemPath>anTest.cpp</itemPath>
-      <itemPath>rgbColor.cpp</itemPath>
-      <itemPath>counter.cpp</itemPath>
-      <itemPath>io.cpp</itemPath>
-      <itemPath>anPatterns.cpp</itemPath>
-      <itemPath>anStrobes.cpp</itemPath>
-      <itemPath>anAnalyzers.cpp</itemPath>
-      <itemPath>pixel.cpp</itemPath>
-      <itemPath>sprite.cpp</itemPath>
+      <logicalFolder name="src" displayName="src" projectFiles="true">
+        <itemPath>src/anChevrons.cpp</itemPath>
+        <itemPath>src/anClassicHorizSA.cpp</itemPath>
+        <itemPath>src/anColorFlowSA.cpp</itemPath>
+        <itemPath>src/anColorRaceSA.cpp</itemPath>
+        <itemPath>src/anComets.cpp</itemPath>
+        <itemPath>src/anFadeMiddle.cpp</itemPath>
+        <itemPath>src/anPulseFadeSA.cpp</itemPath>
+        <itemPath>src/anRain.cpp</itemPath>
+        <itemPath>src/anRainbowChaser.cpp</itemPath>
+        <itemPath>src/anSplatterSA.cpp</itemPath>
+        <itemPath>src/counter.cpp</itemPath>
+        <itemPath>src/fft.cpp</itemPath>
+        <itemPath>src/io.cpp</itemPath>
+        <itemPath>src/main.cpp</itemPath>
+        <itemPath>src/Neopixel.cpp</itemPath>
+        <itemPath>src/npAnimation.cpp</itemPath>
+        <itemPath>src/npDisplay.cpp</itemPath>
+        <itemPath>src/pixel.cpp</itemPath>
+        <itemPath>src/rgbColor.cpp</itemPath>
+        <itemPath>src/sprite.cpp</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -153,7 +171,7 @@
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-cross-reference-file" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="heap-size" value="65535"/>
+        <property key="heap-size" value="16384"/>
         <property key="input-libraries" value=""/>
         <property key="kseg-length" value=""/>
         <property key="kseg-origin" value=""/>
@@ -176,12 +194,12 @@
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
         <property key="check-new" value="false"/>
-        <property key="eh-specs" value="true"/>
+        <property key="eh-specs" value="false"/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
-        <property key="exceptions" value="true"/>
+        <property key="exceptions" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories" value=""/>
         <property key="generate-16-bit-code" value="false"/>
@@ -405,9 +423,15 @@
         <property key="warningmessagebreakoptions.W0028_TBLRD_WORM_CONFIG_MEMORY"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0029_TBLRD_DEVICE_ID" value="report"/>
+        <property key="warningmessagebreakoptions.W0030_CORE_UNIMPLEMENTED_MEMORY_ACCESS"
+                  value="report"/>
         <property key="warningmessagebreakoptions.W0031_BSLIM_INSUFFICIENT_BOOT_SEGMENT"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0032_BSLIM_LIMITS_EXCEEDS_PROG_MEMORY"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0033_CORE_UNPREDICTABLE_OPCODE"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0034_CORE_UNALIGNED_MEMORY_ACCESS"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0051_INSTRUCTION_DIV_NOT_ENOUGH_REPEAT"
                   value="report"/>
@@ -428,6 +452,10 @@
         <property key="warningmessagebreakoptions.W0107_SIM_NOT_SUPPORTED"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0108_SIM_RESERVED_SETTING"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0109_SIM_PERIPHERAL_IN_DEVELOPMENT"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0110_SIM_UNEXPECTED_EVENT"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0201_ADC_NO_STIMULUS_FILE"
                   value="report"/>
@@ -508,6 +536,9 @@
         <property key="warningmessagebreakoptions.W0241_ADC_FRACTIONAL_NOT_ALLOWED"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0242_ADC_BG_INT_BEFORE_PWR"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0243_ADC_INVALID_TAD" value="report"/>
+        <property key="warningmessagebreakoptions.W0244_ADC_CONVERSION_ABORTED"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0400_PWM_PWM_FASTER_THAN_FOSC"
                   value="report"/>
@@ -606,6 +637,10 @@
         <property key="warningmessagebreakoptions.W9804_SCL_UNRECOGNIZED_LABEL"
                   value="report"/>
         <property key="warningmessagebreakoptions.W9805_SCL_UNRECOGNIZED_VAR"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W9901_RTSP_INVALID_OPERATION_SELECTION"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W9902_RTSP_FLASH_PROGRAM_WRITE_PROTECTED"
                   value="report"/>
         <property key="warningmessagebreakoptions.displaywarningmessagesoption"
                   value=""/>
