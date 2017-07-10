@@ -9,14 +9,19 @@ int16c din[ N ];       // buffer to hold old samples
 int16c dout[ N ];      // holds computed FFT
 int16c scratch[ N ];
 int16c twiddle [ N / 2 ];
+long int freqVector [ N ];
 short singleSidedFFT[ N ];
-#if N == 64
-int log2N = 6;  // log2(64) = 6
-#elif N == 128
-int log2N = 7;  // log2(128) = 7
-#elif N == 256
-int log2N = 8;  // log2(256) = 8
+
+#ifdef FFT_64
+    int log2N = 6;  // log2(64) = 6
 #endif
+#ifdef FFT_128
+    int log2N = 7;  // log2(128) = 7
+#endif
+#ifdef FFT_256
+    int log2N = 8;  // log2(256) = 8
+#endif
+
 // fast log (dB) lookup table
 const char dbLUT[ 1024 ] = {
 -60,-60,-54,-51,-48,-46,-45,-43,-42,-41,-40,-39,-39,-38,-37,-37,-36,-36,-35,-35,-34,-34,-33,-33,-33,-32,-32,-32,-31,-31,-31,-30,-30,-30,-30,-29,-29,
@@ -42,6 +47,17 @@ const char dbLUT[ 1024 ] = {
 -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+void InitFFT() {
+    for ( int i = 0; i < N; i++ ) {
+		freqVector[ i ] = 0;
+		singleSidedFFT[ i ] = 0;
+	}
+
+	for ( int i = 0; i < N / 2; i++ ) {
+		freqVector[ i ] = i * ( ADC_SAMPLE_FREQ/2 ) / ( ( N/2 ) - 1 );
+	}      
+}
 
 __attribute__ ( ( optimize( "unroll-loops" ) ) )
 void ComputeFFT() {

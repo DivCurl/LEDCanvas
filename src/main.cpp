@@ -17,7 +17,7 @@
 
 using namespace std;
 
-int T4Period = 3000;           // 40 Khz period; 20 Khz effective for audio FFT
+int T4Period = PB_FREQ / ADC_SAMPLE_FREQ;           // 20 Khz period; 10 Khz effective for audio FFT
 volatile uint32_t t2Ticks = 0;
 volatile uint32_t ticks = 0;
 uint16_t _1_ms_tick;
@@ -65,8 +65,9 @@ int main() {
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 10 ] );
            
     /* Todo:
-        1. Add some randomization to animation options (number of frames, color modes, fading, etc)                 
-    */
+     *  1. Add some randomization to animation options (number of frames, color modes, fading, etc)    
+     *  2. This implementation will not save specific settings from the touch screen. 
+     */
     while ( 1 ) {
         switch ( currAnim ) {  
             case ( ID_AN_CHEVRONS ):

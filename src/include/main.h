@@ -28,6 +28,7 @@
 // all code is tuned to run on a PIC32 with 80 MHz core clock. 
 // Do not change nor attempt to use with slower PIC32 MCUs!
 #define SYS_FREQ    ( 80000000L )   
+#define PB_FREQ     ( 80000000L )
 
 // Stuff for ADC config.
 #define ADC_CONFIG1 ( ADC_MODULE_ON | ADC_FORMAT_INTG | ADC_CLK_AUTO | ADC_AUTO_SAMPLING_ON )

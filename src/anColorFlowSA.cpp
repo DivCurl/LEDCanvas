@@ -14,7 +14,9 @@ extern long maxM;
 extern int log2N; 
 
 anColorFlowSA::anColorFlowSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
- : npAnimation( pDisplay, mode, frames, opts ) { }
+ : npAnimation( pDisplay, mode, frames, opts ) { 
+    InitFFT();
+}
 
 anColorFlowSA::~anColorFlowSA( void ) { }
 
