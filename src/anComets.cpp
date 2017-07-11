@@ -5,8 +5,6 @@ using namespace std;
 anComets::anComets( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
 : npAnimation( pDisplay, mode, frames, opts ) { }
 
-anComets::~anComets() { }
-
 int anComets::Draw() {
     Init();
 
@@ -22,9 +20,7 @@ int anComets::Draw() {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
        
-        if ( !skip ) {           
-            int ret = FRAME_SKIP;
-            
+        if ( !skip ) {
             if ( firstScan ) {        
                 int rnd;
                 rnd = rand() % 10;
@@ -33,7 +29,6 @@ int anComets::Draw() {
                 comets.resize( rnd );    // number of comets
                 firstScan = 0;
                 // controls fadeout rate (and thus trail length) for all saucers 
-                // NOTE: might need to have individual counter for each saucer...will see after testing
                 StartDelayCounter( 75 );  
                 ctrDelay.Reset();       
                 // randomize starting positions, directions, and color
@@ -110,22 +105,18 @@ int anComets::Draw() {
 }
 
 int anComets::Init() {
-    firstScan = 1;    
-    framesDrawn = 0;    
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();
-    
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
-    } else {
+    }
+    else {
         LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
     }
     
     if ( modeFlags.test( MODE_PAUSE ) ) {
         LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
-    } else {
+    }
+    else {
         LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
     }
 }

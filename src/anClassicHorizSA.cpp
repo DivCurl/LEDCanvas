@@ -18,8 +18,6 @@ anClassicHorizSA::anClassicHorizSA( npDisplay* pDisplay, mode_t mode, int frames
     InitFFT();
 }
 
-anClassicHorizSA::~anClassicHorizSA( void ) { }
-
 int anClassicHorizSA::Draw() {    
     Init();
     
@@ -81,12 +79,7 @@ int anClassicHorizSA::Draw() {
     return ( ret );   // return 0 when all animations done
 }
 
-int anClassicHorizSA::Init() {
-    firstScan = 1;
-    framesDrawn = 0;
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();    
+int anClassicHorizSA::Init() { 
     memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
     analyzerRun = 1;    // used by T4 ISR
     newSample = 0;

@@ -18,8 +18,6 @@ anColorRaceSA::anColorRaceSA( npDisplay* pDisplay, mode_t mode, int frames, opt_
     InitFFT();
 }
 
-anColorRaceSA::~anColorRaceSA( void ) { }
-
 int anColorRaceSA::Draw() {    
     Init();
     
@@ -47,7 +45,7 @@ int anColorRaceSA::Draw() {
                 firstScan = 0;
                 ctrDelay.Reset();
             }
-
+            
             // Each update, check remaining column shifts. While there are some left, shift the column up.
             if ( ctrDelay.Update() ) {
                 // ShiftUp();
@@ -89,12 +87,7 @@ int anColorRaceSA::Draw() {
     return ( ret );   // return 0 when all animations done
 }
 
-int anColorRaceSA::Init() {
-    firstScan = 1;
-    framesDrawn = 0;
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();    
+int anColorRaceSA::Init() {  
     memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
     analyzerRun = 1;    // used by T4 ISR
     newSample = 0;
@@ -106,13 +99,15 @@ int anColorRaceSA::Init() {
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
-    } else {
+    }
+    else {
         LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
     }
     
     if ( modeFlags.test( MODE_PAUSE ) ) {
         LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
-    } else {
+    }
+    else {
         LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
     }
 }

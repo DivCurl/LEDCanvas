@@ -5,8 +5,6 @@ using namespace std;
 anFadeMiddle::anFadeMiddle( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
 : npAnimation( pDisplay, mode, frames, opts ) { }
 
-anFadeMiddle::~anFadeMiddle() { }
-
 int anFadeMiddle::Draw() {
     Init();
 
@@ -60,13 +58,7 @@ int anFadeMiddle::Draw() {
     return ( ret );
 }
 
-int anFadeMiddle::Init() {
-    firstScan = 1;    
-    framesDrawn = 0;    
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();
-    
+int anFadeMiddle::Init() {   
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   

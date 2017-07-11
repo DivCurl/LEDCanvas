@@ -3,11 +3,16 @@
 
 #include <cstdint>
 
-struct coord {
+typedef struct {
+    int x;
+    int y;
+} coord2d_t;
+
+typedef struct {
     int x;
     int y;
     int z;
-};
+} coord3d_t;
 
 typedef struct {
     bool msgPending;
@@ -26,6 +31,18 @@ typedef struct {
     uint8_t b;
     uint8_t w;
 } rgbw_t;
+
+typedef struct {
+    coord2d_t coord;
+    rgbw_t clr;
+    uint16_t brt;
+} pixel_t;  
+
+typedef struct {
+    coord3d_t coord;
+    rgbw_t clr;
+    uint16_t brt;
+} voxel_t;  
 
 typedef enum { MODE_NONE, MODE_OFF, MODE_STBY, MODE_PAUSE, MODE_REPEAT, MODE_NEXT, MODE_PREV, MODE_STROBE, MODE_FADEIN, MODE_FADEOUT } mode_t; // Mode flags
 typedef enum { OPT_NONE } opt_t;    // Option flags

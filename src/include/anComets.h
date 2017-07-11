@@ -7,8 +7,7 @@
 class anComets : public npAnimation {
 public:
     anComets();
-    anComets( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
-    ~anComets();    
+    anComets( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE ); 
     int Draw();
     int Init();
         

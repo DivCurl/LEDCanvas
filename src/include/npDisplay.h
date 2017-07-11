@@ -5,7 +5,6 @@
 #include "Neopixel.h"
 #include "types.h"
 #include "rgbColor.h"
-#include "pixel.h"
 
 enum colorMode_t { RGB, RGBW };
 enum { ORIGIN_BOTTOM, ORIGIN_TOP, ORIGIN_LEFT, ORIGIN_RIGHT }; // orientation of origin with respect to first wired LED.

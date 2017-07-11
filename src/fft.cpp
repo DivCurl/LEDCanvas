@@ -12,15 +12,24 @@ int16c twiddle [ N / 2 ];
 long int freqVector [ N ];
 short singleSidedFFT[ N ];
 
-#ifdef FFT_64
-    int log2N = 6;  // log2(64) = 6
+#ifdef FFT_1024
+    int log2N = 9;  // log2(1024) = 9
 #endif
-#ifdef FFT_128
-    int log2N = 7;  // log2(128) = 7
-#endif
+
 #ifdef FFT_256
     int log2N = 8;  // log2(256) = 8
 #endif
+
+#ifdef FFT_128
+    int log2N = 7;  // log2(128) = 7
+#endif    
+    
+#ifdef FFT_64
+    int log2N = 6;  // log2(64) = 6
+#endif
+
+
+
 
 // fast log (dB) lookup table
 const char dbLUT[ 1024 ] = {
@@ -66,7 +75,8 @@ void ComputeFFT() {
     for ( int i = 0; i < N; i++ ) {
         if ( i < sampleIndex ) {
             din[ i + ( N - sampleIndex ) ] = sampleBuffer[ i ];
-        } else {
+        } 
+        else {
             din[ i - sampleIndex ] = sampleBuffer[ i ];
         }
     }  

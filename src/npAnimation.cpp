@@ -16,6 +16,12 @@ npAnimation::npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t op
     frames( frames ) {
         optFlags.set ( opts );
         modeFlags.set( mode ); 
+        // Initialize a few common startup parameters
+        firstScan = 1;    
+        framesDrawn = 0;    
+        skip = 0;
+        ret = MODE_NONE;
+        Clr();    
 }
 
 npAnimation::~npAnimation() { }
@@ -380,12 +386,21 @@ void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
             }                
         } else {    // use shift method
             // if ( pDisplay->frameBuffer[ i ] ) {         // if current color is non-zero
-            //    if ( ( pDisplay->frameBuffer[ i ] >> 1 ) >= minBrt ) {  // shift as long as we wont't undershoot minimum brightness 
+            //    if ( ( pDisplay->frameBuffer[ i ] >> 1 ) >= minBrt ) {  // shift as long as we won't undershoot minimum brightness 
                     pDisplay->frameBuffer[ i ] >>= 1;
             //    }                
             // }   
         }
     }    
+}
+
+void npAnimation::Blit() {
+    if ( !pixels.empty() ) {
+        vector<pixel_t>::iterator it;
+        for ( it = pixels.begin(); it < pixels.end(); it++ ) { 
+            npAnimation::Set( (*it).coord.x, (*it).coord.y, (*it).clr, (*it).brt );
+        }        
+    }
 }
 
 int npAnimation::PollGlobalModes() {
@@ -514,44 +529,34 @@ int npAnimation::PollGlobalModes() {
 
             break;
             
-        case LCD_STROBE_0:
-            strobeRate = ( 80 * 0.1 );    
+        case LCD_STROBE_0:            
             break;
             
         case LCD_STROBE_1:
-            strobeRate = ( 80 * 0.2 );
             break;
 
         case LCD_STROBE_2:
-            strobeRate = ( 80 * 0.3 );
             break;
 
         case LCD_STROBE_3:
-            strobeRate = ( 80 * 0.4 );
             break;
 
         case LCD_STROBE_4:
-            strobeRate = ( 80 * 0.5 );
             break;
 
         case LCD_STROBE_5:
-            strobeRate = ( 80 * 0.6 );
             break;
 
         case LCD_STROBE_6:
-            strobeRate = ( 80 * 0.7 );
             break;
 
         case LCD_STROBE_7:
-            strobeRate = ( 80 * 0.8 );
             break;
 
         case LCD_STROBE_8:  
-            strobeRate = ( 80 * 0.9 );
             break;
 
         case LCD_STROBE_9:
-            strobeRate = ( 80 );
             break;                       
             
         // lower slider, higher number

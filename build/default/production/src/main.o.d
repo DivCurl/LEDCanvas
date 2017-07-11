@@ -6,11 +6,10 @@ src/./include/npDisplay.h  \
  src/./include/Neopixel.h  \
 src/./include/types.h  \
 src/./include/rgbColor.h  \
- src/./include/pixel.h  \
-src/./include/counter.h  \
+ src/./include/counter.h  \
 src/./include/io.h  \
- src/./include/fft.h  \
-src/./include/anChevrons.h  \
+src/./include/fft.h  \
+ src/./include/anChevrons.h  \
 src/./include/anComets.h  \
  src/./include/anFadeMiddle.h  \
 src/./include/anRain.h  \

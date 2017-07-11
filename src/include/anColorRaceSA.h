@@ -8,7 +8,6 @@ class anColorRaceSA : public npAnimation {
 public:
     anColorRaceSA();
     anColorRaceSA( npDisplay* display, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
-    ~anColorRaceSA();
     int Draw();   
     int Init();
     

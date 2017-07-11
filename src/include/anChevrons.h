@@ -8,7 +8,6 @@ class anChevrons : public npAnimation {
 public:
     anChevrons();
     anChevrons( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
-    ~anChevrons();
     int Draw();
     int Init();
         

@@ -18,7 +18,7 @@ class npAnimation {
 public:
     npAnimation();
     npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts );
-    ~npAnimation();
+    virtual ~npAnimation(); 
     virtual int Draw() = 0;
     virtual int Init() = 0;
     uint16_t GetRowBottom();
@@ -41,6 +41,7 @@ public:
     void Cpy( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 );
     void Mov( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 );
     void Swap( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 );
+    void Blit();
     void ClrRow( uint16_t row );
     void ClrCol( uint16_t col );
     void CpyRow( uint16_t src, uint16_t dest );
@@ -66,10 +67,9 @@ public:
     int GetID();    
         
 protected:
+    vector<pixel_t> pixels;   
     uint32_t frames;
-    uint32_t framesDrawn;
-    uint32_t cycles;
-    float strobeRate = 60;
+    uint32_t framesDrawn;    
     float fadeRate;
     float dbGain = 25.f;    // good starting point
     int ret;    // return code from Draw() 

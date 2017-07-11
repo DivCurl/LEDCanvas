@@ -18,8 +18,6 @@ anPulseFadeSA::anPulseFadeSA( npDisplay* pDisplay, mode_t mode, int frames, opt_
     InitFFT();
 }
 
-anPulseFadeSA::~anPulseFadeSA( void ) { }
-
 int anPulseFadeSA::Draw() {    
     Init();
     
@@ -83,11 +81,6 @@ int anPulseFadeSA::Draw() {
 }
 
 int anPulseFadeSA::Init() {
-    firstScan = 1;
-    framesDrawn = 0;
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();    
     memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
     analyzerRun = 1;    // used by T4 ISR
     newSample = 0;

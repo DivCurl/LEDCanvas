@@ -21,7 +21,7 @@ int T4Period = PB_FREQ / ADC_SAMPLE_FREQ;           // 20 Khz period; 10 Khz eff
 volatile uint32_t t2Ticks = 0;
 volatile uint32_t ticks = 0;
 uint16_t _1_ms_tick;
-extern int16c sampleBuffer[];   // initialize buffer to collect samples
+extern int16c sampleBuffer[];  
 extern bool analyzerRun;
 extern volatile bool newSample;
 extern int sampleIndex;
@@ -58,15 +58,18 @@ int main() {
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 3 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 4 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 5 ] );   
-    // RB6 and RB7 used for ICSP so I'm not using these pins here. It doesn't hurt anything, 
-    // just prevents junk from being clocked to those LED strips while flashing the PIC. 
+    // RB6 and RB7 used for ICSP on my board so I'm not using these pins here. 
+    // It doesn't hurt anything to have these connected, just prevents 
+    // junk from being clocked out to those LED strips while flashing the PIC. 
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 8 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 9 ] );
     display.AddNeopixel( 60, &LATBSET, &LATBCLR, &TRISB, portPin[ 10 ] );
            
-    /* Todo:
+    /* TODO:
+     * 
      *  1. Add some randomization to animation options (number of frames, color modes, fading, etc)    
      *  2. This implementation will not save specific settings from the touch screen. 
+     * 
      */
     while ( 1 ) {
         switch ( currAnim ) {  
@@ -172,6 +175,7 @@ int main() {
             
             default : 
                 currAnim = 1;
+                delete pAnim;
                 break;                        
         }
     }
@@ -210,13 +214,15 @@ void __ISR ( _TIMER_4_VECTOR, IPL7AUTO ) TMR4IntHandler( void ) {
     if ( ticks++ == _1_ms_tick ) {
         t2Ticks++;  
         ticks = 0;
-    }    
+    } 
+    
     if ( analyzerRun ) {
         sampleBuffer[ sampleIndex ].re = ReadADC10( 0 ) - 370 ; // bias voltage at ~1.25V
         sampleBuffer[ sampleIndex ].im = 0;    
         if ( sampleIndex == ( N - 1 ) ) {
             sampleIndex = 0;
-        } else {
+        }
+        else {
             sampleIndex++;
         }
         newSample = 1;

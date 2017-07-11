@@ -5,8 +5,6 @@ using namespace std;
 anChevrons::anChevrons( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
 : npAnimation( pDisplay, mode, frames, opts ) { }
 
-anChevrons::~anChevrons() { }
-
 int anChevrons::Draw() {
     Init();
     // Main animation loop
@@ -97,12 +95,6 @@ int anChevrons::Draw() {
 }
 
 int anChevrons::Init() {
-    firstScan = 1;    
-    framesDrawn = 0;    
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();
-    
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   

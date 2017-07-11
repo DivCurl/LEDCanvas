@@ -18,8 +18,6 @@ anColorFlowSA::anColorFlowSA( npDisplay* pDisplay, mode_t mode, int frames, opt_
     InitFFT();
 }
 
-anColorFlowSA::~anColorFlowSA( void ) { }
-
 int anColorFlowSA::Draw() {    
     Init();
     
@@ -78,12 +76,7 @@ int anColorFlowSA::Draw() {
     return ( ret );   // return 0 when all animations done
 }
 
-int anColorFlowSA::Init() {
-    firstScan = 1;
-    framesDrawn = 0;
-    skip = 0;
-    ret = MODE_NONE;
-    Clr();    
+int anColorFlowSA::Init() {   
     memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
     analyzerRun = 1;    // used by T4 ISR
     newSample = 0;
