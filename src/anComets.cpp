@@ -3,30 +3,37 @@
 using namespace std;
 
 anComets::anComets( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
-: npAnimation( pDisplay, mode, frames, opts ) { }
+: npAnimation( pDisplay, mode, frames, opts ) {
+    // Sync current animation runtime mode settings to LCD display
+    if ( modeFlags.test( MODE_REPEAT ) ) {
+        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
+    } else {
+        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
+    }
+}
+
+anComets::~anComets() { }
 
 int anComets::Draw() {
-    Init();
-
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
             PollGlobalModes();  // handle any new external I/O messages
-        }                
+        }  
+        
         if ( modeFlags.test( MODE_OFF ) ) {
             Clr();
-        }        
+        }
+        
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
        
         if ( !skip ) {
             if ( firstScan ) {        
-                int rnd;
-                rnd = rand() % 10;
+                int rnd = rand() % 10;
                 rnd += 10;
-
-                comets.resize( rnd );    // number of comets
+                comets.resize( rnd );    // randomize number of comets
                 firstScan = 0;
                 // controls fadeout rate (and thus trail length) for all saucers 
                 StartDelayCounter( 75 );  
@@ -37,9 +44,11 @@ int anComets::Draw() {
                     (*it).y = rand() % ( GetRowTop() + 1 );
                     (*it).color = rgbwGetByAngle( rand() % 360, rand() % 32 );  // throw a little white in there for good measure...
                     (*it).dir = rand() % DIR_MAX;       // randomize path direction
+                    
                     if ( ( rnd = ( rand() % 350 ) ) < 150 ) {
                         rnd = 150;                
                     }
+                    
                     (*it).speed.Start( rnd );
                     Set( (*it).x, (*it).y, (*it).color );
                 }
@@ -60,6 +69,7 @@ int anComets::Draw() {
                             } else {
                                 (*it).x--;
                             }
+                            
                             break;
 
                         case DIR_RIGHT:
@@ -68,6 +78,7 @@ int anComets::Draw() {
                             } else {
                                 (*it).x++;
                             }
+                            
                             break;
 
                         case DIR_UP:
@@ -76,6 +87,7 @@ int anComets::Draw() {
                             } else {
                                 (*it).y++;
                             }
+                            
                             break;
 
                         case DIR_DOWN:
@@ -84,6 +96,7 @@ int anComets::Draw() {
                             } else {
                                 (*it).y--;
                             }
+                            
                             break;
 
                         default:
@@ -99,24 +112,7 @@ int anComets::Draw() {
         }
         
         RefreshDisplay();
-    } // end while loop         
+    } // end main loop         
     
     return ( ret );
-}
-
-int anComets::Init() {
-    // Sync current animation runtime mode settings to LCD display
-    if ( modeFlags.test( MODE_REPEAT ) ) {
-        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
-    }
-    else {
-        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
-    }
-    
-    if ( modeFlags.test( MODE_PAUSE ) ) {
-        LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
-    }
-    else {
-        LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
-    }
 }

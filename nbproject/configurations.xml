@@ -6,7 +6,6 @@
                    projectFiles="true">
       <logicalFolder name="include" displayName="include" projectFiles="true">
         <itemPath>src/include/anChevrons.h</itemPath>
-        <itemPath>src/include/anClassicHorizSA.h</itemPath>
         <itemPath>src/include/anColorFlowSA.h</itemPath>
         <itemPath>src/include/anColorRaceSA.h</itemPath>
         <itemPath>src/include/anComets.h</itemPath>
@@ -24,6 +23,11 @@
         <itemPath>src/include/npDisplay.h</itemPath>
         <itemPath>src/include/rgbColor.h</itemPath>
         <itemPath>src/include/types.h</itemPath>
+        <itemPath>src/include/anSprites.h</itemPath>
+        <itemPath>src/include/anTest.h</itemPath>
+        <itemPath>src/include/pixel.h</itemPath>
+        <itemPath>src/include/anClassicSA.h</itemPath>
+        <itemPath>src/include/anTetrisSA.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -35,7 +39,6 @@
                    projectFiles="true">
       <logicalFolder name="src" displayName="src" projectFiles="true">
         <itemPath>src/anChevrons.cpp</itemPath>
-        <itemPath>src/anClassicHorizSA.cpp</itemPath>
         <itemPath>src/anColorFlowSA.cpp</itemPath>
         <itemPath>src/anColorRaceSA.cpp</itemPath>
         <itemPath>src/anComets.cpp</itemPath>
@@ -52,6 +55,11 @@
         <itemPath>src/npAnimation.cpp</itemPath>
         <itemPath>src/npDisplay.cpp</itemPath>
         <itemPath>src/rgbColor.cpp</itemPath>
+        <itemPath>src/anSprites.cpp</itemPath>
+        <itemPath>src/anTest.cpp</itemPath>
+        <itemPath>src/pixel.cpp</itemPath>
+        <itemPath>src/anClassicSA.cpp</itemPath>
+        <itemPath>src/anTetrisSA.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -167,7 +175,7 @@
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-cross-reference-file" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="heap-size" value="16384"/>
+        <property key="heap-size" value="32767"/>
         <property key="input-libraries" value=""/>
         <property key="kseg-length" value=""/>
         <property key="kseg-origin" value=""/>
@@ -177,7 +185,7 @@
         <property key="oXC32ld-extra-opts" value=""/>
         <property key="optimization-level" value="-O1"/>
         <property key="preprocessor-macros" value=""/>
-        <property key="remove-unused-sections" value="false"/>
+        <property key="remove-unused-sections" value="true"/>
         <property key="report-memory-usage" value="false"/>
         <property key="serial-length" value=""/>
         <property key="serial-origin" value=""/>

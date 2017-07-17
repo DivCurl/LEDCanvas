@@ -3,19 +3,28 @@
 using namespace std;
 
 anRain::anRain( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
-: npAnimation( pDisplay, mode, frames, opts ) { }
+: npAnimation( pDisplay, mode, frames, opts ) { 
+    // Sync current animation runtime mode settings to LCD display
+    if ( modeFlags.test( MODE_REPEAT ) ) {
+        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
+    } else {
+        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
+    }
+}
 
-int anRain::Draw() {
-    Init();
-    
+anRain::~anRain() { }
+
+int anRain::Draw() { 
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
             PollGlobalModes();  // handle any new external I/O messages
-        }                
+        }    
+        
         if ( modeFlags.test( MODE_OFF ) ) {
             Clr();
-        }        
+        }
+        
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
@@ -30,6 +39,7 @@ int anRain::Draw() {
     
             if ( ctrDelay.Update() ) {
                 int i, r_i, rnd;
+                
                 rnd = rand() % ( 4 );           // max random number of 'droplets' to start with on top row every cycle
                 ShiftDown();
                 
@@ -49,22 +59,7 @@ int anRain::Draw() {
         }
         
         RefreshDisplay();
-    } // end while loop         
+    } // end main loop         
     
     return ( ret );
-}
-
-int anRain::Init() {   
-    // Sync current animation runtime mode settings to LCD display
-    if ( modeFlags.test( MODE_REPEAT ) ) {
-        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
-    } else {
-        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
-    }
-    
-    if ( modeFlags.test( MODE_PAUSE ) ) {
-        LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
-    } else {
-        LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
-    }
 }

@@ -14,16 +14,19 @@
 #include "io.h"
 #include "npDisplay.h"
 #include "fft.h"
+#include "anTest.h"
 #include "anChevrons.h"
 #include "anComets.h"
 #include "anFadeMiddle.h"
 #include "anRain.h"
 #include "anRainbowChaser.h"
-#include "anClassicHorizSA.h"
+#include "anSprites.h"
+#include "anClassicSA.h"
 #include "anColorFlowSA.h"
 #include "anColorRaceSA.h"
 #include "anPulseFadeSA.h"
 #include "anSplatterSA.h"
+#include "anTetrisSA.h"
 
 // all code is tuned to run on a PIC32 with 80 MHz core clock. 
 // Do not change nor attempt to use with slower PIC32 MCUs!

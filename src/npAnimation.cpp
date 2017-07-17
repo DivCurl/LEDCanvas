@@ -21,7 +21,8 @@ npAnimation::npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t op
         framesDrawn = 0;    
         skip = 0;
         ret = MODE_NONE;
-        Clr();    
+        Clr();
+        RefreshDisplay( FB_CLEAR );
 }
 
 npAnimation::~npAnimation() { }
@@ -41,7 +42,6 @@ void npAnimation::StartDelayCounter( uint16_t delay ) {
 bitset<16> npAnimation::GetModeFlags( void ) {
     return ( modeFlags );
 }
-
 
 int npAnimation::GetID( void ) {
     return ( id );
@@ -67,14 +67,42 @@ uint16_t npAnimation::GetColRight() {
     return ( pDisplay->colRight );
 }
 
+uint16_t npAnimation::GetRowCount() {
+    return ( GetRowBottom() + GetRowTop() + 1 );
+}
+
+uint16_t npAnimation::GetColCount() {
+    return ( GetColLeft() + GetColRight() + 1 );
+}
+
+float npAnimation::GetRowMiddle() {
+    return ( ( (float)GetRowCount() + 1.0f ) / 2 - 1 );
+}
+
+float npAnimation::GetColMiddle() {
+    return ( ( (float)GetColCount() + 1.0f ) / 2 - 1 );
+}
+
+coord2d_t npAnimation::GetDisplayBottomLeftCoord() {   
+    return ( coord2d_t { GetColLeft(), GetRowBottom() } );
+}
+
+
+coord2d_t npAnimation::GetDisplayTopRightCoord() {
+    return ( coord2d_t { GetColRight(), GetRowTop() } );
+}
+
 float npAnimation::Remap( float in, float inMin, float inMax, float outMin, float outMax ) {
-        return ( ( in - inMin ) / ( inMax - inMin ) * ( outMax - outMin ) + outMin );
+    in = ( in < inMin ) ? inMin : in;
+    in = ( in > inMax ) ? inMax : in;
+    return ( ( in - inMin ) / ( inMax - inMin ) * ( outMax - outMin ) + outMin );
 }
 
 void npAnimation::Set( uint16_t x, uint16_t y, rgbw_t color, uint16_t brt ) {
     // calculate scaled brightness relative to global brightness
     uint16_t scaledBrt = (float)brt / 255 * pDisplay->globalBrightness;
     uint16_t index;
+    
     if ( pDisplay != NULL ) {
         if ( ( index = pDisplay->GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
             pDisplay->frameBuffer[ index ] = ( color.g * ( scaledBrt + 1 ) ) >> 8;
@@ -88,6 +116,7 @@ void npAnimation::Set( uint16_t x, uint16_t y, rgbw_t color, uint16_t brt ) {
 // Fill entire display with specified color
 void npAnimation::Set( rgbw_t color, uint16_t brt ) {
     uint16_t scaledBrt = (float)brt / 255 * pDisplay->globalBrightness;
+    
     for ( int i = 0; i < pDisplay->GetFrameBytes(); i++ ) {
         pDisplay->frameBuffer[ i ] = ( color.g * ( scaledBrt + 1 ) ) >> 8;
         pDisplay->frameBuffer[ i + 1 ] = ( color.r * ( scaledBrt + 1 ) ) >> 8;
@@ -96,9 +125,14 @@ void npAnimation::Set( rgbw_t color, uint16_t brt ) {
     }
 }
 
+void npAnimation::Set( const pixel& px ) {
+    Set( px.coord.x, px.coord.y, px.color, px.brt );
+}
+
 // Clear pixel at specified coordinate
 void npAnimation::Clr( uint16_t x, uint16_t y ) {
     uint16_t index;
+    
     if ( pDisplay != NULL ) {
         if ( ( index = pDisplay->GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
             if ( pDisplay->GetColorMode() == RGB ) {
@@ -142,6 +176,7 @@ void npAnimation::SetRow( uint16_t row, uint16_t xMin, uint16_t xMax, rgbw_t col
 
 void npAnimation::SetRowFade( uint16_t row, float angleStart, float angleStop ) {
     float angleDelta = fabs( angleStop - angleStart ) / pDisplay->numNeopixels;
+    
     for ( int i = 0; i <  pDisplay->numNeopixels; i++ ) {
         Set( i, row, rgbwGetByAngle( angleStart + ( i * angleDelta ), 0 ) );
     }
@@ -169,6 +204,7 @@ void npAnimation::SetCol( uint16_t col, uint16_t yMin, uint16_t yMax, rgbw_t col
 
 void npAnimation::SetColFade( uint16_t col, float angleStart, float angleStop ) {
     float angleDelta = abs( angleStop - angleStart ) / pDisplay->GetMaxLED();
+    
     for ( int i = 0; i <  pDisplay->GetMaxLED(); i++ ) {
         Set( col, i, rgbwGetByAngle( angleStart + ( i * angleDelta ), 0 ) );
     }
@@ -200,6 +236,7 @@ void npAnimation::Mov( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 ) {
     if ( pDisplay != NULL ) {
         uint16_t index1 = pDisplay->GetColorArrayIndex( x1, y1 );
         uint16_t index2 = pDisplay->GetColorArrayIndex( x2, y2 );
+        
         if ( ( index1 && index2 ) ) {  // valid coordinates in buffer
             pDisplay->frameBuffer[ index2 ] = pDisplay->frameBuffer[ index1 ];
             pDisplay->frameBuffer[ index2 + 1 ] = pDisplay->frameBuffer[ index1 + 1 ];
@@ -230,6 +267,7 @@ void npAnimation::ShiftLeft() {
         for ( int j = pDisplay->rowBottom; j <= pDisplay->rowTop; j++ ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this column
             int idx2 = pDisplay->GetColorArrayIndex( i + 1, j );  // LED on the next column
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -238,6 +276,7 @@ void npAnimation::ShiftLeft() {
             }
         }        
     }
+    
     ClrCol( pDisplay->colRight );
 }
 
@@ -246,6 +285,7 @@ void npAnimation::ShiftLeft( uint16_t colLeft, uint16_t colRight ) {
         for ( int j = pDisplay->rowBottom; j <= pDisplay->rowTop; j++ ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this column
             int idx2 = pDisplay->GetColorArrayIndex( i + 1, j );  // LED on the next column
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -254,6 +294,7 @@ void npAnimation::ShiftLeft( uint16_t colLeft, uint16_t colRight ) {
             }
         }        
     }    
+    
     ClrCol( colRight );
 }
 
@@ -262,6 +303,7 @@ void npAnimation::ShiftRight() {
         for ( int j = pDisplay->rowBottom; j <= pDisplay->rowTop; j++ ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this column
             int idx2 = pDisplay->GetColorArrayIndex( i - 1, j );  // LED on the previous column
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -270,6 +312,7 @@ void npAnimation::ShiftRight() {
             }
         }        
     }    
+    
     ClrCol( pDisplay->colLeft );
 }
 
@@ -278,6 +321,7 @@ void npAnimation::ShiftRight( uint16_t colLeft, uint16_t colRight ) {
         for ( int j = pDisplay->rowBottom; j <= pDisplay->rowTop; j++ ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this column
             int idx2 = pDisplay->GetColorArrayIndex( i - 1, j );  // LED on the previous column
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -286,6 +330,7 @@ void npAnimation::ShiftRight( uint16_t colLeft, uint16_t colRight ) {
             }
         }        
     }    
+    
     ClrCol( colLeft );
 }
 
@@ -294,6 +339,7 @@ void npAnimation::ShiftUp() {
         for ( int j = pDisplay->rowTop; j > pDisplay->rowBottom; j-- ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this row
             int idx2 = pDisplay->GetColorArrayIndex( i, j-1 );  // LED on row below
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -302,6 +348,7 @@ void npAnimation::ShiftUp() {
             }
         }        
     }    
+    
     ClrRow( pDisplay->rowBottom );
 }
 
@@ -309,6 +356,7 @@ void npAnimation::ShiftColUp( uint16_t col ) {
     for ( int j = pDisplay->rowTop; j > pDisplay->rowBottom; j-- ) {
         int idx1 = pDisplay->GetColorArrayIndex( col, j );    // LED on this row
         int idx2 = pDisplay->GetColorArrayIndex( col, j-1 );  // LED on row below
+        
         if ( idx1 >= 0 && idx2 >= 0 ) {
             pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
             pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -325,6 +373,7 @@ void npAnimation::ShiftUp( uint16_t rowBottom, uint16_t rowTop ) {
         for ( int j = rowTop; j > rowBottom; j-- ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this row
             int idx2 = pDisplay->GetColorArrayIndex( i, j - 1 );  // LED on row below
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -333,6 +382,7 @@ void npAnimation::ShiftUp( uint16_t rowBottom, uint16_t rowTop ) {
             }
         }        
     }    
+    
     ClrRow( rowBottom );
 }
 
@@ -341,6 +391,7 @@ void npAnimation::ShiftDown() {
         for ( int j = pDisplay->rowBottom; j < pDisplay->rowTop; j++ ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this row
             int idx2 = pDisplay->GetColorArrayIndex( i, j + 1 );  // LED on row above
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {              
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -349,7 +400,8 @@ void npAnimation::ShiftDown() {
                 
             }
         }        
-    }    
+    }   
+    
     ClrRow( pDisplay->rowTop );
 }
 
@@ -358,6 +410,7 @@ void npAnimation::ShiftDown( uint16_t rowBottom, uint16_t rowTop ) {
         for ( int j = rowBottom; j < rowTop; j++ ) {
             int idx1 = pDisplay->GetColorArrayIndex( i, j );    // LED on this row
             int idx2 = pDisplay->GetColorArrayIndex( i, j + 1 );  // LED on row above
+            
             if ( idx1 >= 0 && idx2 >= 0 ) {                
                 pDisplay->frameBuffer[ idx1 ] = pDisplay->frameBuffer[ idx2 ]; 
                 pDisplay->frameBuffer[ idx1+1 ] = pDisplay->frameBuffer[ idx2+1 ];
@@ -367,11 +420,36 @@ void npAnimation::ShiftDown( uint16_t rowBottom, uint16_t rowTop ) {
             }
         }        
     }    
+    
     ClrRow( rowTop );
 }
 
+// TODO: add option to clip to edges of display, or shift out. 
+/*
+void npAnimation::ShiftPixels( vector<pixel>& px, coord2d_t offset ) {
+    if ( !px.empty() ) {
+        vector<pixel>::const_iterator it;
+        
+        for ( it = px.begin(); it < px.end(); it++ ) { 
+            if ( offset.x < 0 ) { // Left
+                if ( ( (*it).coord.x - offset.x ) >= GetColLeft() ) { // Ensure we don't shift off the edge of the 
+            } else { // Right
+
+            }
+
+            if ( offset.y < 0 ) { // Down
+
+            } else { // Up
+
+            }
+        }        
+    }    
+}
+ */
+
 void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
     int brtStep, tmp;       // tmp needs to be int so we can detect underflow in if-test when using step method
+    
     if ( fadeMode == 1 ) {  // NOTE: MODE 1 IS NOT CURRENTLY WORKING
         brtStep = 255 / numSteps;
     }
@@ -379,6 +457,7 @@ void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
     for ( int i = 0; i < pDisplay->GetFrameBytes(); i++ ) {
         if ( fadeMode == 1 ) {  // use step method
             tmp = pDisplay->frameBuffer[ i ];
+            
             if ( ( tmp -= brtStep ) <= 0 ) {
                 pDisplay->frameBuffer[ i ] = 0;
             } else {
@@ -394,14 +473,26 @@ void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
     }    
 }
 
-void npAnimation::Blit() {
-    if ( !pixels.empty() ) {
-        vector<pixel_t>::iterator it;
-        for ( it = pixels.begin(); it < pixels.end(); it++ ) { 
-            npAnimation::Set( (*it).coord.x, (*it).coord.y, (*it).clr, (*it).brt );
-        }        
+void npAnimation::Blit( const vector<pixel>& px, int offsetX, int offsetY ) {   
+    if ( !px.empty() ) {
+        vector<pixel>::const_iterator it;
+
+        for ( it = px.begin(); it < px.end(); it++ ) { 
+            npAnimation::Set( (*it).coord.x + offsetX, (*it).coord.y + offsetY, (*it).color, (*it).brt );
+
+        }
     }
 }
+
+/*
+template<std::size_t SIZE>
+void npAnimation::Blit( array<pixel, SIZE>& px, int offsetX, int offsetY ) {   
+    for ( auto& e : px ) {        
+            npAnimation::Set( e.coord.x + offsetX, e.coord.y + offsetY, e.color, e.brt );
+    }
+     
+}
+*/
 
 int npAnimation::PollGlobalModes() {
     switch ( globalMode.msg ) {
@@ -611,11 +702,16 @@ int npAnimation::PollGlobalModes() {
     }
     
     globalMode.msg = 0;
-    globalMode.msgPending = 0;
-    
+    globalMode.msgPending = 0;    
     return 0;
 }
 
-void npAnimation::RefreshDisplay() {
+void npAnimation::RefreshDisplay( fbBlendMode_t blendMode ) {
     pDisplay->Refresh();
+    // if blend mode is set to clear, purge contents of the FB before
+    // drawing next frame otherwise conents of the new frame with be blended
+    // with the remnant framebuffer
+    if ( blendMode == FB_CLEAR ) {
+        Clr();
+    }
 }

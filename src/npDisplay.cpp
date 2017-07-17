@@ -21,12 +21,14 @@ npDisplay::npDisplay( colorMode_t colorMode ) :
     colLeft( 0 ),
     colRight( 0 ) {    
     switch ( colorMode ) {
-        case RGB:
+        case ( RGB ):
             bytesPerPixel = 3;           
             break;
-        case RGBW:
+            
+        case ( RGBW ):
             bytesPerPixel = 4;
             break;
+            
         default:
             break;
     }
@@ -51,12 +53,14 @@ int npDisplay::AddNeopixel( uint16_t numLEDs, volatile uint32_t* portSET, volati
     
     // update total frame bytes
     switch ( colorMode ) {
-        case RGB:
+        case ( RGB ):
             frameBytes += maxLED * 3;           
             break;
-        case RGBW:
+            
+        case ( RGBW ):
             frameBytes += maxLED * 4;
             break;
+            
         default:
             break;
     }       
@@ -69,8 +73,7 @@ int npDisplay::AddNeopixel( uint16_t numLEDs, volatile uint32_t* portSET, volati
     rowTop = maxLED - 1;
     rowBottom = 0;
     colLeft = 0;
-    colRight = numNeopixels - 1;
-    
+    colRight = numNeopixels - 1;    
     return ( 0 );
 }
 
@@ -84,12 +87,14 @@ int npDisplay::DeleteNeopixel( uint8_t pos ) {
 
         // update total frame bytes
         switch ( colorMode ) {
-            case RGB:
+            case ( RGB ):
                 frameBytes -= maxLED * 3;           
                 break;
-            case RGBW:
+                
+            case ( RGBW ):
                 frameBytes -= maxLED * 4;
                 break;
+                
             default:
                 break;
         }
@@ -100,7 +105,6 @@ int npDisplay::DeleteNeopixel( uint8_t pos ) {
         rowBottom = 0;
         colLeft = 0;
         colRight = numNeopixels - 1;
-
         return ( 0 );
     }
 }
@@ -109,10 +113,12 @@ int npDisplay::GetColorArrayIndex( uint16_t x, uint16_t y ) {
     uint16_t height, width;
     height = maxLED;
     width = numNeopixels;
+    
     if ( ( x > width - 1 ) || ( y > height - 1 ) ){
         return ( -1 );  // out of bounds
-    }         
-    return ( ( y + x * height ) * bytesPerPixel );
+    } else {         
+        return ( ( y + x * height ) * bytesPerPixel );
+    }
 }
  
 uint8_t npDisplay::GetMaxLED() {
@@ -170,41 +176,42 @@ void npDisplay::ClrFB() {
 uint32_t npDisplay::GetPackedColorAtCoord( uint16_t x, uint16_t y ) {
      uint16_t index;
      uint32_t color;
+     
     if ( ( index = GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
         if ( colorMode == RGB ) {
             color |= frameBuffer[ index ] << 8; // R
             color |= frameBuffer[ index + 1 ] << 16; // G
-            color |= frameBuffer[ index + 2 ]; // B
-                      
-        } 
-        else {
+            color |= frameBuffer[ index + 2 ]; // B                      
+        } else {
             color |= frameBuffer[ index ] << 16; // R
             color |= frameBuffer[ index + 1 ] << 24; // G
             color |= frameBuffer[ index + 2 ] << 8; // B
             color |= frameBuffer[ index + 3 ]; // W
         }
+        
         return ( color );
-    } 
+    } else {
+        return ( 0 );
+    }
 } 
 
 rgbw_t npDisplay::GetColorAtCoord( uint16_t x, uint16_t y ) {
     uint16_t index;
-    rgbw_t tmp;
+    rgbw_t color;
+    
     if ( ( index = GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
         if ( colorMode == RGB ) {
-            tmp.g = frameBuffer[ index ];
-            tmp.r = frameBuffer[ index + 1 ];
-            tmp.b = frameBuffer[ index + 2 ];
-                      
-        } 
-        else {
-            tmp.g = frameBuffer[ index ];
-            tmp.r = frameBuffer[ index + 1 ];
-            tmp.b = frameBuffer[ index + 2 ];
-            tmp.w = frameBuffer[ index + 3 ];
-            
+            color.g = frameBuffer[ index ];
+            color.r = frameBuffer[ index + 1 ];
+            color.b = frameBuffer[ index + 2 ];                      
+        } else {
+            color.g = frameBuffer[ index ];
+            color.r = frameBuffer[ index + 1 ];
+            color.b = frameBuffer[ index + 2 ];
+            color.w = frameBuffer[ index + 3 ];            
         }
-        return ( tmp );
+        
+        return ( color );
     } 
 }
 
@@ -221,10 +228,10 @@ uint8_t* npDisplay::GetFBPointer() {
 }
 
 void npDisplay::Refresh( void ) {
+    std::vector<Neopixel>::iterator it;    
     memset( t1LUT, 0, sizeof( t1LUT ) );
-    std::vector<Neopixel>::iterator it;
     pins = 0;
-    count = 0;
+    count = 0;   
     
     for ( it = neopixels.begin(); it < neopixels.end(); it++ ) {
         pins |= (*it).pin;
@@ -239,19 +246,26 @@ void npDisplay::Refresh( void ) {
                         t1LUT[ count ] |= ( neopixels[ port ].pin ) ;   
                     }                
                 }
+                
                 count++;
             }
         }
     }
         
     INTDisableInterrupts();
+    
     for ( int i = 0; i < refreshPulses; i++ ) {      
         LATBSET = pins;
-        delay_1();          // t0 = .3us          
-        LATBCLR = t1LUT[ i ]; 
-        delay_2();          // t1 = .3us        
-        delay_3();          // t2 = .6us
+        // .3us 
+        delay_t1();                   
+        LATBCLR = t1LUT[ i ];
+        // .3us  
+        delay_t1();                
+        // .6us
+        delay_t2();           
         LATBCLR = pins;
-    }       
+    }
+    
     INTEnableInterrupts();      
+    
 }

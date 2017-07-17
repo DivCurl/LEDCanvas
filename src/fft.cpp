@@ -1,9 +1,9 @@
-#include "./include/fft.h" 
+#include "./include/fft.h"
 
 // global so ISR can access
 int16c sampleBuffer[ N ]; //initialize buffer to collect samples
-volatile int sampleIndex = 0;
-volatile bool newSample = 0;
+volatile int sampleIndex;
+volatile bool FFTBufferReady;
 bool analyzerRun;
 int16c din[ N ];       // buffer to hold old samples
 int16c dout[ N ];      // holds computed FFT
@@ -22,14 +22,11 @@ short singleSidedFFT[ N ];
 
 #ifdef FFT_128
     int log2N = 7;  // log2(128) = 7
-#endif    
-    
+#endif
+
 #ifdef FFT_64
     int log2N = 6;  // log2(64) = 6
 #endif
-
-
-
 
 // fast log (dB) lookup table
 const char dbLUT[ 1024 ] = {
@@ -55,17 +52,22 @@ const char dbLUT[ 1024 ] = {
 -2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
 
 void InitFFT() {
-    for ( int i = 0; i < N; i++ ) {
-		freqVector[ i ] = 0;
-		singleSidedFFT[ i ] = 0;
+    FFTBufferReady = 0;
+    // copy twiddle factors from flash to RAM for slight performance boost
+    memcpy( twiddle, fftc, sizeof( twiddle ) );
+    // Start with clean buffers
+    memset( singleSidedFFT, 0, sizeof( singleSidedFFT ) );
+    memset( sampleBuffer, 0, sizeof( sampleBuffer ) );
+    memset( din, 0, sizeof( din ) );
+    memset( dout, 0, sizeof( dout ) );
+    // Regenerate frequency vector
+	for ( int i = 0; i < N / 2; i++ ) {
+		freqVector[ i ] = i * ( ADC_SAMPLE_FREQ / 2 ) / ( ( N / 2 ) - 1 );
 	}
 
-	for ( int i = 0; i < N / 2; i++ ) {
-		freqVector[ i ] = i * ( ADC_SAMPLE_FREQ/2 ) / ( ( N/2 ) - 1 );
-	}      
 }
 
 __attribute__ ( ( optimize( "unroll-loops" ) ) )
@@ -75,29 +77,20 @@ void ComputeFFT() {
     for ( int i = 0; i < N; i++ ) {
         if ( i < sampleIndex ) {
             din[ i + ( N - sampleIndex ) ] = sampleBuffer[ i ];
-        } 
-        else {
+        } else {
             din[ i - sampleIndex ] = sampleBuffer[ i ];
         }
-    }  
-    
-    mips_fft16( dout, din, twiddle, scratch, log2N ); 
-    
-    for ( int i = 1; i < N / 2; i++ ) {     // skip [0] because it contains garbage
-        float re_sqr = ( dout[ i ].re * dout[ i ].re );
-        float im_sqr = ( dout[ i ].im * dout[ i ].im );
-        /*
-        float dB = (float)( sqrt( re_sqr + im_sqr ) * 2 ) / 1024;
-        if ( dB < 0.002 ) {     
-            dB = 0.002; // clamp to -54dB
-        }
-        
-        singleSidedFFT[ i - 1 ] = 20 * log10( dB );	// calculate dB and store in final holding array
-         */
-        singleSidedFFT[ i - 1 ] = (short)dbLUT[ (int)( sqrt( re_sqr + im_sqr ) ) ];     // scaled to dB using lookup table for speed
-        // singleSidedFFT[ i - 1 ] = sqrt(re_sqr + im_sqr );    // linear amplitude
     }
 
+    mips_fft16( dout, din, twiddle, scratch, log2N );
+
+    for ( int i = 1; i < N / 2; i++ ) { // skip [0] because it contains garbage
+        float re_sqr = ( dout[ i ].re * dout[ i ].re );
+        float im_sqr = ( dout[ i ].im * dout[ i ].im );        
+        singleSidedFFT[ i - 1 ] = (short)dbLUT[ (int)( sqrt( re_sqr + im_sqr ) ) ];     // scaled to dB using lookup table for speed
+    }
+
+    FFTBufferReady = 0;
     mT4IntEnable( 1 );
 }
 

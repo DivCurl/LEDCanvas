@@ -20,12 +20,14 @@ public:
     void Start();
     void Start( uint16_t delay );
     bool Update();
+    bool Done();
     void Pause();
     void Resume();
     void Stop();
     void SetDelay( uint16_t delay );
     uint16_t GetDelay();
     void Reset();
+    void Reset( uint16_t delay );
     
 private:
     uint32_t acc = 0;

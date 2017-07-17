@@ -7,9 +7,10 @@
 #include <plib.h>
 #include <fftc.h>
 #include <cmath>
+#include <cstdint>
 
 #define ADC_SAMPLE_FREQ ( 20000 ) 
-#define FFT_256
+#define FFT_128
 
 #ifdef FFT_1024
     #define N 1024
@@ -31,8 +32,12 @@
     #define fftc fft16c64
 #endif
 
-#define AN_ADC_FLOOR    0
-#define AN_ADC_CEILING  1024
+static const int16_t ADC_COUNT_NOISE = 25;      // about 100mV noise threshold as measured by scope
+static const int16_t ADC_COUNT_1V = 310;
+static const int16_t ADC_COUNT_BIAS = 388;      // 1.25V DC bias (388 counts); 1.2V actual measured with scope
+static const int16_t ADC_COUNT_VMAX = 698;      // 1.25V (bias) + 1V   
+static const int16_t ADC_COUNT_VMIN = 78;       // 1.25V (bias) - 1V   
+static const int16_t ADC_COUNT_ZERO = ADC_COUNT_BIAS - ADC_COUNT_VMIN;
 
 void InitFFT();
 void ComputeFFT();

@@ -35,21 +35,26 @@ void LCDSendMessage( const uint64_t msg, int len ) {
     // sends out packet bytes on UART depending on
     // packet buffer length (between 1 and 6 bytes)
     if ( len >= 6 ) {
-        putcUART1( (char)( ( msg >> 40 ) & 0xff ) );
+        putcUART1( (char)( ( msg >> 40 ) & 0xFF ) );
     }
+    
     if ( len >= 5 ) {
-        putcUART1( (char)( ( msg >> 32 ) & 0xff ) );
+        putcUART1( (char)( ( msg >> 32 ) & 0xFF ) );
     }
+    
     if ( len >= 4 ) {
-        putcUART1( (char)( ( msg >> 24 ) & 0xff ) );
+        putcUART1( (char)( ( msg >> 24 ) & 0xFF ) );
     }
+    
     if ( len >= 3 ) {
-        putcUART1( (char)( ( msg >> 16 ) & 0xff ) );
+        putcUART1( (char)( ( msg >> 16 ) & 0xFF ) );
     }
+    
     if ( len >= 2 ) {
-        putcUART1( (char)( ( msg >> 8 ) & 0xff ) );
+        putcUART1( (char)( ( msg >> 8 ) & 0xFF ) );
     }
+    
     if ( len >= 1 ) {
-        putcUART1( (char)( ( msg  ) & 0xff ) );
+        putcUART1( (char)( ( msg  ) & 0xFF ) );
     }
 }

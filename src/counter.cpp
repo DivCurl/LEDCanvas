@@ -26,23 +26,30 @@ void counter::Start( uint16_t delay ) {
 }
 
 bool counter::Update() {
-    if ( !dn ) {
+    if ( !en ) {
+        return ( 0 );
+    } else if ( en && !dn ) {
         // update accumulator
-        if ( t2Ticks < startTicks ) {     // timer has overflowed since last update
+        if ( t2Ticks < startTicks ) {     // overflow
             acc = ( numeric_limits<uint32_t>::max() - startTicks ) + t2Ticks;
         } else {
-            acc = t2Ticks - startTicks;   // no overflow; update tick accumulator
+            acc = t2Ticks - startTicks;   // no overflow
         }
-        if ( acc >= pre ) { // we've hit the preset
+        // check for done status
+        if ( acc >= pre ) {
             dn = 1;
             return ( 1 );
         } else {
             return ( 0 );
         }
-    } else {
-        // already done; waiting for reset
+    } else {        
         return ( 0 );
     }
+}
+
+bool counter::Done() {
+    Update();
+    return ( dn );
 }
 
 // void counter::Pause() {}
@@ -69,4 +76,12 @@ void counter::Reset() {
     en = 0;
     dn = 0;
     Start();
-}         
+}       
+
+void counter::Reset( uint16_t delay ) {
+    SetDelay( delay );
+    acc = 0;
+    en = 0;
+    dn = 0;
+    Start();
+}  

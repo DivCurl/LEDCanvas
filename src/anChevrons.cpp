@@ -3,21 +3,32 @@
 using namespace std;
 
 anChevrons::anChevrons( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
-: npAnimation( pDisplay, mode, frames, opts ) { }
+: npAnimation( pDisplay, mode, frames, opts ) {
+    // Sync current animation runtime mode settings to LCD display
+    if ( modeFlags.test( MODE_REPEAT ) ) {
+        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
+    } else {
+        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
+    }      
+}
+
+anChevrons::~anChevrons() { }
 
 int anChevrons::Draw() {
-    Init();
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
             PollGlobalModes();  // handle any new external I/O messages
-        }                
+        }       
+        
         if ( modeFlags.test( MODE_OFF ) ) {
             Clr();
-        }        
+        }  
+        
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
+        
         if ( !skip ) {           
             static int bottomVertex; // this tracks the lowest-most chevron vertex currently drawn
             static int currentVertex;
@@ -36,12 +47,14 @@ int anChevrons::Draw() {
             if ( ctrDelay.Update() ) {        
                 if ( dropNew ) {            
                     currentVertex = 51;
+                    
                     if ( count == 3 ) {
                         if ( ( angle += 5.0 ) > 360 ) {
                             angle -= 360;
                         }
                         count = 0;
-                    }            
+                    }      
+                    
                     Set( 0, currentVertex + 8, rgbwGetByAngle( angle  ) );
                     Set( 1, currentVertex + 6, rgbwGetByAngle( angle ) );
                     Set( 2, currentVertex + 4, rgbwGetByAngle( angle ) );
@@ -87,26 +100,10 @@ int anChevrons::Draw() {
                 ctrDelay.Reset(); 
                 framesDrawn++;
             }   
+            
             RefreshDisplay();
         } 
-    }// end while loop         
+    } // end main loop         
     
     return ( ret );
-}
-
-int anChevrons::Init() {
-    // Sync current animation runtime mode settings to LCD display
-    if ( modeFlags.test( MODE_REPEAT ) ) {
-        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
-    } else {
-        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
-    }  
-    
-    if ( modeFlags.test( MODE_PAUSE ) ) {
-        LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
-    } else {
-        LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
-    }
-    
-    return ( 0 );
 }

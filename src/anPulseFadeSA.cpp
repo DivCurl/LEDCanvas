@@ -1,34 +1,38 @@
 #include "./include/anPulseFadeSA.h" 
 
 // Refer to fft.h/fft.cpp
-extern int16c sampleBuffer[ N ];
-extern volatile int sampleIndex;
 extern bool analyzerRun;
-extern volatile bool newSample;
-extern int16c din[ N ];
-extern int16c dout[ N ];
-extern int16c scratch[ N ];
-extern int16c twiddle [ N / 2 ];
+extern volatile bool FFTBufferReady;
 extern short singleSidedFFT[ N ];
-extern long maxM;
-extern int log2N; 
 
 anPulseFadeSA::anPulseFadeSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
- : npAnimation( pDisplay, mode, frames, opts ) { 
+ : npAnimation( pDisplay, mode, frames, opts ) {
+    // Sync current animation runtime mode settings to LCD display
+    if ( modeFlags.test( MODE_REPEAT ) ) {
+        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
+    } else {
+        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
+    }
+
+    analyzerRun = 1;    // used by T4 ISR
     InitFFT();
 }
 
+anPulseFadeSA::~anPulseFadeSA() {
+    analyzerRun = 0;
+}
+
 int anPulseFadeSA::Draw() {    
-    Init();
-    
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) { 
             PollGlobalModes();  // handle any new external I/O messages
-        }                
+        }  
+        
         if ( modeFlags.test( MODE_OFF ) ) {
             Clr();
         }        
+        
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }     
@@ -36,7 +40,9 @@ int anPulseFadeSA::Draw() {
         if ( !skip ) { 
             int barLength; 
             
-            ComputeFFT();
+            if ( FFTBufferReady ) {
+                ComputeFFT();
+            }
             
             if ( firstScan ) {
                 firstScan = 0;
@@ -64,6 +70,7 @@ int anPulseFadeSA::Draw() {
                     // draw with brightness a function of barlength
                     SetCol( i, GetRowBottom(), barLength, rgbwGetByAngle( angle + ( i * 40, rand() % 32 ) ), brt );
                 }
+                
                 barLength = 0;
             }        
 
@@ -73,32 +80,9 @@ int anPulseFadeSA::Draw() {
             
             framesDrawn++;
         }      
+        
         RefreshDisplay();
-    }   // end loop
+    }   // end main loop
     
-    analyzerRun = 0;
-    return ( ret );   // return 0 when all animations done
-}
-
-int anPulseFadeSA::Init() {
-    memcpy( twiddle, fftc, sizeof( twiddle ) ); // copy twiddle factors from flash to RAM  
-    analyzerRun = 1;    // used by T4 ISR
-    newSample = 0;
-    // sampleIndex = 0;
-    // memcpy( sampleBuffer, 0, sizeof( sampleBuffer ) );
-    // memcpy( din, 0, sizeof( din ) );
-    // memcpy( dout, 0, sizeof( dout ) );      
-    
-    // Sync current animation runtime mode settings to LCD display
-    if ( modeFlags.test( MODE_REPEAT ) ) {
-        LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
-    } else {
-        LCDSendMessage( LCD_SET_REPEAT_OFF, 6 );   
-    }
-    
-    if ( modeFlags.test( MODE_PAUSE ) ) {
-        LCDSendMessage( LCD_SET_PAUSE_ON, 6 );   
-    } else {
-        LCDSendMessage( LCD_SET_PAUSE_OFF, 6 );   
-    }
+    return ( ret );
 }

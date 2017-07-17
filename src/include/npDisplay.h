@@ -6,20 +6,17 @@
 #include "types.h"
 #include "rgbColor.h"
 
-enum colorMode_t { RGB, RGBW };
-enum { ORIGIN_BOTTOM, ORIGIN_TOP, ORIGIN_LEFT, ORIGIN_RIGHT }; // orientation of origin with respect to first wired LED.
-
+// delays for Neopixel refresh
 #ifdef __OPTIMIZE__
-    #define delay_1(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
-    #define delay_2(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
-    #define delay_3(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
+    #define delay_t1(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }                        
+    #define delay_t2(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
 #else
     #define delay_1(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
     #define delay_2(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
     #define delay_3(); { asm volatile( "nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n nop\n" ); }
 #endif
 
-#define FB_SIZE ( 19200 )   // 60 pixels/strand * 4 LEDs/pixel * 8 bytes / LED * 10 strands
+#define FB_SIZE ( 17280 )   // 60 pixels/strand * 4 LEDs/pixel * 8 bytes/LED * 9 strands
 
 const uint16_t portPin[] {
     0x01,   // 0
@@ -73,8 +70,7 @@ public:
 protected:  
     std::vector<Neopixel> neopixels;    
     uint8_t frameBuffer[ FB_SIZE ] = {};
-    uint8_t frameBufferAlt[ FB_SIZE ] = {};
-    // pixel frameBufferPixels [ FB_SIZE ] = {};
+    uint8_t frameBufferAlt[ 1 ] = {};
     int t1LUT[ FB_SIZE ] = {};
     uint8_t maxLED;                         // maximum connected LED count per Neopixel strand
     uint8_t bytesPerPixel;
