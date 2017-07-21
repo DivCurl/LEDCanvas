@@ -99,9 +99,9 @@ int anClassicSA::Draw() {
                             }
                             
                             if ( ( 30 + barLength ) > peaks[ bin].coord.y ) { // draw new peak pixel (upper half) when bar size is larger than last
-                                peaks[ bin].coord.x = bin / 2 ;
-                                peaks[ bin].coord.y = 30 + barLength; 
-                                peaks[ bin].color = rgbwGetByAngle ( colorAngle + 180 );
+                                peaks[ bin ].coord.x = bin / 2 ;
+                                peaks[ bin ].coord.y = 30 + barLength; 
+                                peaks[ bin ].color = rgbwGetByAngle ( colorAngle + 180 );
                                 ctrPeakFallDelay[ bin ].Reset( 500 );                                        
                             }
                         } else { // even bin; draw towards bottom  
@@ -114,9 +114,9 @@ int anClassicSA::Draw() {
                             }
                             
                             if ( ( 29 - barLength ) < peaks[ bin].coord.y ) { // draw new peak pixel (lower half) when bar size is larger than last
-                                peaks[ bin].coord.x = bin / 2;
-                                peaks[ bin].coord.y = 29 - barLength;
-                                peaks[ bin].color = rgbwGetByAngle ( colorAngle + 180 );
+                                peaks[ bin ].coord.x = bin / 2;
+                                peaks[ bin ].coord.y = 29 - barLength;
+                                peaks[ bin ].color = rgbwGetByAngle ( colorAngle + 180 );
                                 ctrPeakFallDelay[ bin ].Reset( 500 );  
                             }
                         }

@@ -3,46 +3,69 @@
 
 #include <cstdint>
 
-typedef struct {
+struct coord2d_t {
     int x;
     int y;
-} coord2d_t;
+    
+    coord2d_t( int x = 0, int y = 0 ) : x( x ), y( y ) { }
+    
+    coord2d_t& operator=( const coord2d_t& coord ) {
+        x = coord.x;
+        y = coord.y;
+        return ( *this );
+    }
+    
+    
+    coord2d_t& operator+=( const coord2d_t& coord ) {
+        x += coord.x;
+        y += coord.y;
+        return ( *this );
+    }
+    
+    coord2d_t& operator-=( const coord2d_t& coord ) {
+        x -= coord.x;
+        y -= coord.y;
+        return ( *this );
+    }
 
-typedef struct {
+    coord2d_t operator+( const coord2d_t& coord ) const {
+        return coord2d_t( coord.x + x, coord.y + y );
+    }
+    
+    coord2d_t operator-( const coord2d_t& coord ) const {
+        return coord2d_t( coord.x - x, coord.y - y );
+    }
+
+    bool operator==( const coord2d_t& coord ) const {
+        return ( x == coord.x && y == coord.y );
+    }
+}; 
+
+/* FUTURE 
+struct coord3d_t {
     int x;
     int y;
     int z;
-} coord3d_t;
+};
+*/
 
-typedef struct {
+struct gModes_t {
     bool msgPending;
     uint64_t msg;
-} gModes_t;
+};
 
-typedef struct {
+struct rgb_t {
     uint8_t r;
     uint8_t g; 
     uint8_t b;
-} rgb_t;
+};
 
-typedef struct {
+struct rgbw_t {
     uint8_t r;
     uint8_t g; 
     uint8_t b;
     uint8_t w;
-} rgbw_t;
-
-typedef struct {
-    coord2d_t coord;
-    rgbw_t color;
-    uint16_t brt = 255;
-} pixel_t;  
-
-typedef struct {
-    coord3d_t coord;
-    rgbw_t color;
-    uint16_t brt = 255;
-} voxel_t;  
+};
 
 typedef enum { 
     OPT_NONE 
@@ -85,6 +108,11 @@ enum {
 };
 
 enum { 
+    OFF,
+    ON
+};
+
+enum { 
     ID_AN_TEST = -1, 
     ID_AN_NONE, 
     ID_AN_CHEVRONS, 
@@ -98,6 +126,7 @@ enum {
     ID_AN_COLORRACE_SA, 
     ID_AN_PULSEFADE_SA, 
     ID_AN_SPLATTER_SA, 
+    ID_AN_TETRIS_SA, 
     ID_AN_MAX 
 };
 

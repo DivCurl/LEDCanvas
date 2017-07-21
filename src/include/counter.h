@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <limits>
 #include <plib.h>  
+#include "types.h"
 
 extern volatile uint32_t t2Ticks;
 extern uint16_t T2Period;
@@ -15,7 +16,7 @@ extern uint16_t T2Period;
 class counter {
 public:
     counter(); 
-    counter( uint16_t delay ); 
+    counter( uint16_t delay, bool startMode = OFF ); 
     ~counter();
     void Start();
     void Start( uint16_t delay );

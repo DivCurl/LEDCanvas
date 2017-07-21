@@ -225,6 +225,18 @@ int main() {
                 
                 delete pAnim;
                 break;
+                
+            case ( ID_AN_TETRIS_SA ):
+                pAnim = new anTetrisSA( &display, MODE_REPEAT, 3000 );
+                
+                if ( pAnim->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {
+                    currAnim++;
+                }
+                
+                delete pAnim;                
+                break;
             
             default : 
                 currAnim++;

@@ -18,6 +18,9 @@
 
 #define FB_SIZE ( 17280 )   // 60 pixels/strand * 4 LEDs/pixel * 8 bytes/LED * 9 strands
 
+const uint8_t MIN_BRT = 0;
+const uint8_t MAX_BRT = 255;
+
 const uint16_t portPin[] {
     0x01,   // 0
     0x02,   // 1

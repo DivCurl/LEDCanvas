@@ -138,10 +138,14 @@ uint8_t npDisplay::GetBrightness() {
 }
 
 void npDisplay::SetBrightness( uint16_t brt ) {
-    if ( brt >= 0 && brt <= 255 ) {
+    if ( brt < MIN_BRT ) {
+        globalBrightness = MIN_BRT;
+    } else if ( brt > MAX_BRT ) {
+        brt = MAX_BRT;
+    } else {
         globalBrightness = brt;
     }
-    // update framebuffer
+    // update framebuffer to new brightness
     for ( int i = 0; i < frameBytes; i++ ) {
         frameBuffer[ i ] = ( frameBuffer[ i ] * ( globalBrightness + 1 ) ) >> 8;            
     }
@@ -267,5 +271,4 @@ void npDisplay::Refresh( void ) {
     }
     
     INTEnableInterrupts();      
-    
 }
