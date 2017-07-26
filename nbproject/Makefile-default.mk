@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=src/anChevrons.cpp src/anColorFlowSA.cpp src/anColorRaceSA.cpp src/anComets.cpp src/anFadeMiddle.cpp src/anPulseFadeSA.cpp src/anRain.cpp src/anRainbowChaser.cpp src/anSplatterSA.cpp src/counter.cpp src/fft.cpp src/io.cpp src/main.cpp src/Neopixel.cpp src/npAnimation.cpp src/npDisplay.cpp src/rgbColor.cpp src/anTest.cpp src/pixel.cpp src/anClassicSA.cpp src/anTetrisSA.cpp src/sprite.cpp
+SOURCEFILES_QUOTED_IF_SPACED=src/anChevrons.cpp src/anColorFlowSA.cpp src/anColorRaceSA.cpp src/anComets.cpp src/anFadeMiddle.cpp src/anPulseFadeSA.cpp src/anRain.cpp src/anRainbowChaser.cpp src/anSplatterSA.cpp src/counter.cpp src/fft.cpp src/io.cpp src/main.cpp src/Neopixel.cpp src/npAnimation.cpp src/npDisplay.cpp src/rgbColor.cpp src/anSprites.cpp src/anTest.cpp src/pixel.cpp src/anClassicSA.cpp src/anTetrisSA.cpp
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/anChevrons.o ${OBJECTDIR}/src/anColorFlowSA.o ${OBJECTDIR}/src/anColorRaceSA.o ${OBJECTDIR}/src/anComets.o ${OBJECTDIR}/src/anFadeMiddle.o ${OBJECTDIR}/src/anPulseFadeSA.o ${OBJECTDIR}/src/anRain.o ${OBJECTDIR}/src/anRainbowChaser.o ${OBJECTDIR}/src/anSplatterSA.o ${OBJECTDIR}/src/counter.o ${OBJECTDIR}/src/fft.o ${OBJECTDIR}/src/io.o ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/Neopixel.o ${OBJECTDIR}/src/npAnimation.o ${OBJECTDIR}/src/npDisplay.o ${OBJECTDIR}/src/rgbColor.o ${OBJECTDIR}/src/anTest.o ${OBJECTDIR}/src/pixel.o ${OBJECTDIR}/src/anClassicSA.o ${OBJECTDIR}/src/anTetrisSA.o ${OBJECTDIR}/src/sprite.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/src/anChevrons.o.d ${OBJECTDIR}/src/anColorFlowSA.o.d ${OBJECTDIR}/src/anColorRaceSA.o.d ${OBJECTDIR}/src/anComets.o.d ${OBJECTDIR}/src/anFadeMiddle.o.d ${OBJECTDIR}/src/anPulseFadeSA.o.d ${OBJECTDIR}/src/anRain.o.d ${OBJECTDIR}/src/anRainbowChaser.o.d ${OBJECTDIR}/src/anSplatterSA.o.d ${OBJECTDIR}/src/counter.o.d ${OBJECTDIR}/src/fft.o.d ${OBJECTDIR}/src/io.o.d ${OBJECTDIR}/src/main.o.d ${OBJECTDIR}/src/Neopixel.o.d ${OBJECTDIR}/src/npAnimation.o.d ${OBJECTDIR}/src/npDisplay.o.d ${OBJECTDIR}/src/rgbColor.o.d ${OBJECTDIR}/src/anTest.o.d ${OBJECTDIR}/src/pixel.o.d ${OBJECTDIR}/src/anClassicSA.o.d ${OBJECTDIR}/src/anTetrisSA.o.d ${OBJECTDIR}/src/sprite.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/anChevrons.o ${OBJECTDIR}/src/anColorFlowSA.o ${OBJECTDIR}/src/anColorRaceSA.o ${OBJECTDIR}/src/anComets.o ${OBJECTDIR}/src/anFadeMiddle.o ${OBJECTDIR}/src/anPulseFadeSA.o ${OBJECTDIR}/src/anRain.o ${OBJECTDIR}/src/anRainbowChaser.o ${OBJECTDIR}/src/anSplatterSA.o ${OBJECTDIR}/src/counter.o ${OBJECTDIR}/src/fft.o ${OBJECTDIR}/src/io.o ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/Neopixel.o ${OBJECTDIR}/src/npAnimation.o ${OBJECTDIR}/src/npDisplay.o ${OBJECTDIR}/src/rgbColor.o ${OBJECTDIR}/src/anSprites.o ${OBJECTDIR}/src/anTest.o ${OBJECTDIR}/src/pixel.o ${OBJECTDIR}/src/anClassicSA.o ${OBJECTDIR}/src/anTetrisSA.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/src/anChevrons.o.d ${OBJECTDIR}/src/anColorFlowSA.o.d ${OBJECTDIR}/src/anColorRaceSA.o.d ${OBJECTDIR}/src/anComets.o.d ${OBJECTDIR}/src/anFadeMiddle.o.d ${OBJECTDIR}/src/anPulseFadeSA.o.d ${OBJECTDIR}/src/anRain.o.d ${OBJECTDIR}/src/anRainbowChaser.o.d ${OBJECTDIR}/src/anSplatterSA.o.d ${OBJECTDIR}/src/counter.o.d ${OBJECTDIR}/src/fft.o.d ${OBJECTDIR}/src/io.o.d ${OBJECTDIR}/src/main.o.d ${OBJECTDIR}/src/Neopixel.o.d ${OBJECTDIR}/src/npAnimation.o.d ${OBJECTDIR}/src/npDisplay.o.d ${OBJECTDIR}/src/rgbColor.o.d ${OBJECTDIR}/src/anSprites.o.d ${OBJECTDIR}/src/anTest.o.d ${OBJECTDIR}/src/pixel.o.d ${OBJECTDIR}/src/anClassicSA.o.d ${OBJECTDIR}/src/anTetrisSA.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/src/anChevrons.o ${OBJECTDIR}/src/anColorFlowSA.o ${OBJECTDIR}/src/anColorRaceSA.o ${OBJECTDIR}/src/anComets.o ${OBJECTDIR}/src/anFadeMiddle.o ${OBJECTDIR}/src/anPulseFadeSA.o ${OBJECTDIR}/src/anRain.o ${OBJECTDIR}/src/anRainbowChaser.o ${OBJECTDIR}/src/anSplatterSA.o ${OBJECTDIR}/src/counter.o ${OBJECTDIR}/src/fft.o ${OBJECTDIR}/src/io.o ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/Neopixel.o ${OBJECTDIR}/src/npAnimation.o ${OBJECTDIR}/src/npDisplay.o ${OBJECTDIR}/src/rgbColor.o ${OBJECTDIR}/src/anTest.o ${OBJECTDIR}/src/pixel.o ${OBJECTDIR}/src/anClassicSA.o ${OBJECTDIR}/src/anTetrisSA.o ${OBJECTDIR}/src/sprite.o
+OBJECTFILES=${OBJECTDIR}/src/anChevrons.o ${OBJECTDIR}/src/anColorFlowSA.o ${OBJECTDIR}/src/anColorRaceSA.o ${OBJECTDIR}/src/anComets.o ${OBJECTDIR}/src/anFadeMiddle.o ${OBJECTDIR}/src/anPulseFadeSA.o ${OBJECTDIR}/src/anRain.o ${OBJECTDIR}/src/anRainbowChaser.o ${OBJECTDIR}/src/anSplatterSA.o ${OBJECTDIR}/src/counter.o ${OBJECTDIR}/src/fft.o ${OBJECTDIR}/src/io.o ${OBJECTDIR}/src/main.o ${OBJECTDIR}/src/Neopixel.o ${OBJECTDIR}/src/npAnimation.o ${OBJECTDIR}/src/npDisplay.o ${OBJECTDIR}/src/rgbColor.o ${OBJECTDIR}/src/anSprites.o ${OBJECTDIR}/src/anTest.o ${OBJECTDIR}/src/pixel.o ${OBJECTDIR}/src/anClassicSA.o ${OBJECTDIR}/src/anTetrisSA.o
 
 # Source Files
-SOURCEFILES=src/anChevrons.cpp src/anColorFlowSA.cpp src/anColorRaceSA.cpp src/anComets.cpp src/anFadeMiddle.cpp src/anPulseFadeSA.cpp src/anRain.cpp src/anRainbowChaser.cpp src/anSplatterSA.cpp src/counter.cpp src/fft.cpp src/io.cpp src/main.cpp src/Neopixel.cpp src/npAnimation.cpp src/npDisplay.cpp src/rgbColor.cpp src/anTest.cpp src/pixel.cpp src/anClassicSA.cpp src/anTetrisSA.cpp src/sprite.cpp
+SOURCEFILES=src/anChevrons.cpp src/anColorFlowSA.cpp src/anColorRaceSA.cpp src/anComets.cpp src/anFadeMiddle.cpp src/anPulseFadeSA.cpp src/anRain.cpp src/anRainbowChaser.cpp src/anSplatterSA.cpp src/counter.cpp src/fft.cpp src/io.cpp src/main.cpp src/Neopixel.cpp src/npAnimation.cpp src/npDisplay.cpp src/rgbColor.cpp src/anSprites.cpp src/anTest.cpp src/pixel.cpp src/anClassicSA.cpp src/anTetrisSA.cpp
 
 
 CFLAGS=
@@ -214,6 +214,12 @@ ${OBJECTDIR}/src/rgbColor.o: src/rgbColor.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/src/rgbColor.o 
 	@${FIXDEPS} "${OBJECTDIR}/src/rgbColor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/rgbColor.o.d" -o ${OBJECTDIR}/src/rgbColor.o src/rgbColor.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/src/anSprites.o: src/anSprites.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/anSprites.o.d 
+	@${RM} ${OBJECTDIR}/src/anSprites.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/anSprites.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/anSprites.o.d" -o ${OBJECTDIR}/src/anSprites.o src/anSprites.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/src/anTest.o: src/anTest.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/src" 
 	@${RM} ${OBJECTDIR}/src/anTest.o.d 
@@ -237,12 +243,6 @@ ${OBJECTDIR}/src/anTetrisSA.o: src/anTetrisSA.cpp  nbproject/Makefile-${CND_CONF
 	@${RM} ${OBJECTDIR}/src/anTetrisSA.o.d 
 	@${RM} ${OBJECTDIR}/src/anTetrisSA.o 
 	@${FIXDEPS} "${OBJECTDIR}/src/anTetrisSA.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/anTetrisSA.o.d" -o ${OBJECTDIR}/src/anTetrisSA.o src/anTetrisSA.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/src/sprite.o: src/sprite.cpp  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src" 
-	@${RM} ${OBJECTDIR}/src/sprite.o.d 
-	@${RM} ${OBJECTDIR}/src/sprite.o 
-	@${FIXDEPS} "${OBJECTDIR}/src/sprite.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/sprite.o.d" -o ${OBJECTDIR}/src/sprite.o src/sprite.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
 else
 ${OBJECTDIR}/src/anChevrons.o: src/anChevrons.cpp  nbproject/Makefile-${CND_CONF}.mk
@@ -347,6 +347,12 @@ ${OBJECTDIR}/src/rgbColor.o: src/rgbColor.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/src/rgbColor.o 
 	@${FIXDEPS} "${OBJECTDIR}/src/rgbColor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/rgbColor.o.d" -o ${OBJECTDIR}/src/rgbColor.o src/rgbColor.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/src/anSprites.o: src/anSprites.cpp  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/anSprites.o.d 
+	@${RM} ${OBJECTDIR}/src/anSprites.o 
+	@${FIXDEPS} "${OBJECTDIR}/src/anSprites.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/anSprites.o.d" -o ${OBJECTDIR}/src/anSprites.o src/anSprites.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
+	
 ${OBJECTDIR}/src/anTest.o: src/anTest.cpp  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/src" 
 	@${RM} ${OBJECTDIR}/src/anTest.o.d 
@@ -370,12 +376,6 @@ ${OBJECTDIR}/src/anTetrisSA.o: src/anTetrisSA.cpp  nbproject/Makefile-${CND_CONF
 	@${RM} ${OBJECTDIR}/src/anTetrisSA.o.d 
 	@${RM} ${OBJECTDIR}/src/anTetrisSA.o 
 	@${FIXDEPS} "${OBJECTDIR}/src/anTetrisSA.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/anTetrisSA.o.d" -o ${OBJECTDIR}/src/anTetrisSA.o src/anTetrisSA.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/src/sprite.o: src/sprite.cpp  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/src" 
-	@${RM} ${OBJECTDIR}/src/sprite.o.d 
-	@${RM} ${OBJECTDIR}/src/sprite.o 
-	@${FIXDEPS} "${OBJECTDIR}/src/sprite.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CPPC} $(MP_EXTRA_CC_PRE)  -g -x c++ -c -mprocessor=$(MP_PROCESSOR_OPTION)  -frtti -fexceptions -fno-check-new -fno-enforce-eh-specs -O1 -MMD -MF "${OBJECTDIR}/src/sprite.o.d" -o ${OBJECTDIR}/src/sprite.o src/sprite.cpp   -DXPRJ_default=$(CND_CONF)  $(COMPARISON_BUILD) 
 	
 endif
 

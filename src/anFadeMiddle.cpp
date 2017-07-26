@@ -15,8 +15,6 @@ anFadeMiddle::anFadeMiddle( npDisplay* pDisplay, mode_t mode, int frames, opt_t 
 anFadeMiddle::~anFadeMiddle() { }
 
 int anFadeMiddle::Draw() {
-    angle = 0.f;
-    StartDelayCounter( 40 ); 
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
@@ -31,10 +29,15 @@ int anFadeMiddle::Draw() {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
        
-        if ( !skip ) {              
-            if ( ctrDelay.Done() ) {    
-                ctrDelay.Reset();  
-                
+        if ( !skip ) {           
+            if ( firstScan ) {
+                firstScan = 0;
+                angle = 0.f;
+                StartDelayCounter( 40 ); 
+                ctrDelay.Reset();
+            }
+    
+            if ( ctrDelay.Update() ) {    
                 if ( angle < 360 ) {            
                     for ( int i = 0; i <= GetColRight(); i++ ) {
                         for ( int j = 30, jj = 1; j <= 59; j++, jj++ ) {
@@ -51,7 +54,8 @@ int anFadeMiddle::Draw() {
                     angle -= 360;
                 }
 
-                angle += 2;                
+                angle += 2;
+                ctrDelay.Reset();  
                 framesDrawn++;
             }                               
         }

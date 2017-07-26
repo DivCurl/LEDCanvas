@@ -23,11 +23,11 @@
         <itemPath>src/include/npDisplay.h</itemPath>
         <itemPath>src/include/rgbColor.h</itemPath>
         <itemPath>src/include/types.h</itemPath>
+        <itemPath>src/include/anSprites.h</itemPath>
         <itemPath>src/include/anTest.h</itemPath>
         <itemPath>src/include/pixel.h</itemPath>
         <itemPath>src/include/anClassicSA.h</itemPath>
         <itemPath>src/include/anTetrisSA.h</itemPath>
-        <itemPath>src/include/sprite.h</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -55,11 +55,11 @@
         <itemPath>src/npAnimation.cpp</itemPath>
         <itemPath>src/npDisplay.cpp</itemPath>
         <itemPath>src/rgbColor.cpp</itemPath>
+        <itemPath>src/anSprites.cpp</itemPath>
         <itemPath>src/anTest.cpp</itemPath>
         <itemPath>src/pixel.cpp</itemPath>
         <itemPath>src/anClassicSA.cpp</itemPath>
         <itemPath>src/anTetrisSA.cpp</itemPath>
-        <itemPath>src/sprite.cpp</itemPath>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"

@@ -13,23 +13,12 @@ struct coord2d_t {
         x = coord.x;
         y = coord.y;
         return ( *this );
-    }   
+    }
+    
     
     coord2d_t& operator+=( const coord2d_t& coord ) {
         x += coord.x;
         y += coord.y;
-        return ( *this );
-    }
-    
-    coord2d_t& operator++() {
-        x++;
-        y++;
-        return ( *this );
-    }
-    
-    coord2d_t& operator--() {
-        x--;
-        y--;
         return ( *this );
     }
     
@@ -50,19 +39,15 @@ struct coord2d_t {
     bool operator==( const coord2d_t& coord ) const {
         return ( x == coord.x && y == coord.y );
     }
-    
-    bool operator>( const coord2d_t& coord ) const {
-        return ( x > coord.x && y > coord.y );
-    }
-    
-    bool operator>=( const coord2d_t& coord ) const {
-        return ( x >= coord.x && y >= coord.y );
-    }
-    
-    bool operator<=( const coord2d_t& coord ) const {
-        return ( x <= coord.x && y <= coord.y );
-    }
 }; 
+
+/* FUTURE 
+struct coord3d_t {
+    int x;
+    int y;
+    int z;
+};
+*/
 
 struct gModes_t {
     bool msgPending;
@@ -82,11 +67,11 @@ struct rgbw_t {
     uint8_t w;
 };
 
-enum opt_t { 
+typedef enum { 
     OPT_NONE 
-};    // Option flags
+} opt_t;    // Option flags
 
-enum mode_t { 
+typedef enum { 
     MODE_NONE, 
     MODE_OFF, 
     MODE_STBY, 
@@ -97,22 +82,22 @@ enum mode_t {
     MODE_STROBE, 
     MODE_FADEIN, 
     MODE_FADEOUT 
-}; // Mode flags
+} mode_t; // Mode flags
 
 enum { 
     FRAME_SKIP, 
     FRAME_DRAWN 
 };
 
-enum colorMode_t { 
+typedef enum { 
     RGB, 
     RGBW 
-};
+} colorMode_t;
 
-enum fbBlendMode_t {
+typedef enum {
     FB_BLEND,   // blend with remnant framebuffer
     FB_CLEAR    // clear remnant framebuffer 
-};
+} fbBlendMode_t;
 
 enum { 
     DIR_UP, 
@@ -150,14 +135,6 @@ enum {
     ORIGIN_BOTTOM_RIGHT, 
     ORIGIN_TOP_LEFT, 
     ORIGIN_TOP_RIGHT 
-};
-
-enum { 
-    COLLIDE_NONE,
-    COLLIDE_RIGHT,
-    COLLIDE_TOP,
-    COLLIDE_LEFT,
-    COLLIDE_BOTTOM
 };
 
 #endif

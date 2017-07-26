@@ -79,7 +79,7 @@ int main() {
         if ( ( currAnim == ID_AN_NONE ) || ( currAnim >= ID_AN_MAX ) ) {
             currAnim = 1;
         }
-                
+        
         switch ( currAnim ) {  
             
             case ( ID_AN_TEST ):
@@ -143,7 +143,7 @@ int main() {
                 break;
                 
             case ( ID_AN_RAINBOWCHASER ):
-                pAnim = new anRainbowChaser( &display, MODE_NONE, 1000 );
+                pAnim = new anRainbowChaser( &display, MODE_NONE, 1500 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -153,7 +153,19 @@ int main() {
                 
                 delete pAnim;
                 break;
-                                                   
+             
+            case ( ID_AN_SPRITES ):
+                pAnim = new anSprites( &display, MODE_NONE, 1500 );
+                
+                if ( pAnim->Draw() == MODE_PREV ) {
+                    currAnim--;
+                } else {
+                    currAnim++;
+                }
+                
+                delete pAnim;
+                break;
+                                          
             case ( ID_AN_CLASSIC_SA ):
                 pAnim = new anClassicSA( &display, MODE_REPEAT, 3000 );
                 
@@ -163,7 +175,6 @@ int main() {
                     currAnim++;
                 
                 }
-                
                 delete pAnim;
                 break;
                 
@@ -213,8 +224,8 @@ int main() {
                 }
                 
                 delete pAnim;
-                break;                
-            
+                break;
+                
             case ( ID_AN_TETRIS_SA ):
                 pAnim = new anTetrisSA( &display, MODE_REPEAT, 3000 );
                 
@@ -225,7 +236,7 @@ int main() {
                 }
                 
                 delete pAnim;                
-                break;             
+                break;
             
             default : 
                 currAnim++;

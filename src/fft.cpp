@@ -87,7 +87,7 @@ void ComputeFFT() {
     for ( int i = 1; i < N / 2; i++ ) { // skip [0] because it contains garbage
         float re_sqr = ( dout[ i ].re * dout[ i ].re );
         float im_sqr = ( dout[ i ].im * dout[ i ].im );        
-        singleSidedFFT[ i - 1 ] = (short)dbLUT[ (int)( sqrt( re_sqr + im_sqr ) ) ]; // scaled to dB using lookup table for speed
+        singleSidedFFT[ i - 1 ] = (short)dbLUT[ (int)( sqrt( re_sqr + im_sqr ) ) ];     // scaled to dB using lookup table for speed
     }
 
     FFTBufferReady = 0;

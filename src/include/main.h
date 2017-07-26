@@ -20,6 +20,7 @@
 #include "anFadeMiddle.h"
 #include "anRain.h"
 #include "anRainbowChaser.h"
+#include "anSprites.h"
 #include "anClassicSA.h"
 #include "anColorFlowSA.h"
 #include "anColorRaceSA.h"

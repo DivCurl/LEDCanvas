@@ -15,11 +15,6 @@ anChevrons::anChevrons( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts
 anChevrons::~anChevrons() { }
 
 int anChevrons::Draw() {
-    angle = rand() % 360 ;
-    static int currentVertex = 51;
-    static int bottomVertex = 0;
-    StartDelayCounter( 25 );
-    
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
@@ -35,10 +30,21 @@ int anChevrons::Draw() {
         }   
         
         if ( !skip ) {           
+            static int bottomVertex; // this tracks the lowest-most chevron vertex currently drawn
+            static int currentVertex;
             static int dropNew = 1;
             static int count = 0;
             
-            if ( ctrDelay.Done() ) {        
+            if ( firstScan ) { 
+                firstScan = 0;
+                angle = rand() % 360 ;
+                currentVertex = 51;
+                bottomVertex = 0;
+                StartDelayCounter( 25 );         
+                ctrDelay.Reset();       
+            }
+    
+            if ( ctrDelay.Update() ) {        
                 if ( dropNew ) {            
                     currentVertex = 51;
                     

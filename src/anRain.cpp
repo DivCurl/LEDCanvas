@@ -15,7 +15,6 @@ anRain::anRain( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts )
 anRain::~anRain() { }
 
 int anRain::Draw() { 
-    StartDelayCounter( 50 );     
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
@@ -30,11 +29,17 @@ int anRain::Draw() {
             break;  // break while loop and return to main signaling next/prev animation to be drawn
         }   
        
-        if ( !skip ) {                           
-            if ( ctrDelay.Done() ) {                
+        if ( !skip ) {           
+            if ( firstScan ) {
+                firstScan = 0;
+                angle = 0.f;
+                StartDelayCounter( 50 );         
+                ctrDelay.Reset(); 
+            }
+    
+            if ( ctrDelay.Update() ) {
                 int i, r_i, rnd;
                 
-                ctrDelay.Reset(); 
                 rnd = rand() % ( 4 );           // max random number of 'droplets' to start with on top row every cycle
                 ShiftDown();
                 
@@ -48,6 +53,7 @@ int anRain::Draw() {
                     angle -= 360;
                 }
 
+                ctrDelay.Reset(); 
                 framesDrawn++;
             }            
         }

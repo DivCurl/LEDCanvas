@@ -50,9 +50,9 @@ int anSplatterSA::Draw() {
                 ctrDelay.Reset();
             }
             
-            if ( ctrDelay.Done() ) {
+            if ( ctrDelay.Update() ) {
+                FadeOut();      
                 ctrDelay.Reset();
-                FadeOut();                      
             }
 
             // float dFreq = ( N / 2 ) / GetColRight() - 1;

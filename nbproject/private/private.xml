@@ -3,11 +3,54 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/pixel.h</file>
-            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/sprite.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anRainbowChaser.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anChevrons.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/pixel.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anSprites.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/rgbColor.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anChevrons.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/npDisplay.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/types.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anTest.h</file>
             <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anTetrisSA.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anClassicSA.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/nbproject/Makefile-default.mk</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/main.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anComets.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anTest.cpp</file>
+            <file>file:/C:/Program%20Files%20(x86)/Microchip/xc32/v1.40/pic32mx/include/Cpp/bitset</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anClassicSA.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anTetrisSA.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anSplatterSA.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/io.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anRain.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/rgbColor.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anColorRaceSA.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anSplatterSA.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anColorFlowSA.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/npDisplay.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/counter.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/fft.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anRain.h</file>
             <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/main.cpp</file>
-            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/sprite.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/Neopixel.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/io.h</file>
+            <file>file:/C:/Program%20Files%20(x86)/Microchip/xc32/v1.40/pic32mx/include/Cpp/vector</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anColorRaceSA.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anFadeMiddle.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anSprites.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anFadeMiddle.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/anPulseFadeSA.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/fft.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/pixel.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anPulseFadeSA.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anComets.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/npAnimation.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anRainbowChaser.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/include/npAnimation.h</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/counter.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/Neopixel.cpp</file>
+            <file>file:/C:/Users/mdillmann/MPLABXProjects/LEDCanvas/src/anColorFlowSA.cpp</file>
         </group>
     </open-files>
 </project-private>
