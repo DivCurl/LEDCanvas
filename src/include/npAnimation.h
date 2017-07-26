@@ -9,6 +9,7 @@
 #include "npDisplay.h"
 #include "rgbColor.h"
 #include "pixel.h"
+#include "sprite.h"
 #include "counter.h"
 #include "io.h"
 #include "types.h"

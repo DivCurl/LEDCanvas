@@ -32,7 +32,7 @@ void counter::Start( uint16_t delay ) {
 bool counter::Update() {
     if ( !en ) {
         return ( 0 );
-    } else if ( en && !dn ) {
+    } else if ( en && !dn ) {   // on but not done -> update acc
         // update accumulator
         if ( t2Ticks < startTicks ) {     // overflow
             acc = ( numeric_limits<uint32_t>::max() - startTicks ) + t2Ticks;

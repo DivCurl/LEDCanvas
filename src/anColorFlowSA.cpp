@@ -23,6 +23,8 @@ anColorFlowSA::~anColorFlowSA() {
 }
 
 int anColorFlowSA::Draw() {    
+    StartDelayCounter( 25 );         
+    
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) { 
@@ -43,17 +45,11 @@ int anColorFlowSA::Draw() {
             if ( FFTBufferReady ) {
                 ComputeFFT();
             }   
-            
-            if ( firstScan ) {
-                firstScan = 0;
-                StartDelayCounter( 25 );         
-                ctrDelay.Reset();
-            }
 
             // Each update, check remaining column shifts. While there are some left, shift the column up.
-            if ( ctrDelay.Update() ) {
-                ShiftUp();
+            if ( ctrDelay.Done() ) {                
                 ctrDelay.Reset();
+                ShiftUp();
             }
 
             for ( int i = 0; i <= GetColRight(); i++ ) {   // loop across x (frequency) axis, lower & upper halves    

@@ -6,8 +6,7 @@
 
 using namespace std;
 
-enum { O, L, Z, T, I };
-const int MAX_PIECES = 5;
+const int MAX_PIECES = 7;
 const int MAX_ROTATIONS = 4;
 
 class anTetrisSA : public npAnimation {
@@ -20,8 +19,11 @@ public:
         
 private:
     vector<sprite> blocks;
-    bool noMoves;
-};
+    bool gameOver = 0;
+    bool blockMoving = 0;
+    rgbw_t blockColors[ MAX_PIECES ];
+    
+};  
 
 #endif
 

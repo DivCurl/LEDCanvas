@@ -54,13 +54,14 @@ int anComets::Draw() {
                 }
             }
 
-            if ( ctrDelay.Update() ) {        
-                FadeOut();
+            if ( ctrDelay.Done() ) {        
                 ctrDelay.Reset();
+                FadeOut();
             }   
     
             for ( vector<comet>::iterator it = comets.begin(); it < comets.end(); it++ ) { // draw initial positions
-                if ( (*it).speed.Update() ) {            
+                if ( (*it).speed.Done() ) {   
+                    (*it).speed.Reset();
                     // check direction and wrap around to other side of display if we're at the edge
                     switch ( (*it).dir ) {         
                         case DIR_LEFT:
@@ -104,8 +105,7 @@ int anComets::Draw() {
                     }
             
                     // Draw new position
-                    Set( (*it).x, (*it).y, (*it).color );            
-                    (*it).speed.Reset();            
+                    Set( (*it).x, (*it).y, (*it).color );                                
                     framesDrawn++;
                 }
             }            

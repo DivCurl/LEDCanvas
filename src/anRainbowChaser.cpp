@@ -15,6 +15,7 @@ anRainbowChaser::anRainbowChaser( npDisplay* pDisplay, mode_t mode, int frames, 
 anRainbowChaser::~anRainbowChaser() { }
 
 int anRainbowChaser::Draw() {
+    StartDelayCounter( 40 );       
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) {
@@ -30,13 +31,9 @@ int anRainbowChaser::Draw() {
         }   
         
         if ( !skip ) {              
-            if ( firstScan ) {
-                firstScan = 0;
-                StartDelayCounter( 40 );         
-                ctrDelay.Reset();
-            }
-
-            if ( ctrDelay.Update() ) {    
+            if ( ctrDelay.Done() ) {    
+                ctrDelay.Reset();  
+                
                 if ( angle < 360 ) {            
                     for ( int i = 0; i <= GetColRight(); i++ ) {
                         for (int j = 0; j <= GetRowTop(); j++ ) {
@@ -51,8 +48,7 @@ int anRainbowChaser::Draw() {
                     angle = angle - 360;
                 }
 
-                angle += 5;
-                ctrDelay.Reset();  
+                angle += 5;                
                 framesDrawn++;
             }        
         }

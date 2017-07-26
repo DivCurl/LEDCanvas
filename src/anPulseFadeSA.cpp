@@ -23,6 +23,7 @@ anPulseFadeSA::~anPulseFadeSA() {
 }
 
 int anPulseFadeSA::Draw() {    
+    StartDelayCounter( 50 );      
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) { 
@@ -42,18 +43,11 @@ int anPulseFadeSA::Draw() {
             
             if ( FFTBufferReady ) {
                 ComputeFFT();
-            }
-            
-            if ( firstScan ) {
-                firstScan = 0;
-                StartDelayCounter( 50 );         
-                ctrDelay.Reset();
-                angle = 0;
-            }    
+            }  
 
-            if ( ctrDelay.Update() ) {
-                FadeOut();
+            if ( ctrDelay.Done() ) {
                 ctrDelay.Reset();
+                FadeOut();                
             }
 
             for ( int i = 0; i <= GetColRight(); i++ ) {        // loop across x (frequency) axis, bottom half       

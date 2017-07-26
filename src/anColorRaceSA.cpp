@@ -24,6 +24,8 @@ anColorRaceSA::~anColorRaceSA() {
 }
 
 int anColorRaceSA::Draw() {    
+    StartDelayCounter( 25 ); 
+    
     // Main animation loop
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) { 
@@ -46,15 +48,8 @@ int anColorRaceSA::Draw() {
                 ComputeFFT();
             }            
             
-            if ( firstScan ) {
-                firstScan = 0;
-                StartDelayCounter( 25 ); 
-                firstScan = 0;
-                ctrDelay.Reset();
-            }
-            
             // Each update, check remaining column shifts. While there are some left, shift the column up.
-            if ( ctrDelay.Update() ) {
+            if ( ctrDelay.Done() ) {
                 ctrDelay.Reset();
                 
                 for ( int i = 0; i < 9; i++ ) {

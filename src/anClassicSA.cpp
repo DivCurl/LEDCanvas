@@ -62,7 +62,7 @@ int anClassicSA::Draw() {
                 ComputeFFT();
             }
             
-            if ( ctrMain.Update() ) {
+            if ( ctrMain.Done() ) {
                 ctrMain.Reset();   
                 
                 for ( int bin = 0; bin < binCount; bin++ ) {
