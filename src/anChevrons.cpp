@@ -2,8 +2,8 @@
 
 using namespace std;
 
-anChevrons::anChevrons( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
-: npAnimation( pDisplay, mode, frames, opts ) {
+anChevrons::anChevrons( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScaling ) 
+: npAnimation( pDisplay, mode, frames, opts, customScaling ) {
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
@@ -16,8 +16,8 @@ anChevrons::~anChevrons() { }
 
 int anChevrons::Draw() {
     angle = rand() % 360 ;
-    static int currentVertex = 51;
-    static int bottomVertex = 0;
+    int currentVertex = 51;
+    int bottomVertex = 0;
     StartDelayCounter( 25 );
     
     // Main animation loop
@@ -39,13 +39,16 @@ int anChevrons::Draw() {
             static int count = 0;
             
             if ( ctrDelay.Done() ) {        
+                
                 if ( dropNew ) {            
                     currentVertex = 51;
                     
                     if ( count == 3 ) {
+                        
                         if ( ( angle += 5.0 ) > 360 ) {
                             angle -= 360;
                         }
+                        
                         count = 0;
                     }      
                     
@@ -60,7 +63,9 @@ int anChevrons::Draw() {
                     Set( 8, currentVertex + 8, rgbwGetByAngle( angle ) );         
                     count++;            
                     dropNew = 0;
-                } else {    // gets the job done but need to clean this up...
+                } 
+                
+                else {    // gets the job done but need to clean this up...
                     Clr( 0, currentVertex + 8 );
                     Clr( 1, currentVertex + 6 );
                     Clr( 2, currentVertex + 4 );
@@ -82,9 +87,12 @@ int anChevrons::Draw() {
                     currentVertex--;                      
                     
                     if ( currentVertex == bottomVertex ) {
+                        
                         if ( bottomVertex++ != 50 ) {
                             dropNew = 1;
-                        } else {    // Done - restart
+                        } 
+                        
+                        else {    // Done - restart
                             firstScan = 1;
                             return ( FRAME_DRAWN );
                         }
@@ -95,7 +103,7 @@ int anChevrons::Draw() {
                 framesDrawn++;
             }   
             
-            RefreshDisplay();
+            RefreshDisplay( FB_BLEND );
         } 
     } // end main loop         
     

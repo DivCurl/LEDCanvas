@@ -5,8 +5,8 @@ extern bool analyzerRun;
 extern volatile bool FFTBufferReady;
 extern short singleSidedFFT[ N ];
 
-anClassicSA::anClassicSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts )
- : npAnimation( pDisplay, mode, frames, opts ) {
+anClassicSA::anClassicSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScaling )
+ : npAnimation( pDisplay, mode, frames, opts, customScaling ) {
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );
@@ -39,7 +39,8 @@ int anClassicSA::Draw() {
         // set initial peak y-coords to upper/lower row origin
         if ( i % 2 != 0 ) { // odd
             peaks[ i ].coord.y = 30;
-        } else { // even
+        } 
+        else { // even
             peaks[ i ].coord.y = 29;
         }
     }    
@@ -75,18 +76,22 @@ int anClassicSA::Draw() {
                             if ( bin % 2 != 0 ) { // odd bin; peaks fall downwards                               
                                 if ( ( peaks[ bin].coord.y - 1 ) < 30 ) {
                                     peaks[ bin].color = rgbw_t { 0, 0, 0, 0 };
-                                } else {
+                                } 
+                                else {
                                     peaks[ bin].coord.y -= 1;
                                 } 
-                            } else { // even bin; peaks 'fall' upwards
+                            } 
+                            else { // even bin; peaks 'fall' upwards
                                 if ( ( peaks[ bin].coord.y + 1 ) > 29 ) {
                                     peaks[ bin].color = rgbw_t { 0, 0, 0, 0 };
-                                } else {
+                                }
+                                else {
                                     peaks[ bin].coord.y += 1;
                                 }
                             }
                         }
-                    } else { // new bar is longer; regenerate bar 
+                    } 
+                    else { // new bar is longer; regenerate bar 
                         freqBars[ bin ].clear();
                         
                         if ( bin % 2 != 0 ) { // odd bin; draw towards top
@@ -104,7 +109,8 @@ int anClassicSA::Draw() {
                                 peaks[ bin ].color = rgbwGetByAngle ( colorAngle + 180 );
                                 ctrPeakFallDelay[ bin ].Reset( 500 );                                        
                             }
-                        } else { // even bin; draw towards bottom  
+                        } 
+                        else { // even bin; draw towards bottom  
                             for ( int j = 0; j <= barLength; j++ ) { 
                                 freqBars[ bin ].push_back( 
                                     pixel( coord2d_t { bin / 2, 29 - j }, 

@@ -5,8 +5,8 @@ extern bool analyzerRun;
 extern volatile bool FFTBufferReady;
 extern short singleSidedFFT[ N ];
 
-anSplatterSA::anSplatterSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
- : npAnimation( pDisplay, mode, frames, opts ) {
+anSplatterSA::anSplatterSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScaling ) 
+ : npAnimation( pDisplay, mode, frames, opts, customScaling ) {
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
@@ -24,6 +24,7 @@ anSplatterSA::~anSplatterSA() {
 
 int anSplatterSA::Draw() {    
     // Main animation loop
+    counter fadeCtr ( 20, ON );
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {
         if ( globalMode.msgPending ) { 
             PollGlobalModes();  // handle any new external I/O messages
@@ -44,16 +45,18 @@ int anSplatterSA::Draw() {
                 ComputeFFT();                
             }  
             
+            /*
             if ( firstScan ) {
                 firstScan = 0;
                 StartDelayCounter( 20 );         
                 ctrDelay.Reset();
             }
-            
-            if ( ctrDelay.Done() ) {
-                ctrDelay.Reset();
+            */
+            if ( fadeCtr.Done() ) {
+                fadeCtr.Reset();
                 FadeOut();                      
             }
+            
 
             // float dFreq = ( N / 2 ) / GetColRight() - 1;
 

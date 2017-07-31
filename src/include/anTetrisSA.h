@@ -3,19 +3,19 @@
 
 #include "npAnimation.h"
 #include "types.h"
-
-using namespace std;
+#include "fft.h"
 
 const int MAX_PIECES = 7;
 const int MAX_ROTATIONS = 4;
+using namespace std;
 
 class anTetrisSA : public npAnimation {
 public:
     anTetrisSA();
-    anTetrisSA( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
+    anTetrisSA( npDisplay* pDisplay, mode_t = MODE_NULL, int frames = 0, opt_t = OPT_NULL, scale_t = SCALE_1_1 );
     ~anTetrisSA();
     int Draw();
-    bool SpawnBlock();
+    bool SpawnBlock( float dispCenter, int block );
         
 private:
     vector<sprite> blocks;

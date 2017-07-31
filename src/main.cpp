@@ -1,6 +1,6 @@
 #include "./include/main.h"
 
-#define DEBUG_LEVEL 0
+#define DEBUG_LEVEL 1
 
 // PIC32 chip-specific configuration bits
 #pragma config FSRSSEL      = PRIORITY_7    // Assign shadow register set to IPL7 interrupts
@@ -71,15 +71,15 @@ int main() {
      * 
      *  1. Add some randomization to animation options (number of frames, color modes, fading, etc)    
      *  2. This implementation will not save specific settings from the touch screen. Is this needed?
-     *  3. 
-     *  4. 
+     *  3. Implement automatic rescaling of resolution depending on number of connected Neopixels & remove magic numbers
+     *  4. !!!! Add scaling to account for spacing between Neopixels columns (to prevent vertical squashing of sprites, etc)
      */
     
     while ( 1 ) {
-        if ( ( currAnim == ID_AN_NONE ) || ( currAnim >= ID_AN_MAX ) ) {
+        if ( ( currAnim == ID_AN_NULL ) || ( currAnim >= ID_AN_MAX ) ) {
             currAnim = 1;
         }
-                
+        
         switch ( currAnim ) {  
             
             case ( ID_AN_TEST ):
@@ -95,7 +95,7 @@ int main() {
                 break;
             
             case ( ID_AN_CHEVRONS ):
-                pAnim = new anChevrons( &display, MODE_NONE, 1500 );
+                pAnim = new anChevrons( &display, MODE_NULL, 1500 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -107,7 +107,7 @@ int main() {
                 break;
             
             case ( ID_AN_COMETS ):
-                pAnim = new anComets( &display, MODE_NONE, 1500 );
+                pAnim = new anComets( &display, MODE_NULL, 1500 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -119,7 +119,7 @@ int main() {
                 break;
                 
             case ( ID_AN_FADEMIDDLE ):
-                pAnim = new anFadeMiddle( &display, MODE_NONE, 1500 );
+                pAnim = new anFadeMiddle( &display, MODE_NULL, 1500 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -131,7 +131,7 @@ int main() {
                 break;
                 
             case ( ID_AN_RAIN ):
-                pAnim = new anRain( &display, MODE_NONE, 1500 );
+                pAnim = new anRain( &display, MODE_NULL, 1500 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -143,7 +143,7 @@ int main() {
                 break;
                 
             case ( ID_AN_RAINBOWCHASER ):
-                pAnim = new anRainbowChaser( &display, MODE_NONE, 1000 );
+                pAnim = new anRainbowChaser( &display, MODE_NULL, 1000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -168,7 +168,7 @@ int main() {
                 break;
                 
             case ( ID_AN_COLORFLOW_SA ):
-                pAnim = new anColorFlowSA( &display, MODE_NONE, 3000 );
+                pAnim = new anColorFlowSA( &display, MODE_NULL, 3000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -180,7 +180,7 @@ int main() {
                 break;
                 
             case ( ID_AN_COLORRACE_SA ):
-                pAnim = new anColorRaceSA( &display, MODE_NONE, 3000 );
+                pAnim = new anColorRaceSA( &display, MODE_NULL, 3000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -192,7 +192,7 @@ int main() {
                 break;
                 
             case ( ID_AN_PULSEFADE_SA ):
-               pAnim = new anPulseFadeSA( &display, MODE_NONE, 3000 );
+               pAnim = new anPulseFadeSA( &display, MODE_NULL, 3000 );
                
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
@@ -215,6 +215,8 @@ int main() {
                 delete pAnim;
                 break;                
             
+            // WIP
+            /* 
             case ( ID_AN_TETRIS_SA ):
                 pAnim = new anTetrisSA( &display, MODE_REPEAT, 3000 );
                 
@@ -226,6 +228,7 @@ int main() {
                 
                 delete pAnim;                
                 break;             
+             */
             
             default : 
                 currAnim++;

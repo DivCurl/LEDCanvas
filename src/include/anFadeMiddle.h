@@ -7,7 +7,7 @@
 class anFadeMiddle : public npAnimation {
 public:
     anFadeMiddle();
-    anFadeMiddle( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
+    anFadeMiddle( npDisplay* pDisplay, mode_t = MODE_NULL, int frames = 0, opt_t = OPT_NULL, scale_t = SCALE_1_1 );
     ~anFadeMiddle();
     int Draw();
     

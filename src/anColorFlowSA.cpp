@@ -5,8 +5,8 @@ extern bool analyzerRun;
 extern volatile bool FFTBufferReady;
 extern short singleSidedFFT[ N ];
 
-anColorFlowSA::anColorFlowSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
- : npAnimation( pDisplay, mode, frames, opts ) {
+anColorFlowSA::anColorFlowSA( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScale ) 
+ : npAnimation( pDisplay, mode, frames, opts, customScale ) {
      // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   

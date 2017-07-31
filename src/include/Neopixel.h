@@ -14,7 +14,7 @@ friend class npDisplay;
 
 public:
     Neopixel( void );
-	Neopixel( uint16_t numLEDs, volatile uint32_t* portSET, volatile uint32_t* portCLR, volatile uint32_t* portTRIS, uint16_t pin  );	
+	Neopixel( uint16_t numLEDs, volatile uint32_t* portSET, volatile uint32_t* portCLR, volatile uint32_t* portTRIS, uint16_t pin );	
 	~Neopixel( void );
       
 private:

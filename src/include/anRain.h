@@ -7,7 +7,7 @@
 class anRain : public npAnimation {
 public:
     anRain();
-    anRain( npDisplay* pDisplay, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
+    anRain( npDisplay* pDisplay, mode_t = MODE_NULL, int frames = 0, opt_t = OPT_NULL, scale_t = SCALE_1_1 );
     ~anRain();
     int Draw();
         

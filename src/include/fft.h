@@ -32,7 +32,7 @@
     #define fftc fft16c64
 #endif
 
-static const int16_t ADC_COUNT_NOISE = 25;      // about 100mV noise threshold as measured by scope
+static const int16_t ADC_COUNT_NOISE = 25;      // about 100mV (~30 ADC counts) noise threshold as measured by scope
 static const int16_t ADC_COUNT_1V = 310;
 static const int16_t ADC_COUNT_BIAS = 388;      // 1.25V DC bias (388 counts); 1.2V actual measured with scope
 static const int16_t ADC_COUNT_VMAX = 698;      // 1.25V (bias) + 1V   

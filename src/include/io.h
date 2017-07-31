@@ -9,6 +9,17 @@
 #include <plib.h> 
 #include "types.h"
 
+/* RANT WARNING
+ * I had to decode ALL of these by hand via a debug terminal session with the 4D-Systems touchscreen display. 
+ * What's hilarious to me is that the values of these packets don't even seem to be generated in an simple, logical, or 
+ * otherwise obvious way...you'd think that a pushbutton for example would have a particular signature bytecode or something, 
+ * ... but oh no that would
+ * be WAY too fucking simple. Instead, force your developer to sit and read the value of EACH INDVIDUAL screen control.
+ * Also: 4D Workshop is a TERRIBLE, childish looking, unpolished piece of shit software that hasn't changed much in the year or two
+ * since I first played with it. I mean, wow...it really does suck. 
+ * My suggestion therefore is absolutely not to use a 4D Systems display and go with something much nicer and developer friendly.  
+ */
+
 // Defines for LCD UART read/write messages, as inferred from 4D Workshop debugging
 #define LCD_ACK             0x06
 #define LCD_NAK             0x15

@@ -1,9 +1,11 @@
-#include "./include/anTest.h"
+#include "include/anTest.h"
+#include "include/matrix.h"
+#include "include/types.h"
 
 using namespace std;
 
-anTest::anTest( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
-: npAnimation( pDisplay, mode, frames, opts ) { }
+anTest::anTest( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScaling ) 
+: npAnimation( pDisplay, mode, frames, opts, customScaling ) { }
 
 anTest::~anTest() { }
 
@@ -28,20 +30,29 @@ int anTest::Draw() {
         upperRectMidRowRef = GetRowMiddle() + 1;
     }
     
-    volatile int dxBin = (float)( 64 / 2 ) / 9;
-    int binCount = GetColCount(); // Just the bottom rect for now (testing) 
-    vector<pixel> freqBins[ binCount ];  
-    vector<pixel> pxTest[2];
-    pixel pxTest2( coord2d_t { 1, 1 }, rgbwGetByAngle( 0 ) );
-    asm volatile ("nop");
     
-    for ( int i = 0; i < binCount; i++ ) {   
-        for ( int j = 0; j <= i; j++ ) {
-            freqBins[ i ].push_back( pixel( coord2d_t { i, j }, rgbwGetByAngle( 0 ) ) );       
-        }
-        Blit( freqBins[ i ] );
+    coord2d_t orig[4] = { { 2, 2}, { 2, 3}, { 2, 4}, { 2, 5} };
+    coord2d_t test[4] = { 0 };
+    
+    
+    // 
+    Matrix4 mxTest, mxTest2, mxTest3;
+    mxTest.Translate( 1, 1, 1 );
+    mxTest2.Scale( 2, 2, 2 );
+    mxTest3.RotateZ( 270 );
+    
+    // result[0] = m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12];
+    //        result[1] = m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13];
+            // result[2] = m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14];
+    
+    for ( int i = 0; i < 4; ++i ) {  
+        test[i].x = round(mxTest3.m[0] * (float)orig[i].x) + round(mxTest3.m[4] * (float)orig[i].y);
+        test[i].y = round(mxTest3.m[1] * (float)orig[i].x) + round(mxTest3.m[5] * (float)orig[i].y);
+        
     }
     
+    asm volatile ("nop");
+       
     while ( ( framesDrawn < frames ) || modeFlags.test( MODE_REPEAT ) ) {        
         if ( !skip ) {        
             
@@ -54,13 +65,10 @@ int anTest::Draw() {
             if ( ctrDelay.Update() ) {        
                 ctrDelay.Reset(); 
                 // Clr();
+               
+                // Blit( rotationTest );
                 
-                for ( int i = 0; i < binCount; i++ ) {   
-                    freqBins[ i ].pop_back();
-                    Blit( freqBins[i] );
-                }
-                
-                RefreshDisplay( FB_BLEND );
+                RefreshDisplay( FB_CLEAR );
                 framesDrawn++;
             }   
         } 

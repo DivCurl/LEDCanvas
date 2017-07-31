@@ -4,8 +4,6 @@
 #define _SUPPRESS_PLIB_WARNING
 #define _DISABLE_OPENADC10_CONFIGPORT_WARNING
 
-#include <cstdlib>
-#include <vector>
 #include <p32xxxx.h>
 #include <plib.h>  
 #include <xc.h>
@@ -27,7 +25,7 @@
 #include "anSplatterSA.h"
 #include "anTetrisSA.h"
 
-// all code is tuned to run on a PIC32 with 80 MHz core clock. 
+// All code is tuned to run on a PIC32 with 80 MHz core clock. 
 // Do not change nor attempt to use with slower PIC32 MCUs!
 #define SYS_FREQ    ( 80000000L )   
 #define PB_FREQ     ( 80000000L )

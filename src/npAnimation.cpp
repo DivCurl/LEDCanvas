@@ -6,26 +6,56 @@ npAnimation::npAnimation() :
     firstScan( 1 ),
     pDisplay( NULL ),
     frames( 0 ) {
-        optFlags.set ( OPT_NONE );
-        modeFlags.set( MODE_NONE ); 
+        optFlags.set ( OPT_NULL );
+        modeFlags.set( MODE_NULL ); 
 } 
 
-npAnimation::npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) : 
-    firstScan( 1 ),
+npAnimation::npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScale ) : 
     pDisplay ( pDisplay ),
-    frames( frames ) {
+    frames( frames ),
+    customScale ( customScale ) {
         optFlags.set ( opts );
         modeFlags.set( mode ); 
         // Initialize a few common startup parameters
-        firstScan = 1;    
+        // firstScan = 1;    
         framesDrawn = 0;    
         skip = 0;
-        ret = MODE_NONE;
+        ret = MODE_NULL;   
+        // SetScaling();
         Clr();
-        RefreshDisplay( FB_CLEAR );
 }
 
 npAnimation::~npAnimation() { }
+
+void npAnimation::SetScaling() {
+    if ( optFlags.test ( OPT_CUSTOM_SCALE ) ) {
+        switch ( customScale ) {
+            case SCALE_1_1:
+                xyScale = { 1, 1 };
+                break;
+                
+            case SCALE_1_2:
+                xyScale = { 1, 2 };
+                break;
+                
+            case SCALE_1_3:
+                xyScale = { 1, 3 };
+                break;
+                
+            case SCALE_1_4:
+                xyScale = { 1, 4 };
+                break;
+                
+            case SCALE_1_5:
+                xyScale = { 1, 5 };
+                break;
+                
+            default: 
+                xyScale = { 1, 1 };
+                break;
+        }                   
+    }
+}
 
 void npAnimation::SetMode( mode_t mode ) {
     modeFlags.set( mode );
@@ -92,6 +122,10 @@ coord2d_t npAnimation::GetDisplayTopRightCoord() {
     return ( coord2d_t { GetColRight(), GetRowTop() } );
 }
 
+float npAnimation::GetDisplayCenter() {
+    return ( ( GetColRight() - GetColLeft() ) / 2.0f );
+}
+
 float npAnimation::Remap( float in, float inMin, float inMax, float outMin, float outMax ) {
     in = ( in < inMin ) ? inMin : in;
     in = ( in > inMax ) ? inMax : in;
@@ -104,7 +138,7 @@ void npAnimation::Set( uint16_t x, uint16_t y, rgbw_t color, uint16_t brt ) {
     uint16_t index;
     
     if ( pDisplay != NULL ) {
-        if ( ( index = pDisplay->GetColorArrayIndex( x, y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
+        if ( ( index = pDisplay->GetColorArrayIndex( x * xyScale.x, y * xyScale.y ) ) >= 0 ) {  // returns -1 if coords are out of bounds
             pDisplay->frameBuffer[ index ] = ( color.g * ( scaledBrt + 1 ) ) >> 8;
             pDisplay->frameBuffer[ index + 1 ] = ( color.r * ( scaledBrt + 1 ) ) >> 8;
             pDisplay->frameBuffer[ index + 2 ] = ( color.b * ( scaledBrt + 1 ) ) >> 8;
@@ -473,12 +507,12 @@ void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
     }    
 }
 
-void npAnimation::Blit( const vector<pixel>& px, int offsetX, int offsetY ) {   
+void npAnimation::Blit( const vector<pixel>& px ) {   
     if ( !px.empty() ) {
         vector<pixel>::const_iterator it;
 
         for ( it = px.begin(); it < px.end(); it++ ) { 
-            npAnimation::Set( (*it).coord.x + offsetX, (*it).coord.y + offsetY, (*it).color, (*it).brt );
+            npAnimation::Set( (*it).coord.x, (*it).coord.y, (*it).color, (*it).brt );
 
         }
     }

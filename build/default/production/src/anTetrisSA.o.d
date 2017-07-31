@@ -9,4 +9,5 @@ src/./include/types.h  \
 src/./include/pixel.h  \
 src/./include/sprite.h  \
  src/./include/counter.h  \
-src/./include/io.h 
+src/./include/io.h  \
+src/./include/fft.h 

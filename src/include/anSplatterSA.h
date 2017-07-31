@@ -7,7 +7,7 @@
 class anSplatterSA : public npAnimation {    
 public:
     anSplatterSA();
-    anSplatterSA( npDisplay* display, mode_t = MODE_NONE, int frames = 0, opt_t = OPT_NONE );
+    anSplatterSA( npDisplay* display, mode_t = MODE_NULL, int frames = 0, opt_t = OPT_NULL, scale_t = SCALE_1_1 );
     ~anSplatterSA();
     int Draw();   
     

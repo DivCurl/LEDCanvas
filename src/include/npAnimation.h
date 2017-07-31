@@ -15,14 +15,13 @@
 #include "types.h"
 
 using namespace std;
-
 extern gModes_t globalMode;
 
 class npAnimation {
     
 public:
     npAnimation();
-    npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts );
+    npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScale );
     virtual ~npAnimation(); 
     virtual int Draw() = 0;
     uint16_t GetRowBottom();
@@ -31,10 +30,12 @@ public:
     uint16_t GetColRight();
     uint16_t GetRowCount();
     uint16_t GetColCount();
+    float GetDisplayCenter();
     coord2d_t GetDisplayBottomLeftCoord();
     coord2d_t GetDisplayTopRightCoord();
     float GetRowMiddle();
     float GetColMiddle();
+    void SetScaling();
     float Remap( float in, float inMin, float inMax, float outMin, float outMax );
     void Set( uint16_t x, uint16_t y, rgb_t color, uint16_t brt = 255 );
     void Set( uint16_t x, uint16_t y, rgbw_t color, uint16_t brt = 255 );
@@ -52,7 +53,7 @@ public:
     void Cpy( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 );
     void Mov( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 );
     void Swap( uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2 );
-    void Blit( const vector<pixel>& px, int offsetX = 0, int offsetY = 0 );   
+    void Blit( const vector<pixel>& px );   
     void ClrRow( uint16_t row );
     void ClrCol( uint16_t col );
     void CpyRow( uint16_t src, uint16_t dest );
@@ -81,6 +82,8 @@ public:
 protected:
     uint32_t frames;
     uint32_t framesDrawn;    
+    scale_t customScale;
+    coord2d_t xyScale = { 1, 1 };
     float fadeRate;
     float dbGain = 25.f;    // good starting point
     int ret;    // return code from Draw() 

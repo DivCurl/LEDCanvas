@@ -2,8 +2,8 @@
 
 using namespace std;
 
-anRain::anRain( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts ) 
-: npAnimation( pDisplay, mode, frames, opts ) { 
+anRain::anRain( npDisplay* pDisplay, mode_t mode, int frames, opt_t opts, scale_t customScaling ) 
+: npAnimation( pDisplay, mode, frames, opts, customScaling ) { 
     // Sync current animation runtime mode settings to LCD display
     if ( modeFlags.test( MODE_REPEAT ) ) {
         LCDSendMessage( LCD_SET_REPEAT_ON, 6 );   
