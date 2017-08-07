@@ -17,7 +17,8 @@ void pixel::Shift( int x, int y, coord2d_t displayBottomLeft, coord2d_t displayT
     if ( x < 0 ) {   // shifting left
         if ( ( coord.x - x ) < 0 ) {  // check if this shift will overflow the left extents
             color = { 0, 0, 0, 0 }; // if so, just turn the pixel off
-        } else {
+        } 
+        else {
             coord.x -= x;
         }
     } 

@@ -35,15 +35,15 @@ int anTest::Draw() {
     coord2d_t test[4] = { 0 };
     
     
-    // 
+    
     Matrix4 mxTest, mxTest2, mxTest3;
     mxTest.Translate( 1, 1, 1 );
     mxTest2.Scale( 2, 2, 2 );
     mxTest3.RotateZ( 270 );
     
     // result[0] = m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12];
-    //        result[1] = m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13];
-            // result[2] = m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14];
+    // result[1] = m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13];
+    // result[2] = m[2] * v[0] + m[6] * v[1] + m[10] * v[2] + m[14];
     
     for ( int i = 0; i < 4; ++i ) {  
         test[i].x = round(mxTest3.m[0] * (float)orig[i].x) + round(mxTest3.m[4] * (float)orig[i].y);
@@ -74,5 +74,5 @@ int anTest::Draw() {
         } 
     } // end main loop         
     
-    return ( ret );
+    return ( MODE_NEXT );
 }

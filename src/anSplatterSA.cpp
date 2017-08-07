@@ -35,7 +35,7 @@ int anSplatterSA::Draw() {
         }        
         
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
-            break;  // break while loop and return to main signaling next/prev animation to be drawn
+            return ( ret );  // break while loop and return to main signaling next/prev animation to be drawn
         }     
     
         if ( !skip ) { 
@@ -44,21 +44,11 @@ int anSplatterSA::Draw() {
             if ( FFTBufferReady ) {
                 ComputeFFT();                
             }  
-            
-            /*
-            if ( firstScan ) {
-                firstScan = 0;
-                StartDelayCounter( 20 );         
-                ctrDelay.Reset();
-            }
-            */
+           
             if ( fadeCtr.Done() ) {
                 fadeCtr.Reset();
                 FadeOut();                      
-            }
-            
-
-            // float dFreq = ( N / 2 ) / GetColRight() - 1;
+            }            
 
             for ( int i = 0; i <= GetColRight(); i++ ) {        // loop across x (frequency) axis, bottom half       
                 // Get number of splats for this column
@@ -78,5 +68,5 @@ int anSplatterSA::Draw() {
         RefreshDisplay();
     }   // end main loop
     
-    return ( ret );
+    return ( MODE_NEXT );
 }

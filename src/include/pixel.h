@@ -15,6 +15,7 @@ public:
     pixel();
     pixel( coord2d_t coord, rgbw_t color, uint16_t brt = 255 );    
     ~pixel();
+    rgbw_t GetColor() { return color; }
     void Shift( int x, int y, coord2d_t displayBottomLeft, coord2d_t displayTopRight );
     
     // Public to avoid having to use getters and setters for now

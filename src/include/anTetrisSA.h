@@ -21,6 +21,7 @@ private:
     vector<sprite> blocks;
     bool gameOver = 0;
     bool blockMoving = 0;
+    int vertShifts = 0;
     rgbw_t blockColors[ MAX_PIECES ];
     
 };  

@@ -80,7 +80,8 @@ int npDisplay::AddNeopixel( uint16_t numLEDs, volatile uint32_t* portSET, volati
 int npDisplay::DeleteNeopixel( uint8_t pos ) {
     if ( neopixels.empty() ) {  // nothing yet in the container
         return ( 1 );
-    } else {
+    } 
+    else {
         neopixels.erase( neopixels.begin() + pos );
         // update the number of connected Neopixel strips
         numNeopixels = neopixels.size();
@@ -116,7 +117,8 @@ int npDisplay::GetColorArrayIndex( uint16_t x, uint16_t y ) {
     
     if ( ( x > width - 1 ) || ( y > height - 1 ) ){
         return ( -1 );  // out of bounds
-    } else {         
+    } 
+    else {         
         return ( ( y + x * height ) * bytesPerPixel );
     }
 }
@@ -140,9 +142,11 @@ uint8_t npDisplay::GetBrightness() {
 void npDisplay::SetBrightness( uint16_t brt ) {
     if ( brt < MIN_BRT ) {
         globalBrightness = MIN_BRT;
-    } else if ( brt > MAX_BRT ) {
+    } 
+    else if ( brt > MAX_BRT ) {
         brt = MAX_BRT;
-    } else {
+    } 
+    else {
         globalBrightness = brt;
     }
     // update framebuffer to new brightness
@@ -186,7 +190,8 @@ uint32_t npDisplay::GetPackedColorAtCoord( uint16_t x, uint16_t y ) {
             color |= frameBuffer[ index ] << 8; // R
             color |= frameBuffer[ index + 1 ] << 16; // G
             color |= frameBuffer[ index + 2 ]; // B                      
-        } else {
+        } 
+        else {
             color |= frameBuffer[ index ] << 16; // R
             color |= frameBuffer[ index + 1 ] << 24; // G
             color |= frameBuffer[ index + 2 ] << 8; // B
@@ -194,7 +199,8 @@ uint32_t npDisplay::GetPackedColorAtCoord( uint16_t x, uint16_t y ) {
         }
         
         return ( color );
-    } else {
+    } 
+    else {
         return ( 0 );
     }
 } 
@@ -208,7 +214,8 @@ rgbw_t npDisplay::GetColorAtCoord( uint16_t x, uint16_t y ) {
             color.g = frameBuffer[ index ];
             color.r = frameBuffer[ index + 1 ];
             color.b = frameBuffer[ index + 2 ];                      
-        } else {
+        } 
+        else {
             color.g = frameBuffer[ index ];
             color.r = frameBuffer[ index + 1 ];
             color.b = frameBuffer[ index + 2 ];

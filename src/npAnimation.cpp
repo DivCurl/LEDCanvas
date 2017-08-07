@@ -16,12 +16,10 @@ npAnimation::npAnimation( npDisplay* pDisplay, mode_t mode, int frames, opt_t op
     customScale ( customScale ) {
         optFlags.set ( opts );
         modeFlags.set( mode ); 
-        // Initialize a few common startup parameters
-        // firstScan = 1;    
         framesDrawn = 0;    
         skip = 0;
         ret = MODE_NULL;   
-        // SetScaling();
+        SetScaling();
         Clr();
 }
 
@@ -201,7 +199,8 @@ void npAnimation::SetRow( uint16_t row, uint16_t xMin, uint16_t xMax, rgbw_t col
         for ( int i = xMin; i < xMax; i++ ) {
             Set( i, row, color, brt );
         } 
-    } else {
+    } 
+    else {
         for ( int i = xMax; i > xMin; i-- ) {
             Set( i, row, color, brt );
         }
@@ -229,7 +228,8 @@ void npAnimation::SetCol( uint16_t col, uint16_t yMin, uint16_t yMax, rgbw_t col
         for ( int i = yMin; i <= yMax; i++ ) {
             Set( col, i, color, brt );
         }
-    } else {    // if yMin > yMax, we are drawing the column top-to-bottom so reverse the direction of the loop
+    } 
+    else {    // if yMin > yMax, we are drawing the column top-to-bottom so reverse the direction of the loop
         for ( int i = yMax; i <= yMin; i++ ) {
             Set( col, i, color, brt );
         }
@@ -458,29 +458,6 @@ void npAnimation::ShiftDown( uint16_t rowBottom, uint16_t rowTop ) {
     ClrRow( rowTop );
 }
 
-// TODO: add option to clip to edges of display, or shift out. 
-/*
-void npAnimation::ShiftPixels( vector<pixel>& px, coord2d_t offset ) {
-    if ( !px.empty() ) {
-        vector<pixel>::const_iterator it;
-        
-        for ( it = px.begin(); it < px.end(); it++ ) { 
-            if ( offset.x < 0 ) { // Left
-                if ( ( (*it).coord.x - offset.x ) >= GetColLeft() ) { // Ensure we don't shift off the edge of the 
-            } else { // Right
-
-            }
-
-            if ( offset.y < 0 ) { // Down
-
-            } else { // Up
-
-            }
-        }        
-    }    
-}
- */
-
 void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
     int brtStep, tmp;       // tmp needs to be int so we can detect underflow in if-test when using step method
     
@@ -494,10 +471,12 @@ void npAnimation::FadeOut( int fadeMode, int numSteps, uint16_t minBrt ) {
             
             if ( ( tmp -= brtStep ) <= 0 ) {
                 pDisplay->frameBuffer[ i ] = 0;
-            } else {
+            } 
+            else {
                 pDisplay->frameBuffer[ i ] -= tmp;
             }                
-        } else {    // use shift method
+        } 
+        else {    // use shift method
             // if ( pDisplay->frameBuffer[ i ] ) {         // if current color is non-zero
             //    if ( ( pDisplay->frameBuffer[ i ] >> 1 ) >= minBrt ) {  // shift as long as we won't undershoot minimum brightness 
                     pDisplay->frameBuffer[ i ] >>= 1;
@@ -517,16 +496,6 @@ void npAnimation::Blit( const vector<pixel>& px ) {
         }
     }
 }
-
-/*
-template<std::size_t SIZE>
-void npAnimation::Blit( array<pixel, SIZE>& px, int offsetX, int offsetY ) {   
-    for ( auto& e : px ) {        
-            npAnimation::Set( e.coord.x + offsetX, e.coord.y + offsetY, e.color, e.brt );
-    }
-     
-}
-*/
 
 int npAnimation::PollGlobalModes() {
     switch ( globalMode.msg ) {
@@ -731,7 +700,8 @@ int npAnimation::PollGlobalModes() {
     
     if ( modeFlags.test( MODE_OFF ) || modeFlags.test( MODE_PAUSE ) ) {
         skip = 1;
-    } else {
+    } 
+    else {
         skip = 0;
     }
     

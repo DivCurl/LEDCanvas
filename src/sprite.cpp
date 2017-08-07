@@ -2,7 +2,7 @@
 
 using namespace std;
 
-/*=
+/*
 sprite::sprite() { }
 
 sprite::~sprite() { }
@@ -25,19 +25,71 @@ void sprite::AddPixels( const pixel& px ) {
 // Does not check for duplicates!
 void sprite::AddPixels( const vector<pixel>& px ) {
     pixels.insert( std::end( pixels ), std::begin( px ), std::end( px ) );
+
+}
+// This isn't great...the extents should only be recalculated once when new pixels are added/deleted
+// to or from the sprite. Works OK for small sprites composed of only a few pixels 
+int sprite::GetLeftExtent() {
+    vector<pixel>::iterator it = pixels.begin();
+    int x = it->coord.x;
+    
+    for ( it = pixels.begin(); it != pixels.end(); ++it ) {
+        x = ( it->coord.x < x ) ? it->coord.x : x;
+    }
+    
+    return ( x );
+}
+
+// This isn't great...the extents should only be recalculated once when new pixels are added/deleted
+// to or from the sprite. Works OK for small sprites composed of only a few pixels 
+int sprite::GetRightExtent() {
+    vector<pixel>::iterator it = pixels.begin();
+    int x = it->coord.x;
+    
+    for ( it = pixels.begin(); it != pixels.end(); ++it ) {
+        x = ( it->coord.x > x ) ? it->coord.x : x;
+    }
+    
+    return ( x );
+}
+
+// This isn't great...the extents should only be recalculated once when new pixels are added/deleted
+// to or from the sprite. Works OK for small sprites composed of only a few pixels 
+int sprite::GetTopExtent() {
+    vector<pixel>::iterator it = pixels.begin();
+    int y = it->coord.y;
+    
+    for ( it = pixels.begin(); it != pixels.end(); ++it ) {
+        y = ( it->coord.y > y ) ? it->coord.y : y;
+    }
+    
+    return ( y );
+}
+
+// This isn't great...the extents should only be recalculated once when new pixels are added/deleted
+// to or from the sprite. Works OK for small sprites composed of only a few pixels 
+int sprite::GetBottomExtent() {
+    vector<pixel>::iterator it = pixels.begin();
+    int y = it->coord.y;
+    
+    for ( it = pixels.begin(); it != pixels.end(); ++it ) {
+        y = ( it->coord.y < y ) ? it->coord.y : y;
+    }
+    
+    return ( y );
 }
 
 // Set color of entire sprite
 void sprite::SetColor( rgbw_t color ) {    
     for ( vector<pixel>::iterator it = pixels.begin(); it != pixels.end(); it++ ) {
-        (*it).color = color;
+        it->color = color;
     }
 }
 
 // Clear the color of all pixels of the sprite
 void sprite::ClrColor() {
     for ( vector<pixel>::iterator it = pixels.begin(); it != pixels.end(); it++ ) {
-        (*it).color = { 0, 0, 0, 0 };
+        it->color = { 0, 0, 0, 0 };
     }
 }
 
@@ -49,7 +101,7 @@ void sprite::Translate( coord2d_t transCoord ) {
     newOrigin.y = transCoord.y - it->coord.y;
     
     for ( ; it != pixels.end(); it++ ) {
-        (*it).coord += newOrigin;
+        it->coord += newOrigin;
         
     }
 }
@@ -68,20 +120,20 @@ int sprite::CollideCheck( const vector< vector<coord2d_t> >& env, const pixel& p
     int collidePos = 0;
     
     for ( vector<coord2d_t>::const_iterator itBinVals = env[ colBin ].begin(); itBinVals != env[ colBin ].end(); ++itBinVals ) {
-        if ( /* ( ( px.coord.x + 1 ) >= itBinVals->x ) || */ ( ( px.coord.x + 1 ) >= 58 ) ) {
+        if ( /* ( ( px.coord.x + 1 ) >= itBinVals->x ) || */ ( px.coord.x  > 8 ) ) {
             collidePos |= COLLIDE_RIGHT;
         }
         
-        if ( /* ( ( px.coord.x - 1 ) <= itBinVals->x ) || */ ( ( px.coord.x - 1 ) <= 1 ) ) {
+        if ( /* ( ( px.coord.x - 1 ) <= itBinVals->x ) || */ ( px.coord.x < 0 ) ) {
             collidePos |= COLLIDE_LEFT;
         }
         
         if ( ( px.coord.y + 1 ) >= itBinVals->y ) {
-                collidePos |= COLLIDE_TOP;
+            collidePos |= COLLIDE_TOP;
         }
         
         if ( ( px.coord.y - 1 ) <= itBinVals->y ) {
-                collidePos |= COLLIDE_BOTTOM;
+            collidePos |= COLLIDE_BOTTOM;
         }
     }
         
@@ -94,19 +146,22 @@ int sprite::CollideCheck( const vector< vector<coord2d_t> >& env, const coord2d_
     int colBin = coord.x;
     int collidePos = 0;
     
-    if ( /* ( ( px.coord.x + 1 ) >= itBinVals->x ) || */ ( coord.x > 8 ) ) {
+    if ( ( coord.x > 8 ) ) {
         collidePos |= COLLIDE_RIGHT;
     }
     
-    if ( /* ( ( px.coord.x - 1 ) <= itBinVals->x ) || */ ( coord.x < 0 ) ) {
+    if ( ( coord.x < 0 ) ) {
         collidePos |= COLLIDE_LEFT;
     }
     
     for ( vector<coord2d_t>::const_iterator itBinVals = env[ colBin ].begin(); itBinVals != env[ colBin ].end(); ++itBinVals ) {
+        if ( ( coord.y == itBinVals->y ) && ( coord.x == itBinVals->x ) ) {
+            collidePos |= COLLIDE_RIGHT | COLLIDE_LEFT; // need to fix
+        }
+        
         if ( coord.y >= itBinVals->y ) {
             collidePos |= COLLIDE_TOP;
         }
-    
 
         if ( coord.y <= itBinVals->y ) {
             collidePos |= COLLIDE_BOTTOM;

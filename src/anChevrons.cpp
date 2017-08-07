@@ -31,8 +31,8 @@ int anChevrons::Draw() {
         }  
         
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
-            break;  // break while loop and return to main signaling next/prev animation to be drawn
-        }   
+            return ( ret );
+        }
         
         if ( !skip ) {           
             static int dropNew = 1;
@@ -90,11 +90,9 @@ int anChevrons::Draw() {
                         
                         if ( bottomVertex++ != 50 ) {
                             dropNew = 1;
-                        } 
-                        
-                        else {    // Done - restart
-                            firstScan = 1;
-                            return ( FRAME_DRAWN );
+                        }                         
+                        else {    
+                            break;
                         }
                     }
                 }       
@@ -105,7 +103,7 @@ int anChevrons::Draw() {
             
             RefreshDisplay( FB_BLEND );
         } 
-    } // end main loop         
-    
-    return ( ret );
+    } // end main loop
+            
+    return ( MODE_NEXT );
 }

@@ -35,7 +35,7 @@ int anPulseFadeSA::Draw() {
         }        
         
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
-            break;  // break while loop and return to main signaling next/prev animation to be drawn
+            return ( ret );  // break while loop and return to main signaling next/prev animation to be drawn
         }     
     
         if ( !skip ) { 
@@ -78,5 +78,5 @@ int anPulseFadeSA::Draw() {
         RefreshDisplay();
     }   // end main loop
     
-    return ( ret );
+    return ( MODE_NEXT );
 }

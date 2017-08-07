@@ -77,7 +77,8 @@ void ComputeFFT() {
     for ( int i = 0; i < N; i++ ) {
         if ( i < sampleIndex ) {
             din[ i + ( N - sampleIndex ) ] = sampleBuffer[ i ];
-        } else {
+        }
+        else {
             din[ i - sampleIndex ] = sampleBuffer[ i ];
         }
     }

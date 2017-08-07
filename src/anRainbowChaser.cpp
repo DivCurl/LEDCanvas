@@ -27,7 +27,7 @@ int anRainbowChaser::Draw() {
         }        
         
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
-            break;  // break while loop and return to main signaling next/prev animation to be drawn
+            return ( ret );  // break while loop and return to main signaling next/prev animation to be drawn
         }   
         
         if ( !skip ) {              
@@ -44,7 +44,8 @@ int anRainbowChaser::Draw() {
                             }
                         }
                     }
-                } else {
+                } 
+                else {
                     angle = angle - 360;
                 }
 
@@ -56,5 +57,5 @@ int anRainbowChaser::Draw() {
         RefreshDisplay();
     } // end main loop       
     
-    return ( ret );
+    return ( MODE_NEXT );
 }

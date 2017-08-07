@@ -1,6 +1,6 @@
 #include "./include/main.h"
 
-#define DEBUG_LEVEL 1
+#define DEBUG_LEVEL 0
 
 // PIC32 chip-specific configuration bits
 #pragma config FSRSSEL      = PRIORITY_7    // Assign shadow register set to IPL7 interrupts
@@ -72,14 +72,17 @@ int main() {
      *  1. Add some randomization to animation options (number of frames, color modes, fading, etc)    
      *  2. This implementation will not save specific settings from the touch screen. Is this needed?
      *  3. Implement automatic rescaling of resolution depending on number of connected Neopixels & remove magic numbers
-     *  4. !!!! Add scaling to account for spacing between Neopixels columns (to prevent vertical squashing of sprites, etc)
+     *  4. 
      */
     
     while ( 1 ) {
-        if ( ( currAnim == ID_AN_NULL ) || ( currAnim >= ID_AN_MAX ) ) {
+        if ( currAnim == ID_AN_NULL ) {
+            currAnim = ID_AN_MAX - 1;
+        } 
+        else if ( currAnim >= ID_AN_MAX ) {
             currAnim = 1;
         }
-        
+                
         switch ( currAnim ) {  
             
             case ( ID_AN_TEST ):
@@ -87,7 +90,8 @@ int main() {
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -99,7 +103,8 @@ int main() {
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -111,7 +116,8 @@ int main() {
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                }
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -123,7 +129,8 @@ int main() {
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -135,7 +142,8 @@ int main() {
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                }
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -147,7 +155,8 @@ int main() {
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -155,24 +164,25 @@ int main() {
                 break;
                                                    
             case ( ID_AN_CLASSIC_SA ):
-                pAnim = new anClassicSA( &display, MODE_REPEAT, 3000 );
+                pAnim = new anClassicSA( &display, MODE_NULL, 5000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
-                
                 }
                 
                 delete pAnim;
                 break;
                 
             case ( ID_AN_COLORFLOW_SA ):
-                pAnim = new anColorFlowSA( &display, MODE_NULL, 3000 );
+                pAnim = new anColorFlowSA( &display, MODE_NULL, 5000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                }
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -180,11 +190,12 @@ int main() {
                 break;
                 
             case ( ID_AN_COLORRACE_SA ):
-                pAnim = new anColorRaceSA( &display, MODE_NULL, 3000 );
+                pAnim = new anColorRaceSA( &display, MODE_NULL, 5000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
@@ -192,11 +203,12 @@ int main() {
                 break;
                 
             case ( ID_AN_PULSEFADE_SA ):
-               pAnim = new anPulseFadeSA( &display, MODE_NULL, 3000 );
+               pAnim = new anPulseFadeSA( &display, MODE_NULL, 5000 );
                
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                
@@ -204,31 +216,30 @@ int main() {
                 break;
                 
             case ( ID_AN_SPLATTER_SA ):
-                pAnim = new anSplatterSA( &display, MODE_REPEAT, 3000 );
+                pAnim = new anSplatterSA( &display, MODE_NULL, 3000 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                }
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
                 delete pAnim;
                 break;                
             
-            // WIP
-            /* 
             case ( ID_AN_TETRIS_SA ):
-                pAnim = new anTetrisSA( &display, MODE_REPEAT, 3000 );
+                pAnim = new anTetrisSA( &display, MODE_NULL, 3000, OPT_CUSTOM_SCALE, SCALE_1_2 );
                 
                 if ( pAnim->Draw() == MODE_PREV ) {
                     currAnim--;
-                } else {
+                } 
+                else if ( pAnim->Draw() == MODE_NEXT ) {
                     currAnim++;
                 }
                 
                 delete pAnim;                
                 break;             
-             */
             
             default : 
                 currAnim++;
@@ -284,7 +295,8 @@ void __ISR ( _TIMER_4_VECTOR, IPL7AUTO ) TMR4IntHandler( void ) {
         if ( sampleIndex == ( N - 1 ) ) {
             sampleIndex = 0;
             FFTBufferReady = 1;
-        } else {
+        } 
+        else {
             sampleIndex++;
         }        
     }

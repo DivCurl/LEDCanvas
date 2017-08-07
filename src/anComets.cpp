@@ -26,7 +26,7 @@ int anComets::Draw() {
         }
         
         if ( ret == MODE_PREV || ret == MODE_NEXT ) {
-            break;  // break while loop and return to main signaling next/prev animation to be drawn
+            return ( ret );  // break while loop and return to main signaling next/prev animation to be drawn
         }   
        
         if ( !skip ) {
@@ -40,17 +40,17 @@ int anComets::Draw() {
                 ctrDelay.Reset();       
                 // randomize starting positions, directions, and color
                 for ( vector<comet>::iterator it = comets.begin(); it < comets.end(); it++ ) {
-                    (*it).x = rand() % ( GetColRight() + 1 );
-                    (*it).y = rand() % ( GetRowTop() + 1 );
-                    (*it).color = rgbwGetByAngle( rand() % 360, rand() % 32 );  // throw a little white in there for good measure...
-                    (*it).dir = rand() % DIR_MAX;       // randomize path direction
+                    it->x = rand() % ( GetColRight() + 1 );
+                    it->y = rand() % ( GetRowTop() + 1 );
+                    it->color = rgbwGetByAngle( rand() % 360, rand() % 32 );  // throw a little white in there for good measure...
+                    it->dir = rand() % DIR_MAX;       // randomize path direction
                     
                     if ( ( rnd = ( rand() % 350 ) ) < 150 ) {
                         rnd = 150;                
                     }
                     
-                    (*it).speed.Start( rnd );
-                    Set( (*it).x, (*it).y, (*it).color );
+                    it->speed.Start( rnd );
+                    Set( it->x, it->y, it->color );
                 }
             }
 
@@ -60,42 +60,46 @@ int anComets::Draw() {
             }   
     
             for ( vector<comet>::iterator it = comets.begin(); it < comets.end(); it++ ) { // draw initial positions
-                if ( (*it).speed.Done() ) {   
-                    (*it).speed.Reset();
+                if ( it->speed.Done() ) {   
+                    it->speed.Reset();
                     // check direction and wrap around to other side of display if we're at the edge
-                    switch ( (*it).dir ) {         
+                    switch ( it->dir ) {         
                         case DIR_LEFT:
-                            if ( (*it).x == GetColLeft() ) {
-                                (*it).x = GetColRight();
-                            } else {
-                                (*it).x--;
+                            if ( it->x == GetColLeft() ) {
+                                it->x = GetColRight();
+                            } 
+                            else {
+                                it->x--;
                             }
                             
                             break;
 
                         case DIR_RIGHT:
-                            if ( (*it).x == GetColRight() ) {
-                                (*it).x = GetColLeft();
-                            } else {
-                                (*it).x++;
+                            if ( it->x == GetColRight() ) {
+                                it->x = GetColLeft();
+                            } 
+                            else {
+                                it->x++;
                             }
                             
                             break;
 
                         case DIR_UP:
-                            if ( (*it).y == GetRowTop() ) {
-                                (*it).y = GetRowBottom();
-                            } else {
-                                (*it).y++;
+                            if ( it->y == GetRowTop() ) {
+                                it->y = GetRowBottom();
+                            } 
+                            else {
+                                it->y++;
                             }
                             
                             break;
 
                         case DIR_DOWN:
-                            if ( (*it).y == GetRowBottom() ) {
-                                (*it).y = GetRowTop();
-                            } else {
-                                (*it).y--;
+                            if ( it->y == GetRowBottom() ) {
+                                it->y = GetRowTop();
+                            } 
+                            else {
+                                it->y--;
                             }
                             
                             break;
@@ -105,7 +109,7 @@ int anComets::Draw() {
                     }
             
                     // Draw new position
-                    Set( (*it).x, (*it).y, (*it).color );                                
+                    Set( it->x, it->y, it->color );                                
                     framesDrawn++;
                 }
             }            
@@ -114,5 +118,5 @@ int anComets::Draw() {
         RefreshDisplay();
     } // end main loop         
     
-    return ( ret );
+    return ( MODE_NEXT );
 }
